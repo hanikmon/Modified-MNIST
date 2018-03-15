@@ -15,8 +15,10 @@ from sklearn.metrics import accuracy_score
 trainXPath = "../../kaggleDatasets/train_x.csv"
 trainYPath = "../../kaggleDatasets/train_y.csv"
 testXPath = "../../kaggleDatasets/test_x.csv"
-dtype = torch.cuda.FloatTensor
-# dtype =  torch.FloatTensor
+
+#dtype = torch.cuda.FloatTensor
+dtype =  torch.FloatTensor
+
 class kaggleDataset(Dataset):
     def __init__(self, csv_pathX, csv_pathY, transforms=None):
         self.x_data = pd.read_csv(csv_pathX,header=None)
@@ -361,7 +363,7 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 
 if __name__ == '__main__':
-    trainCNN(EPOCH,'train_x_1.csv','train_y_1.csv')
+    trainCNN(EPOCH,'../data/thresholded/train_x.csv','../data/thresholded/train_y.csv')
     # testCNN('cnnModelF3F3F5new1')
    # separateTrainValid()
    #  testCNNResult('cnnModelF3F3F5new1','valid_x_1.csv','valid_y_1.csv')
