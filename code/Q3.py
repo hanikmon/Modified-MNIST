@@ -12,12 +12,16 @@ from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
 from sklearn.metrics import accuracy_score
 # load da
-trainXPath = "../../kaggleDatasets/train_x.csv"
-trainYPath = "../../kaggleDatasets/train_y.csv"
-testXPath = "../../kaggleDatasets/test_x.csv"
+#trainXPath = "../../kaggleDatasets/train_x.csv"
+#trainYPath = "../../kaggleDatasets/train_y.csv"
+#testXPath = "../../kaggleDatasets/test_x.csv"
 
-#dtype = torch.cuda.FloatTensor
-dtype =  torch.FloatTensor
+trainXPath = "../data/train_x.csv"
+trainYPath = "../data/train_y.csv"
+testXPath = "../data/test_x.csv"
+dtype = torch.cuda.FloatTensor
+#dtype =  torch.FloatTensor
+
 
 class kaggleDataset(Dataset):
     def __init__(self, csv_pathX, csv_pathY, transforms=None):
@@ -73,8 +77,8 @@ class testDataset(Dataset):
         return len(self.x_data.index)
 # Hyper Parameters
 EPOCH = 60
-BATCH_SIZE = 30
-LR = 0.0001 # learning rate
+BATCH_SIZE = 200
+LR = 0.000002 # learning rate
 
 
 class CNN(nn.Module):
@@ -152,6 +156,17 @@ class CNN(nn.Module):
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),
             nn.ReLU(),  # activation
+            nn.BatchNorm2d(128),
+            nn.Conv2d(
+                in_channels=128,  # input height
+                out_channels=128,  # n_filters
+                kernel_size=3,  # filter size
+                stride=1,  # filter movement/step
+                padding=1,
+                # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
+            ),
+            nn.ReLU(),  # activation
+            nn.BatchNorm2d(128),
         )
         self.conv6 = nn.Sequential(
             nn.Conv2d(
@@ -168,6 +183,16 @@ class CNN(nn.Module):
                 kernel_size=2,  # F
                 stride=2  # W = (W-F)/S+1
             ),  # output shape (32, 16 , 16)
+            nn.Conv2d(
+                in_channels=128,  # input height
+                out_channels=128,  # n_filters
+                kernel_size=3,  # filter size
+                stride=1,  # filter movement/step
+                padding=1,
+                # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
+            ),
+            nn.ReLU(),  # activation
+            nn.BatchNorm2d(128),
             nn.Dropout2d(p=0.25)
         )
         self.linear1 = nn.Sequential(
@@ -207,6 +232,7 @@ def imgShower(data, target, numberOfExample):
         plt.show()
 
 def trainCNN(EPOCH,trainXPath, trainYPath):
+    print('Loading dataset')
     trainData = kaggleDataset(trainXPath, trainYPath)
     train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True)  # , num_workers=1,pin_memory=True)
     cnn = CNN().cuda()
@@ -238,14 +264,14 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                     batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
         if epoch% 2==0:
-            torch.save(cnn, 'cnnModelF5x2F3x2Lx2')
+            torch.save(cnn, 'cnnModel_VINCENT')
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
         'optimizer': optimizer.state_dict()
     }
-    torch.save(state, 'cnnModelF3F5retrain')
-    torch.save(cnn,'cnnModelF3F5F3')
+    torch.save(state, 'cnnModelVINCENTretrain')
+    torch.save(cnn,'cnnModel_VINCENT')
 
 
 def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
@@ -280,7 +306,7 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                            100. * batch_idx / len(train_loader), loss.data[0]))
         if epoch % 1== 0:
-            torch.save(model, 'cnnModelF3F3F5new2')
+            torch.save(model, 'cnnModelF3F3F5Latest')
 
     torch.save(model,'cnnModelF3F5_3')
 
@@ -314,7 +340,7 @@ def separateTrainValid():
 
 def testCNN(modelName):
     testData = testDataset(testXPath)
-    test_loader = DataLoader(dataset=testData, batch_size=15,shuffle=False)  # , num_workers=1,pin_memory=True)
+    test_loader = DataLoader(dataset=testData, batch_size=200,shuffle=False)  # , num_workers=1,pin_memory=True)
     result=0
     model = torch.load(modelName)
     model.cuda()
@@ -363,10 +389,13 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 
 if __name__ == '__main__':
-    trainCNN(EPOCH,'../data/thresholded/train_x.csv','../data/thresholded/train_y.csv')
+    trainCNN(EPOCH,'../data/thresholded/train_x.csv','../data/train_y.csv')
     # testCNN('cnnModelF3F3F5new1')
-   # separateTrainValid()
-   #  testCNNResult('cnnModelF3F3F5new1','valid_x_1.csv','valid_y_1.csv')
-   #  continueTrainCNN(EPOCH,'train_x_1.csv','train_y_1.csv','cnnModelF3F3F5new1')
+    #trainCNN(EPOCH,trainXPath,trainYPath)
 
+    #testCNN('cnnModelF3F3F5Latest')
+
+    # separateTrainValid()
+    #  testCNNResult('cnnModelF3F3F5new1','valid_x_1.csv','valid_y_1.csv')
+    #continueTrainCNN(EPOCH,trainXPath,trainYPath,'cnnModelF5x2F3x2Lx2')
 

@@ -12,16 +12,12 @@ from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
 from sklearn.metrics import accuracy_score
 from skimage import data, img_as_float, color, feature
-from skimage.filters import threshold_otsu, threshold_adaptive
-from skimage.restoration import (denoise_tv_chambolle, denoise_bilateral,
-                                 denoise_wavelet, estimate_sigma)
-from skimage.util import random_noise
 from skimage.filters.rank import median
 from skimage.morphology import disk
 # load da
-trainXPath = "../../kaggleDatasets/train_x.csv"
-trainYPath = "../../kaggleDatasets/train_y.csv"
-testXPath = "../../kaggleDatasets/test_x.csv"
+trainXPath = "../data/train_x.csv"
+trainYPath = "../data/train_y.csv"
+testXPath = "../data/test_x.csv"
 dtype = torch.cuda.FloatTensor
 # dtype =  torch.FloatTensor
 class kaggleDataset(Dataset):
@@ -78,7 +74,7 @@ class testDataset(Dataset):
         return len(self.x_data.index)
 # Hyper Parameters
 EPOCH = 60
-BATCH_SIZE = 30
+BATCH_SIZE = 200
 LR = 0.0001 # learning rate
 
 def preprocessImage(image,th, r,sig):
@@ -254,7 +250,7 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                     batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
         if epoch% 2==0:
-            torch.save(cnn, 'cnnModelF5x2F3x2Lx2')
+            torch.save(cnn, 'cnnModelF5x2F3x2Lx2pro')
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
@@ -379,7 +375,7 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 
 if __name__ == '__main__':
-    trainCNN(EPOCH,'train_x_1.csv','train_y_1.csv')
+    trainCNN(EPOCH,trainYPath,trainYPath)
     # testCNN('cnnModelF3F3F5new1')
    # separateTrainValid()
    #  testCNNResult('cnnModelF3F3F5new1','valid_x_1.csv','valid_y_1.csv')
