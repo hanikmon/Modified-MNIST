@@ -12,9 +12,9 @@ from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
 from sklearn.metrics import accuracy_score
 # load da
-trainXPath = "../../kaggleDatasets/train_x.csv"
-trainYPath = "../../kaggleDatasets/train_y.csv"
-testXPath = "../../kaggleDatasets/test_x.csv"
+trainXPath = "../data/train_x.csv"
+trainYPath = "../data/train_y.csv"
+testXPath = "../data/test_x.csv"
 dtype = torch.cuda.FloatTensor
 # dtype =  torch.FloatTensor
 class kaggleDataset(Dataset):
@@ -71,8 +71,8 @@ class testDataset(Dataset):
         return len(self.x_data.index)
 # Hyper Parameters
 EPOCH = 60
-BATCH_SIZE = 30
-LR = 0.0001 # learning rate
+BATCH_SIZE = 200
+LR = 0.000002 # learning rate
 
 
 class CNN(nn.Module):
@@ -278,7 +278,7 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                            100. * batch_idx / len(train_loader), loss.data[0]))
         if epoch % 1== 0:
-            torch.save(model, 'cnnModelF3F3F5new2')
+            torch.save(model, 'cnnModelF3F3F5Latest')
 
     torch.save(model,'cnnModelF3F5_3')
 
@@ -312,7 +312,7 @@ def separateTrainValid():
 
 def testCNN(modelName):
     testData = testDataset(testXPath)
-    test_loader = DataLoader(dataset=testData, batch_size=15,shuffle=False)  # , num_workers=1,pin_memory=True)
+    test_loader = DataLoader(dataset=testData, batch_size=200,shuffle=False)  # , num_workers=1,pin_memory=True)
     result=0
     model = torch.load(modelName)
     model.cuda()
@@ -361,10 +361,9 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 
 if __name__ == '__main__':
-    trainCNN(EPOCH,'train_x_1.csv','train_y_1.csv')
-    # testCNN('cnnModelF3F3F5new1')
+    #trainCNN(EPOCH,trainXPath,trainYPath)
+    testCNN('cnnModelF3F3F5Latest')
    # separateTrainValid()
    #  testCNNResult('cnnModelF3F3F5new1','valid_x_1.csv','valid_y_1.csv')
-   #  continueTrainCNN(EPOCH,'train_x_1.csv','train_y_1.csv','cnnModelF3F3F5new1')
-
+   #continueTrainCNN(EPOCH,trainXPath,trainYPath,'cnnModelF5x2F3x2Lx2')
 
