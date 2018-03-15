@@ -150,6 +150,17 @@ class CNN(nn.Module):
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),
             nn.ReLU(),  # activation
+            nn.BatchNorm2d(128),
+            nn.Conv2d(
+                in_channels=128,  # input height
+                out_channels=128,  # n_filters
+                kernel_size=3,  # filter size
+                stride=1,  # filter movement/step
+                padding=1,
+                # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
+            ),
+            nn.ReLU(),  # activation
+            nn.BatchNorm2d(128),
         )
         self.conv6 = nn.Sequential(
             nn.Conv2d(
@@ -166,6 +177,16 @@ class CNN(nn.Module):
                 kernel_size=2,  # F
                 stride=2  # W = (W-F)/S+1
             ),  # output shape (32, 16 , 16)
+            nn.Conv2d(
+                in_channels=128,  # input height
+                out_channels=128,  # n_filters
+                kernel_size=3,  # filter size
+                stride=1,  # filter movement/step
+                padding=1,
+                # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
+            ),
+            nn.ReLU(),  # activation
+            nn.BatchNorm2d(128),
             nn.Dropout2d(p=0.25)
         )
         self.linear1 = nn.Sequential(
