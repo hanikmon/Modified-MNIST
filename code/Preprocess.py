@@ -2,6 +2,8 @@
 # standard library
 
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
 import numpy   as np
 import pandas as pd
 import scipy.misc # to visualize only
@@ -14,6 +16,11 @@ from skimage.util import random_noise
 from skimage.filters.rank import median
 from skimage.morphology import disk
 from scipy import ndimage as ndi
+
+from skimage.segmentation import clear_border
+from skimage.measure import label, regionprops
+from skimage.morphology import closing, square
+from skimage.color import label2rgb
 
 # third-party library
 import torch
@@ -82,11 +89,12 @@ class testDataset(Dataset):
     def __len__(self):
         return len(self.x_data.index)
 
-def preprocessImage(image,r,sig):
+def preprocessImage(image,th,r,sig):
+    # th = 220
     #r=2,3 works well
     # sigma = 1
-    global_thresh = threshold_otsu(image)
-    binary_global = image > global_thresh
+    #global_thresh = threshold_otsu(image)
+    binary_global = image > th
     outputImage = median(binary_global, disk(r))
     output = np.where(outputImage>250,1,0)
     edges = feature.canny(outputImage, sigma=sig)
@@ -99,14 +107,18 @@ trainX = np.loadtxt(trainXPath, delimiter=",") # load from text
 trainY = np.loadtxt(trainYPath, delimiter=",") 
 trainX = trainX.reshape(-1, 64, 64) # reshape 
 trainY = trainY.reshape(-1, 1) 
-plt.imshow(trainX[0],cmap = 'gray') # to visualize only 
+
+n = 300;
+plt.imshow(trainX[n],cmap = 'gray') # to visualize only 
 
 
 
 #image = data.page()
-image = trainX[0]
+image = trainX[n]
 
-global_thresh = threshold_otsu(image)
+global_thresh = 200;
+#threshold_otsu(image)
+
 binary_global = image > global_thresh
 
 block_size = 35
@@ -239,4 +251,36 @@ ax3.set_title('Canny filter, $\sigma=3$', fontsize=20)
 
 fig.tight_layout()
 
+plt.show()
+
+################################################################
+
+
+#image = data.coins()[50:-50, 50:-50]
+image = median(noisy_image, disk(2))
+# apply threshold
+thresh = threshold_otsu(image)
+bw = closing(image > thresh, square(3))
+
+# remove artifacts connected to image border
+cleared = clear_border(bw)
+
+# label image regions
+label_image = label(cleared)
+image_label_overlay = label2rgb(label_image, image=image)
+
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.imshow(image_label_overlay)
+
+for region in regionprops(label_image):
+    # take regions with large enough areas
+    if region.area >= 100:
+        # draw rectangle around segmented coins
+        minr, minc, maxr, maxc = region.bbox
+        rect = mpatches.Rectangle((minc, minr), maxc - minc, maxr - minr,
+                                  fill=False, edgecolor='red', linewidth=2)
+        ax.add_patch(rect)
+
+ax.set_axis_off()
+plt.tight_layout()
 plt.show()
