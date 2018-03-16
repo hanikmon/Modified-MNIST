@@ -95,7 +95,7 @@ class testDataset(Dataset):
 # Hyper Parameters
 EPOCH = 60
 BATCH_SIZE = 200
-LR = 0.000001 # learning rate
+LR = 0.00000001 # learning rate
 
 
 class CNN(nn.Module):
@@ -249,6 +249,7 @@ def imgShower(data, target, numberOfExample):
         plt.show()
 
 def trainCNN(EPOCH,trainXPath, trainYPath):
+    print('Loading dataset')
     trainData = kaggleDataset(trainXPath, trainYPath)
     train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True)  # , num_workers=1,pin_memory=True)
     cnn = CNN().cuda()
@@ -405,9 +406,10 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 
 if __name__ == '__main__':
+    trainCNN(EPOCH,'../data/thresholded/train_x.csv','../data/train_y.csv')
+    # testCNN('cnnModelF3F3F5new1')
     #trainCNN(EPOCH,trainXPath,trainYPath)
     #testCNN('cnnModelVINCENT_THRESH')
     #separateTrainValid()
     #testCNNResult('cnnModelVINCENT_BIG',validXPath, validYPath)
     continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelVINCENT_THRESH')
-

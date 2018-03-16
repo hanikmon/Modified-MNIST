@@ -87,6 +87,8 @@ def preprocessImage(image,th, r,sig):
     edges = feature.canny(outputImage, sigma=sig)
     outputEdge = np.where(edges>250,1,0)
     return output,outputEdge
+
+
 class CNN(nn.Module):
     def __init__(self):
         super(CNN, self).__init__()
