@@ -20,7 +20,8 @@ trainYPath = "../data/thresholded/train_y.csv"
 validXPath = "../data/thresholded/valid_x.csv"
 validYPath = "../data/thresholded/valid_y.csv"
 testXPath = "../data/thresholded/test_x.csv"
-
+modelname = "cnnModelHamed_Thresh"
+submissionname = modelname+"result"
 # BIGGEST NUMBER DATA
 #trainXPath = "../data/biggest/train_x.csv"
 #trainYPath = "../data/biggest/train_y.csv"
@@ -35,9 +36,10 @@ testXPath = "../data/thresholded/test_x.csv"
 #validYPath = "../data/og/valid_y.csv"
 #testXPath = "../data/test_x.csv"
 
-
-dtype = torch.cuda.FloatTensor
-#dtype =  torch.FloatTensor
+cudaenabled = False;
+dtype =  torch.FloatTensor
+if cudaenabled:
+    dtype = torch.cuda.FloatTensor
 
 class kaggleDataset(Dataset):
     def __init__(self, csv_pathX, csv_pathY, transforms=None):
@@ -252,7 +254,9 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
     print('Loading dataset')
     trainData = kaggleDataset(trainXPath, trainYPath)
     train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True)  # , num_workers=1,pin_memory=True)
-    cnn = CNN().cuda()
+    cnn = CNN()
+    if cudaenabled:
+        cnn = cnn.cuda()
     print(cnn)
     cnn.double()
     cnn.train()
@@ -282,22 +286,23 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
                     batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
     	
         if epoch% 1==0:
-            torch.save(cnn, 'models/cnnModelVINCENT_THRESH')
-        testCNNResult('models/cnnModelVINCENT_THRESH',validXPath, validYPath)
+            torch.save(cnn, 'models/'+modelname)
+        testCNNResult('models/'+modelname,validXPath, validYPath)
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
         'optimizer': optimizer.state_dict()
     }
-    torch.save(state, 'models/retrain_cnnModelVINCENT_THRESH')
-    torch.save(cnn,'models/cnnModelVINCENT_THRESH')
+    torch.save(state, 'models/retrain_'+modelname)
+    torch.save(cnn,'models/'+modelname)
 
 
 def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
     trainData = kaggleDataset(trainXPath, trainYPath)
     train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True)  # , num_workers=1,pin_memory=True)
     model = torch.load(modelpath)
-    model.cuda()
+    if cudaenabled:
+        model.cuda()
     model.train()
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)  # optimize all cnn parameters
     # loss_func = nn.MultiLabelSoftMarginLoss()
@@ -325,10 +330,10 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                            100. * batch_idx / len(train_loader), loss.data[0]))
         if epoch % 1== 0:
-            torch.save(model, 'models/cnnModelVINCENT_THRESH')
-    	    testCNNResult('models/cnnModelVINCENT_THRESH',validXPath, validYPath)
+            torch.save(model, 'models/'+modelname)
+            testCNNResult('models/'+modelname,validXPath, validYPath)
 
-    torch.save(model,'models/cnnModelVINCENT_THRESH')
+    torch.save(model,'models/'+modelname)
 
 def separateTrainValid():
     trainData = kaggleDatasetNoReshape(trainXPath, trainYPath)
@@ -373,7 +378,7 @@ def testCNN(modelName):
             result = np.append(result,pred)
         print(len(result))
     df = pd.DataFrame(np.transpose(result.reshape(1,-1)))
-    df.to_csv("submissions/test_y_VINCENT_THRESH.csv",index_label='Id',header=['Label'])
+    df.to_csv("submissions/"+submissionname+".csv",index_label='Id',header=['Label'])
 
 def testCNNResult(modelName,ValidX,ValidY):
     testData = kaggleDataset(ValidX,ValidY)
@@ -381,7 +386,8 @@ def testCNNResult(modelName,ValidX,ValidY):
     result=0
     trueRes = 0
     model = torch.load(modelName)
-    model.cuda()
+    if cudaenabled:
+        model.cuda()
     model.eval()
     for batch_idx, (data, target) in enumerate(test_loader):
         data = Variable(data.type(dtype))
@@ -406,7 +412,7 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 
 if __name__ == '__main__':
-    trainCNN(EPOCH,'../data/thresholded/train_x.csv','../data/train_y.csv')
+    trainCNN(EPOCH,trainXPath,trainYPath)
     # testCNN('cnnModelF3F3F5new1')
     #trainCNN(EPOCH,trainXPath,trainYPath)
     #testCNN('cnnModelVINCENT_THRESH')
