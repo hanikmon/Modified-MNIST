@@ -11,12 +11,34 @@ from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
 from sklearn.metrics import accuracy_score
-# load da
-trainXPath = "../data/train_x.csv"
-trainYPath = "../data/train_y.csv"
-testXPath = "../data/test_x.csv"
+
+# load data
+
+# THRESHOLDED DATA
+trainXPath = "../data/thresholded/train_x.csv"
+trainYPath = "../data/thresholded/train_y.csv"
+validXPath = "../data/thresholded/valid_x.csv"
+validYPath = "../data/thresholded/valid_y.csv"
+testXPath = "../data/thresholded/test_x.csv"
+
+# BIGGEST NUMBER DATA
+#trainXPath = "../data/biggest/train_x.csv"
+#trainYPath = "../data/biggest/train_y.csv"
+#validXPath = "../data/biggest/valid_x.csv"
+#validYPath = "../data/biggest/valid_y.csv"
+#testXPath = "../data/biggest/test_x.csv"
+
+# ORIGINAL
+#trainXPath = "../data/og/train_x.csv"
+#trainYPath = "../data/og/train_y.csv"
+#validXPath = "../data/og/valid_x.csv"
+#validYPath = "../data/og/valid_y.csv"
+#testXPath = "../data/test_x.csv"
+
+
 dtype = torch.cuda.FloatTensor
-# dtype =  torch.FloatTensor
+#dtype =  torch.FloatTensor
+
 class kaggleDataset(Dataset):
     def __init__(self, csv_pathX, csv_pathY, transforms=None):
         self.x_data = pd.read_csv(csv_pathX,header=None)
@@ -29,7 +51,7 @@ class kaggleDataset(Dataset):
         # singleLable = torch.from_numpy(label).type(dtype)
 
         singleLable = torch.from_numpy(self.y_data[index]).type(torch.FloatTensor)
-        singleX = np.asarray(self.x_data.iloc[index]/255.0).reshape(1, 64, 64)
+        singleX = np.asarray(self.x_data.iloc[index]).reshape(1, 64, 64)
         x_tensor = torch.from_numpy(singleX).type(dtype)
         return x_tensor, singleLable
 
@@ -63,16 +85,17 @@ class testDataset(Dataset):
 
     def __getitem__(self, index):
 
-        singleX = np.asarray(self.x_data.iloc[index]/225.0).reshape(1, 64, 64)
+        singleX = np.asarray(self.x_data.iloc[index]).reshape(1, 64, 64)
         x_tensor = torch.from_numpy(singleX).type(dtype)
         return x_tensor
 
     def __len__(self):
         return len(self.x_data.index)
+
 # Hyper Parameters
 EPOCH = 60
 BATCH_SIZE = 200
-LR = 0.000002 # learning rate
+LR = 0.000001 # learning rate
 
 
 class CNN(nn.Module):
@@ -256,15 +279,17 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
                 print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                     batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
-        if epoch% 2==0:
-            torch.save(cnn, 'cnnModelF5x2F3x2Lx2')
+    	
+        if epoch% 1==0:
+            torch.save(cnn, 'models/cnnModelVINCENT_THRESH')
+        testCNNResult('models/cnnModelVINCENT_THRESH',validXPath, validYPath)
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
         'optimizer': optimizer.state_dict()
     }
-    torch.save(state, 'cnnModelF3F5retrain')
-    torch.save(cnn,'cnnModelF3F5F3')
+    torch.save(state, 'models/retrain_cnnModelVINCENT_THRESH')
+    torch.save(cnn,'models/cnnModelVINCENT_THRESH')
 
 
 def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
@@ -299,12 +324,12 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                            100. * batch_idx / len(train_loader), loss.data[0]))
         if epoch % 1== 0:
-            torch.save(model, 'cnnModelF3F3F5Latest')
+            torch.save(model, 'models/cnnModelVINCENT_THRESH')
+    	    testCNNResult('models/cnnModelVINCENT_THRESH',validXPath, validYPath)
 
-    torch.save(model,'cnnModelF3F5_3')
+    torch.save(model,'models/cnnModelVINCENT_THRESH')
 
 def separateTrainValid():
-    # BATCH_SIZE =100
     trainData = kaggleDatasetNoReshape(trainXPath, trainYPath)
     train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True)
     for batch_idx, (data, target) in enumerate(train_loader):
@@ -333,11 +358,9 @@ def separateTrainValid():
 
 def testCNN(modelName):
     testData = testDataset(testXPath)
-    test_loader = DataLoader(dataset=testData, batch_size=200,shuffle=False)  # , num_workers=1,pin_memory=True)
+    test_loader = DataLoader(dataset=testData, batch_size=15,shuffle=False)  # , num_workers=1,pin_memory=True)
     result=0
     model = torch.load(modelName)
-    model.cuda()
-    model.eval()
     for batch_idx, data in enumerate(test_loader):
         data = Variable(data.type(dtype))
 
@@ -349,7 +372,7 @@ def testCNN(modelName):
             result = np.append(result,pred)
         print(len(result))
     df = pd.DataFrame(np.transpose(result.reshape(1,-1)))
-    df.to_csv("x_out.csv",index_label='Id',header=['Label'])
+    df.to_csv("submissions/test_y_VINCENT_THRESH.csv",index_label='Id',header=['Label'])
 
 def testCNNResult(modelName,ValidX,ValidY):
     testData = kaggleDataset(ValidX,ValidY)
@@ -371,10 +394,10 @@ def testCNNResult(modelName,ValidX,ValidY):
         else:
             result = np.append(result,pred)
             trueRes = np.append(trueRes,target)
-        if batch_idx%20 == 0:
-            print(len(result))
-            print(len(trueRes))
-            print(accuracy_score(trueRes, result))
+        #if batch_idx%20 == 0:
+        #    print(len(result))
+        #    print(len(trueRes))
+        #    print(accuracy_score(trueRes, result))
 
 
     print('final accuracy')
@@ -383,8 +406,8 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 if __name__ == '__main__':
     #trainCNN(EPOCH,trainXPath,trainYPath)
-    testCNN('cnnModelF3F3F5Latest')
-   # separateTrainValid()
-   #  testCNNResult('cnnModelF3F3F5new1','valid_x_1.csv','valid_y_1.csv')
-   #continueTrainCNN(EPOCH,trainXPath,trainYPath,'cnnModelF5x2F3x2Lx2')
+    #testCNN('cnnModelVINCENT_THRESH')
+    #separateTrainValid()
+    #testCNNResult('cnnModelVINCENT_BIG',validXPath, validYPath)
+    continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelVINCENT_THRESH')
 
