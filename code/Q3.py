@@ -13,21 +13,22 @@ from torch.utils.data.dataset import Dataset
 from sklearn.metrics import accuracy_score
 
 # load data
-
-# THRESHOLDED DATA
-trainXPath = "../data/thresholded/train_x.csv"
-trainYPath = "../data/thresholded/train_y.csv"
-validXPath = "../data/thresholded/valid_x.csv"
-validYPath = "../data/thresholded/valid_y.csv"
-testXPath = "../data/thresholded/test_x.csv"
-modelname = "cnnModelHamed_Thresh"
+DIM = 32
+modelname = "cnnModelHamed_biggest"
 submissionname = modelname+"result"
+# THRESHOLDED DATA
+#trainXPath = "../data/thresholded/train_x.csv"
+#trainYPath = "../data/thresholded/train_y.csv"
+#validXPath = "../data/thresholded/valid_x.csv"
+#validYPath = "../data/thresholded/valid_y.csv"
+#testXPath = "../data/thresholded/test_x.csv"
+
 # BIGGEST NUMBER DATA
-#trainXPath = "../data/biggest/train_x.csv"
-#trainYPath = "../data/biggest/train_y.csv"
-#validXPath = "../data/biggest/valid_x.csv"
-#validYPath = "../data/biggest/valid_y.csv"
-#testXPath = "../data/biggest/test_x.csv"
+trainXPath = "../data/biggest/train_x.csv"
+trainYPath = "../data/biggest/train_y.csv"
+validXPath = "../data/biggest/valid_x.csv"
+validYPath = "../data/biggest/valid_y.csv"
+testXPath = "../data/biggest/test_x.csv"
 
 # ORIGINAL
 #trainXPath = "../data/og/train_x.csv"
@@ -53,7 +54,7 @@ class kaggleDataset(Dataset):
         # singleLable = torch.from_numpy(label).type(dtype)
 
         singleLable = torch.from_numpy(self.y_data[index]).type(torch.FloatTensor)
-        singleX = np.asarray(self.x_data.iloc[index]).reshape(1, 64, 64)
+        singleX = np.asarray(self.x_data.iloc[index]).reshape(1, DIM, DIM)
         x_tensor = torch.from_numpy(singleX).type(dtype)
         return x_tensor, singleLable
 
@@ -87,7 +88,7 @@ class testDataset(Dataset):
 
     def __getitem__(self, index):
 
-        singleX = np.asarray(self.x_data.iloc[index]).reshape(1, 64, 64)
+        singleX = np.asarray(self.x_data.iloc[index]).reshape(1, DIM, DIM)
         x_tensor = torch.from_numpy(singleX).type(dtype)
         return x_tensor
 
@@ -221,7 +222,7 @@ class CNN(nn.Module):
         )
 
         self.out = nn.Sequential(
-            nn.Linear(128 * 8 * 8, 10),
+            nn.Linear(128 * int((DIM/(2**3))**2), 10),
         )
 
     def forward(self, x):
