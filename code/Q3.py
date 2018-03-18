@@ -95,7 +95,7 @@ class testDataset(Dataset):
 # Hyper Parameters
 EPOCH = 60
 BATCH_SIZE = 50
-LR = 0.000001 # learning rate
+LR = 0.0001 # learning rate
 
 
 class CNN(nn.Module):
@@ -180,7 +180,7 @@ class CNN(nn.Module):
 		stride=2
 		
 	    ),
-	    #nn.Dropout(0.25)
+	    nn.Dropout(0.25)
         )
         self.conv6 = nn.Sequential(
             nn.Conv2d(
@@ -301,15 +301,15 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
                     batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
     	
         if epoch% 1==0:
-            torch.save(cnn, 'models/cnnModelGrant2563')
-        testCNNResult('models/cnnModelGrant2563',validXPath, validYPath)
+            torch.save(cnn, 'models/cnnModelGrant2564')
+        testCNNResult('models/cnnModelGrant2564',validXPath, validYPath)
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
         'optimizer': optimizer.state_dict()
     }
     torch.save(state, 'models/rgrant')
-    torch.save(cnn,'models/cnnModelGrant2563')
+    torch.save(cnn,'models/cnnModelGrant2564')
 
 
 def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
@@ -426,8 +426,8 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 if __name__ == '__main__':
     # testCNN('cnnModelF3F3F5new1')
-    #trainCNN(EPOCH,trainXPath,trainYPath)
-    #testCNN('models/cnnModelVINCENT_THRESH_8')
+    trainCNN(EPOCH,trainXPath,trainYPath)
+    #testCNN('models/cnnModelGrant2563')
     #separateTrainValid()
     #testCNNResult('cnnModelGrant256',validXPath, validYPath)
-     continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant2563')
+    #continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant2563')
