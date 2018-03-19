@@ -13,20 +13,22 @@ from torch.utils.data.dataset import Dataset
 from sklearn.metrics import accuracy_score
 
 # load data
-
+DIM = 32
+modelname = "cnnModelGrant2562"
+submissionname = modelname+"result"
 # THRESHOLDED DATA
-trainXPath = "../data/thresholded/train_x.csv"
-trainYPath = "../data/thresholded/train_y.csv"
-validXPath = "../data/thresholded/valid_x.csv"
-validYPath = "../data/thresholded/valid_y.csv"
-testXPath = "../data/thresholded/test_x.csv"
+#trainXPath = "../data/thresholded/train_x.csv"
+#trainYPath = "../data/thresholded/train_y.csv"
+#validXPath = "../data/thresholded/valid_x.csv"
+#validYPath = "../data/thresholded/valid_y.csv"
+#testXPath = "../data/thresholded/test_x.csv"
 
 # BIGGEST NUMBER DATA
-#trainXPath = "../data/biggest/train_x.csv"
-#trainYPath = "../data/biggest/train_y.csv"
-#validXPath = "../data/biggest/valid_x.csv"
-#validYPath = "../data/biggest/valid_y.csv"
-#testXPath = "../data/biggest/test_x.csv"
+trainXPath = "../data/biggest/train_x.csv"
+trainYPath = "../data/biggest/train_y.csv"
+validXPath = "../data/biggest/valid_x.csv"
+validYPath = "../data/biggest/valid_y.csv"
+testXPath = "../data/biggest/test_x.csv"
 
 # ORIGINAL
 #trainXPath = "../data/og/train_x.csv"
@@ -35,9 +37,10 @@ testXPath = "../data/thresholded/test_x.csv"
 #validYPath = "../data/og/valid_y.csv"
 #testXPath = "../data/test_x.csv"
 
-
-dtype = torch.cuda.FloatTensor
-#dtype =  torch.FloatTensor
+cudaenabled = True
+dtype =  torch.FloatTensor
+if cudaenabled:
+    dtype = torch.cuda.FloatTensor
 
 class kaggleDataset(Dataset):
     def __init__(self, csv_pathX, csv_pathY, transforms=None):
@@ -51,7 +54,7 @@ class kaggleDataset(Dataset):
         # singleLable = torch.from_numpy(label).type(dtype)
 
         singleLable = torch.from_numpy(self.y_data[index]).type(torch.FloatTensor)
-        singleX = np.asarray(self.x_data.iloc[index]).reshape(1, 64, 64)
+        singleX = np.asarray(self.x_data.iloc[index]).reshape(1, DIM, DIM)
         x_tensor = torch.from_numpy(singleX).type(dtype)
         return x_tensor, singleLable
 
@@ -85,7 +88,7 @@ class testDataset(Dataset):
 
     def __getitem__(self, index):
 
-        singleX = np.asarray(self.x_data.iloc[index]).reshape(1, 64, 64)
+        singleX = np.asarray(self.x_data.iloc[index]).reshape(1, DIM, DIM)
         x_tensor = torch.from_numpy(singleX).type(dtype)
         return x_tensor
 
@@ -258,7 +261,9 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
     print('Loading dataset')
     trainData = kaggleDataset(trainXPath, trainYPath)
     train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True)  # , num_workers=1,pin_memory=True)
-    cnn = CNN().cuda()
+    cnn = CNN()
+    if cudaenabled:
+        cnn = cnn.cuda()
     print(cnn)
     cnn.double()
     cnn.train()
@@ -288,22 +293,23 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
                     batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
     	
         if epoch% 1==0:
-            torch.save(cnn, 'models/cnnModelGrant2562')
-        testCNNResult('models/cnnModelGrant2562',validXPath, validYPath)
+            torch.save(cnn, 'models/'+modelname)
+        testCNNResult('models/'+modelname,validXPath, validYPath)
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
         'optimizer': optimizer.state_dict()
     }
-    torch.save(state, 'models/rgrant')
-    torch.save(cnn,'models/cnnModelGrant2562')
+    torch.save(state, 'models/retrain_'+modelname)
+    torch.save(cnn,'models/'+modelname)
 
 
 def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
     trainData = kaggleDataset(trainXPath, trainYPath)
     train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True)  # , num_workers=1,pin_memory=True)
     model = torch.load(modelpath)
-    model.cuda()
+    if cudaenabled:
+        model.cuda()
     model.train()
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)  # optimize all cnn parameters
     # loss_func = nn.MultiLabelSoftMarginLoss()
@@ -331,10 +337,10 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                            100. * batch_idx / len(train_loader), loss.data[0]))
         if epoch % 1== 0:
-            torch.save(model, 'models/cnnModelGrant2562')
-    	    testCNNResult('models/cnnModelGrant2562',validXPath, validYPath)
+            torch.save(model, 'models/'+modelname)
+            testCNNResult('models/'+modelname,validXPath, validYPath)
 
-    torch.save(model,'models/cnnModelGrant2562')
+    torch.save(model,'models/'+modelname)
 
 def separateTrainValid():
     trainData = kaggleDatasetNoReshape(trainXPath, trainYPath)
@@ -379,7 +385,7 @@ def testCNN(modelName):
             result = np.append(result,pred)
         print(len(result))
     df = pd.DataFrame(np.transpose(result.reshape(1,-1)))
-    df.to_csv("submissions/test_y_VINCENT_THRESH_8.csv",index_label='Id',header=['Label'])
+    df.to_csv("submissions/"+submissionname+".csv",index_label='Id',header=['Label'])
 
 def testCNNResult(modelName,ValidX,ValidY):
     testData = kaggleDataset(ValidX,ValidY)
@@ -387,7 +393,8 @@ def testCNNResult(modelName,ValidX,ValidY):
     result=0
     trueRes = 0
     model = torch.load(modelName)
-    model.cuda()
+    if cudaenabled:
+        model.cuda()
     model.eval()
     for batch_idx, (data, target) in enumerate(test_loader):
         data = Variable(data.type(dtype))
@@ -412,9 +419,10 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 
 if __name__ == '__main__':
+    #trainCNN(EPOCH,trainXPath,trainYPath)
     # testCNN('cnnModelF3F3F5new1')
-   #trainCNN(EPOCH,trainXPath,trainYPath)
+    #trainCNN(EPOCH,trainXPath,trainYPath)
     #testCNN('models/cnnModelVINCENT_THRESH_8')
     #separateTrainValid()
     #testCNNResult('cnnModelGrant256',validXPath, validYPath)
-   continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant2562')
+    continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant2562')

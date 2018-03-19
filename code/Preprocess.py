@@ -3,7 +3,6 @@
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-
 import numpy   as np
 import pandas as pd
 import scipy.misc # to visualize only
@@ -14,80 +13,23 @@ from skimage.restoration import (denoise_tv_chambolle, denoise_bilateral,
                                  denoise_wavelet, estimate_sigma)
 from skimage.util import random_noise
 from skimage.filters.rank import median
-from skimage.morphology import disk
+from skimage.morphology import disk,closing, square,erosion
 from scipy import ndimage as ndi
 
 from skimage.segmentation import clear_border
 from skimage.measure import label, regionprops
-from skimage.morphology import closing, square
 from skimage.color import label2rgb
+# watershed
+from scipy import ndimage
 
-# third-party library
-import torch
-import torch.nn as nn
-from torch.autograd import Variable
-from torch.utils.data import DataLoader
-from torch.utils.data.dataset import Dataset
-from sklearn.metrics import accuracy_score
+from skimage.morphology import watershed
+from skimage.feature import peak_local_max
+
 
 # load da
-trainXPath = "../../kaggleDatasets/train_x.csv"
-trainYPath = "../../kaggleDatasets/train_y.csv"
-testXPath = "../../kaggleDatasets/test_x.csv"
-dtype = torch.cuda.FloatTensor
-# dtype =  torch.FloatTensor
-class kaggleDataset(Dataset):
-    def __init__(self, csv_pathX, csv_pathY, transforms=None):
-        self.x_data = pd.read_csv(csv_pathX,header=None)
-        self.y_data = pd.read_csv(csv_pathY,header=None).as_matrix()
-        self.transforms = transforms
-
-    def __getitem__(self, index):
-        # label = np.zeros((10))
-        # label[self.y_data[index][0]] = 1
-        # singleLable = torch.from_numpy(label).type(dtype)
-
-        singleLable = torch.from_numpy(self.y_data[index]).type(torch.FloatTensor)
-        singleX = np.asarray(self.x_data.iloc[index]/255.0).reshape(1, 64, 64)
-        x_tensor = torch.from_numpy(singleX).type(dtype)
-        return x_tensor, singleLable
-
-    def __len__(self):
-        return len(self.x_data.index)
-
-
-class kaggleDatasetNoReshape(Dataset):
-    def __init__(self, csv_pathX, csv_pathY, transforms=None):
-        self.x_data = pd.read_csv(csv_pathX,header=None)
-        self.y_data = pd.read_csv(csv_pathY,header=None).as_matrix()
-        self.transforms = transforms
-
-    def __getitem__(self, index):
-        # label = np.zeros((10))
-        # label[self.y_data[index][0]] = 1
-        # singleLable = torch.from_numpy(label).type(dtype)
-
-        singleLable = torch.from_numpy(self.y_data[index]).type(torch.FloatTensor)
-        singleX = np.asarray(self.x_data.iloc[index])
-        x_tensor = torch.from_numpy(singleX).type(torch.FloatTensor)
-        return x_tensor, singleLable
-
-    def __len__(self):
-        return len(self.x_data.index)
-
-class testDataset(Dataset):
-    def __init__(self, csv_pathX, transforms=None):
-        self.x_data = pd.read_csv(csv_pathX,header=None)
-        self.transforms = transforms
-
-    def __getitem__(self, index):
-
-        singleX = np.asarray(self.x_data.iloc[index]/255.0).reshape(1, 64, 64)
-        x_tensor = torch.from_numpy(singleX).type(dtype)
-        return x_tensor
-
-    def __len__(self):
-        return len(self.x_data.index)
+trainXPath = "../data/og/train_x.csv"
+trainYPath = "../data/og/train_y.csv"
+testXPath = "../data/og/test_x.csv"
 
 def preprocessImage(image,th,r,sig):
     # th = 220
@@ -101,186 +43,280 @@ def preprocessImage(image,th,r,sig):
     outputEdge = np.where(edges>250,1,0)
     return output,outputEdge
 
-#######################
+def showthreshold(image,th,pltsh):
+    binary_global = (image > th).astype(float)
+    if pltsh:        
+        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(7, 8))
+        ax0, ax1 = axes
+        plt.gray()
         
-trainX = np.loadtxt(trainXPath, delimiter=",") # load from text 
-trainY = np.loadtxt(trainYPath, delimiter=",") 
-trainX = trainX.reshape(-1, 64, 64) # reshape 
-trainY = trainY.reshape(-1, 1) 
+        ax0.imshow(image)
+        ax0.set_title('Image')
+        
+        ax1.imshow(binary_global)
+        ax1.set_title('Global thresholding')
+        
+        for ax in axes:
+            ax.axis('off')
+        
+        plt.show()
+    return binary_global
+def medianfilter(image,pltsh):
+    if pltsh:
+        fig, axes = plt.subplots(2, 2, figsize=(8, 8), sharex=True, sharey=True)
+        ax = axes.ravel()
+        
+        ax[0].imshow(image)#, vmin=0, vmax=255, cmap=plt.cm.gray)
+        ax[0].set_title('Noisy image')
+        
+        ax[1].imshow(median(image, disk(1)), vmin=0, vmax=255, cmap=plt.cm.gray)
+        ax[1].set_title('Median $r=1$')
+        
+        ax[2].imshow(median(image, disk(2)), vmin=0, vmax=255, cmap=plt.cm.gray)
+        ax[2].set_title('Median $r=2$')
+        
+        ax[3].imshow(median(image, disk(3)), vmin=0, vmax=255, cmap=plt.cm.gray)
+        ax[3].set_title('Median $r=3$')
+        
+        for a in ax:
+            a.axis('off')
+        
+        plt.tight_layout()
+        return median(image, disk(1))
+def Cannyfilter(image,pltsh):
+    # Compute the Canny filter for two values of sigma
+    edges1 = feature.canny(image)
+    edges2 = feature.canny(image, sigma=3)
+    if pltsh:      
+        # display results
+        fig, (ax1, ax2, ax3) = plt.subplots(nrows=1, ncols=3, figsize=(8, 3),
+                                            sharex=True, sharey=True)
+        
+        ax1.imshow(image, cmap=plt.cm.gray)
+        ax1.axis('off')
+        ax1.set_title('noisy image', fontsize=20)
+        
+        ax2.imshow(edges1, cmap=plt.cm.gray)
+        ax2.axis('off')
+        ax2.set_title('Canny filter, $\sigma=1$', fontsize=20)
+        
+        ax3.imshow(edges2, cmap=plt.cm.gray)
+        ax3.axis('off')
+        ax3.set_title('Canny filter, $\sigma=3$', fontsize=20)
+        
+        fig.tight_layout()
+        
+        plt.show()
+    return edges1,edges2
+def bwlabeling(image,pltsh):
+    if pltsh:
+        # apply threshold
+        thresh = threshold_otsu(image)
+        bw = closing(image > thresh, square(3))
+        
+        # remove artifacts connected to image border
+        #cleared = clear_border(bw)
+        
+        # label image regions
+        label_image = label(bw)
+        image_label_overlay = label2rgb(label_image, image=image)
+        
+        fig, (ax1, ax2) = plt.subplots(nrows = 1, ncols =2, figsize=(5, 2))
+        ax1.imshow(image_label_overlay)
+        
+        for region in regionprops(label_image):
+            # take regions with large enough areas
+            if region.area >= 80:
+                # draw rectangle around segmented coins
+                minr, minc, maxr, maxc = region.bbox
+                rect = mpatches.Rectangle((minc, minr), maxc - minc, maxr - minr,
+                                          fill=False, edgecolor='red', linewidth=2)
+                ax1.add_patch(rect)
+        
+        ax1.set_axis_off()
+        
+        ax2.imshow(bw)
+        #ax3.imshow(cleared)
+        plt.tight_layout()
+        plt.show()
+def bigSegment(imageref,imageseg,pltsh,ignore = False):
+    #thresh = threshold_otsu(image)
+    bw = closing(imageseg, square(1))    
+    label_image = label(bw)
+    amax0 = -1
+    amax = -1
+    pmax = -1
+    wmax = -1
+    for region in regionprops(label_image):
+        r0, c0, r1, c1 = region.bbox
+        length = np.max([r1-r0,c1-c0])
+        width = np.min([r1-r0,c1-c0])
+        if length<=30 or ignore:
+            a = length**2
+            segment = imageref[r0:r1,c0:c1].astype(int)
+            if np.sum(segment) >pmax:
+                outputImageP = segment
+                pmax = np.sum(segment)
+            if region.area > amax:
+                outputImageA = segment
+                amax = region.area
+            if a>amax0 or (a== amax0 and width>wmax):
+                outputImageAS = segment
+                amax0 = a
+                wmax = width
 
-n = 300;
-plt.imshow(trainX[n],cmap = 'gray') # to visualize only 
+            
+        else:
+            print("Merged Numbers")
+            raise Exception('Merged Numbers')
+    if pltsh:     
+        fig, axes = plt.subplots(nrows=1, ncols=3, figsize=(8, 4))
+        ax0, ax1, ax2 = axes
+        plt.gray()
+        
+        ax0.imshow(outputImageA)
+        ax0.set_title('Biggest Number by Area')
+        
+        ax1.imshow(outputImageAS)
+        ax1.set_title('Biggest Number by Square Area')
+        
+        ax2.imshow(outputImageP)
+        ax2.set_title('Biggest Number by Pixel')
+        
+        for ax in axes:
+            ax.axis('off')
+        
+        plt.show()
+    return outputImageA,outputImageAS,outputImageP
+            
+
+    
+def differentfilters(image):
+    fig, ax = plt.subplots(nrows=2, ncols=4, figsize=(8, 5),
+                           sharex=True, sharey=True)
+    
+    plt.gray()
+    
+    # Estimate the average noise standard deviation across color channels.
+    sigma_est = estimate_sigma(image, multichannel=False, average_sigmas=True)
+    # Due to clipping in random_noise, the estimate will be a bit smaller than the
+    # specified sigma.
+    print("Estimated Gaussian noise standard deviation = {}".format(sigma_est))
+    
+    
+    ax[0, 0].imshow(image)
+    ax[0, 0].axis('off')
+    ax[0, 0].set_title('Noisy')
+    ax[0, 1].imshow(denoise_tv_chambolle(image, weight=0.1, multichannel=False))
+    ax[0, 1].axis('off')
+    ax[0, 1].set_title('TV')
+    ax[0, 2].imshow(denoise_bilateral(image, sigma_color=0.05, sigma_spatial=15,
+                    multichannel=False))
+    ax[0, 2].axis('off')
+    ax[0, 2].set_title('Bilateral')
+    ax[0, 3].imshow(denoise_wavelet(image, multichannel=False))
+    ax[0, 3].axis('off')
+    ax[0, 3].set_title('Wavelet denoising')
+    
+    ax[1, 0].imshow(denoise_tv_chambolle(image, weight=0.2, multichannel=False))
+    ax[1, 0].axis('off')
+    ax[1, 0].set_title('(more) TV')
+    ax[1, 1].imshow(denoise_bilateral(image, sigma_color=0.1, sigma_spatial=15,
+                    multichannel=False))
+    ax[1, 1].axis('off')
+    ax[1, 1].set_title('(more) Bilateral')
+    ax[1, 2].imshow(denoise_wavelet(image, multichannel=False, convert2ycbcr=True))
+    ax[1, 2].axis('off')
+    ax[1, 2].set_title('Wavelet denoising\nin YCbCr colorspace')
+    #ax[1, 0].imshow(original)
+    #ax[1, 0].axis('off')
+    #ax[1, 0].set_title('Original')
+    
+    fig.tight_layout()
+    
+    plt.show()
+    
+def preprocess(image,erode = 0):
+    global_thresh = 254;
+    pltShow = True
+    imth = showthreshold(image,global_thresh,pltShow)
+    #differentfilters(imageth)
+    immed = medianfilter(imth,pltShow)
+    Cannyfilter(median(imth, disk(1)),pltShow)
+    bwlabeling(median(imth, disk(1)),True)
+    imforbig = immed
+    if erode == 0:
+        imA,imAS,imP = bigSegment(imforbig,median(imth, disk(1)),True)
+    elif erode == -1:
+        imA,imAS,imP = bigSegment(imforbig,median(imth, disk(1)),True,ignore = True)
+    else:
+        bwlabeling(erosion(imforbig, disk(erode)),True)
+        imA,imAS,imP = bigSegment(imforbig,erosion(imth,disk(erode)),True)
+            
+    return imA,imAS,imP,imth
+
+def normalizeIm(im,size = 32):
+    im = im.astype(int)
+    isize = im.shape
+    hs = int(size/2) #half size for centering
+    w = int(isize[0]/2)
+    h = int(isize[1]/2)
+    if isize[0]>size:
+        im = im[w-hs:w+hs,:]
+        isize = im.shape
+        w = int(isize[0]/2)
+        
+    if isize[1]>size:
+        im = im[:,h-hs:h+hs]
+        isize = im.shape
+        h = int(isize[1]/2)
+            
+    rw = int(isize[0] %2)
+    rh = int(isize[1] %2)
+    
+    out = np.zeros((size,size),dtype=int)
+    out[hs-w:hs+w+rw,hs-h:hs+h+rh] = im
+    
+    return out   
+    
+#######################
+if not 'trainX' in globals():
+    trainX = pd.read_csv(trainXPath, header=None).values
+    #trainX = np.loadtxt(trainXPath,delimiter=",") # load from text 
+    trainX = trainX.reshape(-1, 64, 64) # reshape 
+if not 'trainY' in globals():
+    trainY = pd.read_csv(trainYPath, header=None).values
+    #trainY = np.loadtxt(trainYPath, delimiter=",") 
+    trainY = trainY.reshape(-1, 1) 
 
 
+if __name__ == '__main__':
+    smax = 0
+    #nvec = [42802,25203,27981,25616,12608,48329,45209,26742,46419]
+    nvec = np.random.randint(0,high=trainX.shape[0],size = 1) 
+    bigNumOut = np.zeros((len(nvec),32,32),dtype=int)
 
-#image = data.page()
-image = trainX[n]
+    for i in range(len(nvec)):
+        #n = np.random.randint(0,high=trainX.shape[0])
+        n = nvec[i]
+        print('For n = ',n)
+        image = trainX[n]
+        plt.imshow(image)
+        try:
+            bigNumImA,bigNumImAS,bigNumImP,imageth= preprocess(image)
+        except:
+            try:
+                bigNumImA,bigNumImAS,bigNumImP,imageth= preprocess(image,erode =1)
+            except:
+                #try:
+                    #bigNumImA,bigNumImaAS,bigNumImP,imageth= preprocess(image,erode =2)
+                #except:
+                bigNumImA,bigNumImAS,bigNumImP,imageth= preprocess(image,erode = -1)
+        bigNumOut[i,:,:] = normalizeIm(bigNumImAS)
+        sA = np.max([bigNumImA.shape,bigNumImAS.shape,bigNumImP.shape])
+        if sA>smax :
+            smax = sA
+            print ('max Dimension is: ',smax)
+        print ('Ouput is: ',trainY[n])
+        
 
-global_thresh = 200;
-#threshold_otsu(image)
-
-binary_global = image > global_thresh
-
-block_size = 35
-binary_adaptive = threshold_adaptive(image, block_size, offset=10)
-
-fig, axes = plt.subplots(nrows=3, figsize=(7, 8))
-ax0, ax1, ax2 = axes
-plt.gray()
-
-ax0.imshow(image)
-ax0.set_title('Image')
-
-ax1.imshow(binary_global)
-ax1.set_title('Global thresholding')
-
-ax2.imshow(binary_adaptive)
-ax2.set_title('Adaptive thresholding')
-
-for ax in axes:
-    ax.axis('off')
-
-plt.show()
-
-
-###################################################################################
-
-original = img_as_float(data.chelsea()[100:250, 50:300])
-
-sigma = 0.155
-noisy = random_noise(original, var=sigma**2)
-noisy = binary_global
-fig, ax = plt.subplots(nrows=2, ncols=4, figsize=(8, 5),
-                       sharex=True, sharey=True)
-
-plt.gray()
-
-# Estimate the average noise standard deviation across color channels.
-sigma_est = estimate_sigma(noisy, multichannel=False, average_sigmas=True)
-# Due to clipping in random_noise, the estimate will be a bit smaller than the
-# specified sigma.
-print("Estimated Gaussian noise standard deviation = {}".format(sigma_est))
-
-
-ax[0, 0].imshow(noisy)
-ax[0, 0].axis('off')
-ax[0, 0].set_title('Noisy')
-ax[0, 1].imshow(denoise_tv_chambolle(noisy, weight=0.1, multichannel=False))
-ax[0, 1].axis('off')
-ax[0, 1].set_title('TV')
-ax[0, 2].imshow(denoise_bilateral(noisy, sigma_color=0.05, sigma_spatial=15,
-                multichannel=False))
-ax[0, 2].axis('off')
-ax[0, 2].set_title('Bilateral')
-ax[0, 3].imshow(denoise_wavelet(noisy, multichannel=False))
-ax[0, 3].axis('off')
-ax[0, 3].set_title('Wavelet denoising')
-
-ax[1, 1].imshow(denoise_tv_chambolle(noisy, weight=0.2, multichannel=False))
-ax[1, 1].axis('off')
-ax[1, 1].set_title('(more) TV')
-ax[1, 2].imshow(denoise_bilateral(noisy, sigma_color=0.1, sigma_spatial=15,
-                multichannel=False))
-ax[1, 2].axis('off')
-ax[1, 2].set_title('(more) Bilateral')
-ax[1, 3].imshow(denoise_wavelet(noisy, multichannel=False, convert2ycbcr=True))
-ax[1, 3].axis('off')
-ax[1, 3].set_title('Wavelet denoising\nin YCbCr colorspace')
-#ax[1, 0].imshow(original)
-#ax[1, 0].axis('off')
-#ax[1, 0].set_title('Original')
-
-fig.tight_layout()
-
-plt.show()
-
-#############################################################################
-noisy_image = binary_global
-
-
-fig, axes = plt.subplots(2, 2, figsize=(10, 10), sharex=True, sharey=True)
-ax = axes.ravel()
-
-ax[0].imshow(noisy_image)#, vmin=0, vmax=255, cmap=plt.cm.gray)
-ax[0].set_title('Noisy image')
-
-ax[1].imshow(median(noisy_image, disk(1)), vmin=0, vmax=255, cmap=plt.cm.gray)
-ax[1].set_title('Median $r=1$')
-
-ax[2].imshow(median(noisy_image, disk(2)), vmin=0, vmax=255, cmap=plt.cm.gray)
-ax[2].set_title('Median $r=2$')
-
-ax[3].imshow(median(noisy_image, disk(3)), vmin=0, vmax=255, cmap=plt.cm.gray)
-ax[3].set_title('Median $r=3$')
-
-for a in ax:
-    a.axis('off')
-
-plt.tight_layout()
-
-#########################################################
-
-
-# Generate noisy image of a square
-#im = np.zeros((128, 128))
-#im[32:-32, 32:-32] = 1
-#
-#im = ndi.rotate(im, 15, mode='constant')
-#im = ndi.gaussian_filter(im, 4)
-#im += 0.2 * np.random.random(im.shape)
-im = median(noisy_image, disk(3))
-# Compute the Canny filter for two values of sigma
-edges1 = feature.canny(im)
-edges2 = feature.canny(im, sigma=3)
-
-# display results
-fig, (ax1, ax2, ax3) = plt.subplots(nrows=1, ncols=3, figsize=(8, 3),
-                                    sharex=True, sharey=True)
-
-ax1.imshow(im, cmap=plt.cm.gray)
-ax1.axis('off')
-ax1.set_title('noisy image', fontsize=20)
-
-ax2.imshow(edges1, cmap=plt.cm.gray)
-ax2.axis('off')
-ax2.set_title('Canny filter, $\sigma=1$', fontsize=20)
-
-ax3.imshow(edges2, cmap=plt.cm.gray)
-ax3.axis('off')
-ax3.set_title('Canny filter, $\sigma=3$', fontsize=20)
-
-fig.tight_layout()
-
-plt.show()
-
-################################################################
-
-
-#image = data.coins()[50:-50, 50:-50]
-image = median(noisy_image, disk(2))
-# apply threshold
-thresh = threshold_otsu(image)
-bw = closing(image > thresh, square(3))
-
-# remove artifacts connected to image border
-cleared = clear_border(bw)
-
-# label image regions
-label_image = label(cleared)
-image_label_overlay = label2rgb(label_image, image=image)
-
-fig, ax = plt.subplots(figsize=(10, 6))
-ax.imshow(image_label_overlay)
-
-for region in regionprops(label_image):
-    # take regions with large enough areas
-    if region.area >= 100:
-        # draw rectangle around segmented coins
-        minr, minc, maxr, maxc = region.bbox
-        rect = mpatches.Rectangle((minc, minr), maxc - minc, maxr - minr,
-                                  fill=False, edgecolor='red', linewidth=2)
-        ax.add_patch(rect)
-
-ax.set_axis_off()
-plt.tight_layout()
-plt.show()
