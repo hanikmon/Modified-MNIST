@@ -63,7 +63,7 @@ def showthreshold(image,th,pltsh):
     return binary_global
 def medianfilter(image,pltsh):
     if pltsh:
-        fig, axes = plt.subplots(2, 2, figsize=(8, 4), sharex=True, sharey=True)
+        fig, axes = plt.subplots(2, 2, figsize=(8, 8), sharex=True, sharey=True)
         ax = axes.ravel()
         
         ax[0].imshow(image)#, vmin=0, vmax=255, cmap=plt.cm.gray)
@@ -82,6 +82,7 @@ def medianfilter(image,pltsh):
             a.axis('off')
         
         plt.tight_layout()
+        return median(image, disk(1))
 def Cannyfilter(image,pltsh):
     # Compute the Canny filter for two values of sigma
     edges1 = feature.canny(image)
@@ -237,19 +238,20 @@ def differentfilters(image):
     
 def preprocess(image,erode = 0):
     global_thresh = 254;
-    pltShow = False
+    pltShow = True
     imth = showthreshold(image,global_thresh,pltShow)
     #differentfilters(imageth)
-    #medianfilter(imth,pltShow)
-    #Cannyfilter(median(imth, disk(2)),pltShow)
+    immed = medianfilter(imth,pltShow)
+    Cannyfilter(median(imth, disk(1)),pltShow)
     bwlabeling(median(imth, disk(1)),True)
+    imforbig = immed
     if erode == 0:
-        imA,imAS,imP = bigSegment(imth,median(imth, disk(1)),True)
+        imA,imAS,imP = bigSegment(imforbig,median(imth, disk(1)),True)
     elif erode == -1:
-        imA,imAS,imP = bigSegment(imth,median(imth, disk(1)),True,ignore = True)
+        imA,imAS,imP = bigSegment(imforbig,median(imth, disk(1)),True,ignore = True)
     else:
-        bwlabeling(erosion(imth, disk(erode)),True)
-        imA,imAS,imP = bigSegment(imth,erosion(imth,disk(erode)),True)
+        bwlabeling(erosion(imforbig, disk(erode)),True)
+        imA,imAS,imP = bigSegment(imforbig,erosion(imth,disk(erode)),True)
             
     return imA,imAS,imP,imth
 
@@ -290,11 +292,12 @@ if not 'trainY' in globals():
 
 if __name__ == '__main__':
     smax = 0
-    nvec = [42802,25203,27981,25616,12608,48329,45209,26742,46419]
+    #nvec = [42802,25203,27981,25616,12608,48329,45209,26742,46419]
+    nvec = np.random.randint(0,high=trainX.shape[0],size = 1) 
     bigNumOut = np.zeros((len(nvec),32,32),dtype=int)
 
     for i in range(len(nvec)):
-        n = np.random.randint(0,high=trainX.shape[0])
+        #n = np.random.randint(0,high=trainX.shape[0])
         n = nvec[i]
         print('For n = ',n)
         image = trainX[n]

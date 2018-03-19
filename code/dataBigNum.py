@@ -12,9 +12,9 @@ from skimage.filters.rank import median
 DATA_PATH = '../data/'
 TRAIN_PERCENT = 0.98
 # Threshold filter
-THRESHOLD = 250
+THRESHOLD = 254
 THRESHOLD_DIR = 'thresholded/'
-
+THRESHOLDMED_DIR = 'thresholdmed/'
 # Biggest Number
 MERGED = 0
 BIGGEST_DIR = 'biggest/'
@@ -22,10 +22,16 @@ LENGTHMAX = 30 # Expected MNIST image sizes
 DISKSIZE = 1 # for median filter
 OUTPUTSIZE = 32 # Size of data
 
+# Figures Params
+FIG_PATH = '../figures/'
 if not os.path.exists(DATA_PATH+THRESHOLD_DIR):
     os.makedirs(DATA_PATH+THRESHOLD_DIR)
+if not os.path.exists(DATA_PATH+THRESHOLDMED_DIR):
+    os.makedirs(DATA_PATH+THRESHOLDMED_DIR)
 if not os.path.exists(DATA_PATH+BIGGEST_DIR):
     os.makedirs(DATA_PATH+BIGGEST_DIR)
+if not os.path.exists(FIG_PATH):
+    os.makedirs(FIG_PATH)
 #==============================
 # Save and Load arrays
 def load_array(fname):
@@ -124,7 +130,8 @@ def create_threshold_dataset():
 
     print('Saving test set')
     save_array(og_tx, DATA_PATH+THRESHOLD_DIR+'test_x.csv')
-    
+def medianfilter(image,r):
+        return median(image, disk(r))   
 def normalizeIm(im,size = OUTPUTSIZE):
     im = im.astype(int)
     isize = im.shape
@@ -180,16 +187,17 @@ def biggest(imth,erode = 0):
     return im
 def findBiggest(imth):
     #imth = imth.reshape(64,64)
+    immed = medianfilter(imth,1)
     try:
-        out = biggest(imth)
+        out = biggest(immed)
     except:
         try:
-            out = biggest(imth,erode =1)
+            out = biggest(immed,erode =1)
         except:
             #try:
                 #bigNumImA,bigNumImaAS,bigNumImP,imageth= preprocess(image,erode =2)
             #except:
-            out = biggest(imth,erode = -1)
+            out = biggest(immed,erode = -1)
     return normalizeIm(out)
 def create_biggest_dataset():
     print('Reading old data')
@@ -245,11 +253,94 @@ def create_biggest_dataset():
 
     print('Saving test set')
     save_array(big_tx, DATA_PATH+BIGGEST_DIR+'test_x.csv')
- 
+
+def created_thresholdmed_dataset():
+    print('Reading old data')
+    og_x = pd.read_csv(DATA_PATH+'og/train_x.csv', header=None).values
+    og_y = pd.read_csv(DATA_PATH+'og/train_y.csv', header=None).values
+    og_tx = pd.read_csv(DATA_PATH+'og/test_x.csv', header=None).values
+
+    og_x = og_x.reshape(-1, 64, 64) # reshape 
+    og_tx = og_tx.reshape(-1, 64, 64) # reshape
+    og_y = og_y.reshape(-1,1)
+    num_train = int(TRAIN_PERCENT*og_x.shape[0])
+
+    print('Creating new dataset')
+    thmed_x = np.zeros((og_x.shape[0],64**2),dtype = int)
+    thmed_tx = np.zeros((og_tx.shape[0],64**2),dtype = int)
+
+    print('Applying threshold filter')
+    og_x = threshold_filter(og_x)
+    og_tx = threshold_filter(og_tx)
+
+    print('Shuffling')
+    state = np.random.get_state()
+    np.random.shuffle(og_x)
+    np.random.set_state(state)
+    np.random.shuffle(og_y)
+    
+    print('Applying threshold median preprocessing to training set')
+    for i in range(og_x.shape[0]):
+        thmed_x[i,:] = medianfilter(og_x[i],1).flatten()
+        if i % 1000 == 0:
+            print (i/og_x.shape[0]*100,"% complete for training set")
+    
+    print('Applying threshold median preprocessing to test set')
+    for i in range(og_tx.shape[0]):
+        thmed_tx[i,:] = medianfilter(og_tx[i],1).flatten()
+        if i % 1000 == 0:
+            print (i/og_tx.shape[0]*100,"% complete for test set")
+
+    print('Splitting')
+    valid_x = thmed_x[num_train:, :]
+    valid_y = og_y[num_train:, :]
+
+    print('Saving validation set')
+    save_array(valid_x, DATA_PATH+THRESHOLDMED_DIR+'valid_x.csv')
+    save_array(valid_y, DATA_PATH+THRESHOLDMED_DIR+'valid_y.csv')
+    
+    train_x = thmed_x[:num_train, :]
+    train_y = og_y[:num_train, :]
+
+    print('Saving train set')
+    save_array(train_x, DATA_PATH+THRESHOLDMED_DIR+'train_x.csv')
+    save_array(train_y, DATA_PATH+THRESHOLDMED_DIR+'train_y.csv')
+
+    print('Saving test set')
+    save_array(thmed_tx, DATA_PATH+THRESHOLDMED_DIR+'test_x.csv')
+
+def showDataset(fnamex,fnamey,datasetname,n=100):
+    print('Showing '+datasetname+' dataset:')
+    data = load_array(fnamex)
+    labels = load_array(fnamey)
+    dim = int(np.sqrt(data.shape[1]))
+    ncols = 10
+    nrows = n//ncols
+    fig, ax = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.4, nrows*1.5),
+                           sharex=True, sharey=True)
+    for i in range(n):
+        index = np.random.randint(0,high=data.shape[0])
+        image = data[index,:].reshape(dim,dim)
+        x = i//ncols
+        y = i%ncols
+        ax[x,y].imshow(image)
+        ax[x,y].axis('off')
+        ax[x,y].set_title(format(labels[index]))
+    fig.tight_layout()
+    print(fnamex)
+    fig.savefig(FIG_PATH+datasetname+'Dataset.pdf')
+
+    
+    
 #==============================
 #==============================
 
 if __name__ == '__main__':
     #train_valid_split(train_perc=TRAIN_PERCENT)
-    create_threshold_dataset()
+    #create_threshold_dataset()
+    created_thresholdmed_dataset()
     create_biggest_dataset()
+    
+    showDataset(DATA_PATH+BIGGEST_DIR+'train_x.csv',DATA_PATH+BIGGEST_DIR+'train_y.csv','biggest')
+    showDataset(DATA_PATH+THRESHOLD_DIR+'train_x.csv',DATA_PATH+THRESHOLD_DIR+'train_y.csv','threshold')
+    showDataset(DATA_PATH+THRESHOLDMED_DIR+'train_x.csv',DATA_PATH+THRESHOLDMED_DIR+'train_y.csv','thresholdmed')
