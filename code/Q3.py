@@ -95,7 +95,7 @@ class testDataset(Dataset):
 # Hyper Parameters
 EPOCH = 60
 BATCH_SIZE = 300
-LR = 0.0001 # learning rate
+LR = 0.00001 # learning rate
 
 
 class CNN(nn.Module):
@@ -264,7 +264,7 @@ class CNN(nn.Module):
 			),
             #nn.Dropout(p=0.25)
         )
-		self.conv11 = nn.Sequential(
+	self.conv11 = nn.Sequential(
             nn.Conv2d(
                 in_channels=1024,
                 out_channels=2048,
@@ -318,7 +318,7 @@ class CNN(nn.Module):
         x = self.conv6(x)
         x = self.conv7(x)
         x = self.conv8(x)
-		x = self.conv9(x)
+	x = self.conv9(x)
         x = self.conv10(x)
         x = self.conv11(x)
         x = self.conv12(x)
@@ -499,8 +499,8 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 if __name__ == '__main__':
     # testCNN('cnnModelF3F3F5new1')
-    trainCNN(EPOCH,trainXPath,trainYPath)
+    #trainCNN(EPOCH,trainXPath,trainYPath)
     #testCNN('models/cnnModelGrant10lay')
     #separateTrainValid()
     #testCNNResult('cnnModelGrant256',validXPath, validYPath)
-    #continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant12lay')
+    continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant12lay')
