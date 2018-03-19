@@ -94,7 +94,7 @@ class testDataset(Dataset):
 
 # Hyper Parameters
 EPOCH = 60
-BATCH_SIZE = 333
+BATCH_SIZE = 300
 LR = 0.0001 # learning rate
 
 
@@ -318,8 +318,10 @@ class CNN(nn.Module):
         x = self.conv6(x)
         x = self.conv7(x)
         x = self.conv8(x)
-	x = self.conv9(x)
+		x = self.conv9(x)
         x = self.conv10(x)
+        x = self.conv11(x)
+        x = self.conv12(x)
         x = x.view(x.size(0), -1)  # flatten the output of conv2 to (batch_size, 32 * 16 * 16)
         x = self.linear1(x)
         output = self.out(x)
@@ -372,15 +374,15 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
                     batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
     	
         if epoch% 1==0:
-            torch.save(cnn, 'models/cnnModelGrant10lay')
-        testCNNResult('models/cnnModelGrant10lay',validXPath, validYPath)
+            torch.save(cnn, 'models/cnnModelGrant12lay')
+        testCNNResult('models/cnnModelGrant12lay',validXPath, validYPath)
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
         'optimizer': optimizer.state_dict()
     }
     torch.save(state, 'models/rgrant')
-    torch.save(cnn,'models/cnnModelGrant10lay')
+    torch.save(cnn,'models/cnnModelGrant12lay')
 
 
 def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
@@ -415,10 +417,10 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                            100. * batch_idx / len(train_loader), loss.data[0]))
         if epoch % 1== 0:
-            torch.save(model, 'models/cnnModelGrant10lay')
-    	    testCNNResult('models/cnnModelGrant10lay',validXPath, validYPath)
+            torch.save(model, 'models/cnnModelGrant12lay')
+    	    testCNNResult('models/cnnModelGrant12lay',validXPath, validYPath)
 
-    torch.save(model,'models/cnnModelGrant10lay')
+    torch.save(model,'models/cnnModelGrant12lay')
 
 def separateTrainValid():
     trainData = kaggleDatasetNoReshape(trainXPath, trainYPath)
@@ -497,8 +499,8 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 if __name__ == '__main__':
     # testCNN('cnnModelF3F3F5new1')
-    #trainCNN(EPOCH,trainXPath,trainYPath)
-    testCNN('models/cnnModelGrant10lay')
+    trainCNN(EPOCH,trainXPath,trainYPath)
+    #testCNN('models/cnnModelGrant10lay')
     #separateTrainValid()
     #testCNNResult('cnnModelGrant256',validXPath, validYPath)
-    #continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant10lay')
+    #continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant12lay')
