@@ -95,7 +95,7 @@ class testDataset(Dataset):
 # Hyper Parameters
 EPOCH = 60
 BATCH_SIZE = 333
-LR = 0.000001 # learning rate
+LR = 0.0001 # learning rate
 
 
 class CNN(nn.Module):
@@ -264,16 +264,48 @@ class CNN(nn.Module):
 			),
             #nn.Dropout(p=0.25)
         )
+		self.conv11 = nn.Sequential(
+            nn.Conv2d(
+                in_channels=1024,
+                out_channels=2048,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+            ),
+            nn.ReLU(),
+            nn.BatchNorm2d(2048),
+			#nn.MaxPool2d(
+			#		kernel_size=2,
+			#		stride=2,
+			#),
+			nn.Dropout2d(p=0.25)
+        )
+        self.conv12 = nn.Sequential(
+            nn.Conv2d(
+                in_channels=2048,
+                out_channels=2048,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+            ),
+            nn.ReLU(),
+            nn.BatchNorm2d(2048),
+			nn.MaxPool2d(
+					kernel_size=2,
+					stride=2,
+			),
+            #nn.Dropout(p=0.25)
+        )
         self.linear1 = nn.Sequential(
             # nn.Linear(128*8*8,64*4),
             nn.ReLU(),
             nn.Dropout(p=0.5),
 	    #nn.BatchNorm1d(512*4*4)
-	    nn.BatchNorm1d(1024*2*2)
+	    nn.BatchNorm1d(2048*1*1)
         )
 
         self.out = nn.Sequential(
-            nn.Linear(1024*2*2, 10),
+            nn.Linear(2048*1*1, 10),
         )
 
     def forward(self, x):
