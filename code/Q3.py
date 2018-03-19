@@ -124,10 +124,10 @@ class CNN(nn.Module):
             ),
             nn.ReLU(),  # activation
             nn.BatchNorm2d(64),
-            #nn.MaxPool2d(  # reduce the size
-           #     kernel_size=2,  # F
-           #    stride=2  # W = (W-F)/S+1
-           # ),  # output shape (32, 16 , 16)
+            nn.MaxPool2d(  # reduce the size
+                kernel_size=2,  # F
+				stride=2  # W = (W-F)/S+1
+            ),  # output shape (32, 16 , 16)
             nn.Dropout2d(p=0.25)
         )
         self.conv3 = nn.Sequential(  # input shape (1, 14, 14)
@@ -140,12 +140,12 @@ class CNN(nn.Module):
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),
             nn.ReLU(),  # activation
-	    nn.Dropout2d(p=0.25),
+			nn.Dropout2d(p=0.25),
             nn.BatchNorm2d(128),
-            nn.MaxPool2d(  # reduce the size
-                kernel_size=2,  # F
-                stride=2  # W = (W-F)/S+1
-             ) # output shape (32, 16 , 16)
+            #nn.MaxPool2d(  # reduce the size
+            #    kernel_size=2,  # F
+            #    stride=2  # W = (W-F)/S+1
+            # ) # output shape (32, 16 , 16)
         )
         self.conv4 = nn.Sequential(  # input shape (1, 14, 14)
             nn.Conv2d(
@@ -158,11 +158,11 @@ class CNN(nn.Module):
             ),
             nn.ReLU(),  # activation
             nn.BatchNorm2d(128),
-            #nn.MaxPool2d(  # reduce the size
-            #    kernel_size=2,  # F
-            #    stride=2  # W = (W-F)/S+1
-            #),  # output shape (32, 16 , 16)
-            nn.Dropout2d(p=0.25)
+            nn.MaxPool2d(  # reduce the size
+                kernel_size=2,  # F
+                stride=2  # W = (W-F)/S+1
+            ),  # output shape (32, 16 , 16)
+            #nn.Dropout2d(p=0.25)
         )
         self.conv5 = nn.Sequential(
             nn.Conv2d(
@@ -175,12 +175,12 @@ class CNN(nn.Module):
             ),
             nn.ReLU(),  # activation
             nn.BatchNorm2d(256),
-	    nn.MaxPool2d(
-		kernel_size=2,
-		stride=2
-		
-	    ),
-	    nn.Dropout(0.25)
+			#nn.MaxPool2d(
+			#	kernel_size=2,
+			#	stride=2
+		    #
+			#),
+			nn.Dropout(0.25)
         )
         self.conv6 = nn.Sequential(
             nn.Conv2d(
@@ -193,50 +193,87 @@ class CNN(nn.Module):
             ),
             nn.ReLU(),  # activation
             nn.BatchNorm2d(256),
-            #nn.MaxPool2d(  # reduce the size
-            #    kernel_size=2,  # F
-            #    stride=2  # W = (W-F)/S+1
-            #),  # output shape (32, 16 , 16)
+            nn.MaxPool2d(  # reduce the size
+                kernel_size=2,  # F
+                stride=2  # W = (W-F)/S+1
+            ),  # output shape (32, 16 , 16)
             
-            nn.Dropout2d(p=0.25)
+            #nn.Dropout2d(p=0.25)
         )
         self.conv7 = nn.Sequential(
             nn.Conv2d(
                 in_channels=256,
-                out_channels=128,
+                out_channels=512,
                 kernel_size=3,
                 stride=1,
                 padding=1,
             ),
             nn.ReLU(),
-            nn.BatchNorm2d(128),
-	    nn.MaxPool2d(
-		kernel_size=2,
-		stride=2,
-	    ),
-	    nn.Dropout2d(p=0.25)
+            nn.BatchNorm2d(512),
+			#nn.MaxPool2d(
+			#		kernel_size=2,
+			#		stride=2,
+			#),
+			nn.Dropout2d(p=0.25)
         )
         self.conv8 = nn.Sequential(
             nn.Conv2d(
-                in_channels=128,
-                out_channels=128,
+                in_channels=512,
+                out_channels=512,
                 kernel_size=3,
                 stride=1,
                 padding=1,
             ),
             nn.ReLU(),
-            nn.BatchNorm2d(128),
-            nn.Dropout(p=0.25)
+            nn.BatchNorm2d(512),
+			nn.MaxPool2d(
+					kernel_size=2,
+					stride=2,
+			),
+            #nn.Dropout(p=0.25)
+        )
+        self.conv9 = nn.Sequential(
+            nn.Conv2d(
+                in_channels=512,
+                out_channels=1024,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+            ),
+            nn.ReLU(),
+            nn.BatchNorm2d(1024),
+			#nn.MaxPool2d(
+			#		kernel_size=2,
+			#		stride=2,
+			#),
+			nn.Dropout2d(p=0.25)
+        )
+        self.conv10 = nn.Sequential(
+            nn.Conv2d(
+                in_channels=1024,
+                out_channels=1024,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+            ),
+            nn.ReLU(),
+            nn.BatchNorm2d(1024),
+			nn.MaxPool2d(
+					kernel_size=2,
+					stride=2,
+			),
+            #nn.Dropout(p=0.25)
         )
         self.linear1 = nn.Sequential(
             # nn.Linear(128*8*8,64*4),
             nn.ReLU(),
             nn.Dropout(p=0.5),
-	    nn.BatchNorm1d(128*8*8)
+	    nn.BatchNorm1d(512*4*4)
+		#nn.BatchNorm1d(1024*2*2)
         )
 
         self.out = nn.Sequential(
-            nn.Linear(128*8*8, 10),
+            nn.Linear(512*4*4, 10),
         )
 
     def forward(self, x):
@@ -249,6 +286,8 @@ class CNN(nn.Module):
         x = self.conv6(x)
         x = self.conv7(x)
         x = self.conv8(x)
+		x = self.conv9(x)
+        x = self.conv10(x)
         x = x.view(x.size(0), -1)  # flatten the output of conv2 to (batch_size, 32 * 16 * 16)
         x = self.linear1(x)
         output = self.out(x)
@@ -301,15 +340,15 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
                     batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
     	
         if epoch% 1==0:
-            torch.save(cnn, 'models/cnnModelGrant2564')
-        testCNNResult('models/cnnModelGrant2564',validXPath, validYPath)
+            torch.save(cnn, 'models/cnnModelGrant10lay')
+        testCNNResult('models/cnnModelGrant10lay',validXPath, validYPath)
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
         'optimizer': optimizer.state_dict()
     }
     torch.save(state, 'models/rgrant')
-    torch.save(cnn,'models/cnnModelGrant2564')
+    torch.save(cnn,'models/cnnModelGrant10lay')
 
 
 def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
