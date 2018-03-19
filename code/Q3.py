@@ -94,8 +94,8 @@ class testDataset(Dataset):
 
 # Hyper Parameters
 EPOCH = 60
-BATCH_SIZE = 50
-LR = 0.0001 # learning rate
+BATCH_SIZE = 333
+LR = 0.000001 # learning rate
 
 
 class CNN(nn.Module):
@@ -268,12 +268,12 @@ class CNN(nn.Module):
             # nn.Linear(128*8*8,64*4),
             nn.ReLU(),
             nn.Dropout(p=0.5),
-	    nn.BatchNorm1d(512*4*4)
-		#nn.BatchNorm1d(1024*2*2)
+	    #nn.BatchNorm1d(512*4*4)
+	    nn.BatchNorm1d(1024*2*2)
         )
 
         self.out = nn.Sequential(
-            nn.Linear(512*4*4, 10),
+            nn.Linear(1024*2*2, 10),
         )
 
     def forward(self, x):
@@ -286,7 +286,7 @@ class CNN(nn.Module):
         x = self.conv6(x)
         x = self.conv7(x)
         x = self.conv8(x)
-		x = self.conv9(x)
+	x = self.conv9(x)
         x = self.conv10(x)
         x = x.view(x.size(0), -1)  # flatten the output of conv2 to (batch_size, 32 * 16 * 16)
         x = self.linear1(x)
@@ -383,10 +383,10 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                            100. * batch_idx / len(train_loader), loss.data[0]))
         if epoch % 1== 0:
-            torch.save(model, 'models/cnnModelGrant2563')
-    	    testCNNResult('models/cnnModelGrant2563',validXPath, validYPath)
+            torch.save(model, 'models/cnnModelGrant10lay')
+    	    testCNNResult('models/cnnModelGrant10lay',validXPath, validYPath)
 
-    torch.save(model,'models/cnnModelGrant2563')
+    torch.save(model,'models/cnnModelGrant10lay')
 
 def separateTrainValid():
     trainData = kaggleDatasetNoReshape(trainXPath, trainYPath)
@@ -417,7 +417,7 @@ def separateTrainValid():
 
 def testCNN(modelName):
     testData = testDataset(testXPath)
-    test_loader = DataLoader(dataset=testData, batch_size=15,shuffle=False)  # , num_workers=1,pin_memory=True)
+    test_loader = DataLoader(dataset=testData, batch_size=50,shuffle=False)  # , num_workers=1,pin_memory=True)
     result=0
     model = torch.load(modelName)
     for batch_idx, data in enumerate(test_loader):
@@ -431,7 +431,7 @@ def testCNN(modelName):
             result = np.append(result,pred)
         print(len(result))
     df = pd.DataFrame(np.transpose(result.reshape(1,-1)))
-    df.to_csv("submissions/test_y_VINCENT_THRESH_8.csv",index_label='Id',header=['Label'])
+    df.to_csv("submissions/test_y_grant_10lay.csv",index_label='Id',header=['Label'])
 
 def testCNNResult(modelName,ValidX,ValidY):
     testData = kaggleDataset(ValidX,ValidY)
@@ -465,8 +465,8 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 if __name__ == '__main__':
     # testCNN('cnnModelF3F3F5new1')
-    trainCNN(EPOCH,trainXPath,trainYPath)
-    #testCNN('models/cnnModelGrant2563')
+    #trainCNN(EPOCH,trainXPath,trainYPath)
+    testCNN('models/cnnModelGrant10lay')
     #separateTrainValid()
     #testCNNResult('cnnModelGrant256',validXPath, validYPath)
-    #continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant2563')
+    #continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant10lay')
