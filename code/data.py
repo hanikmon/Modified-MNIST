@@ -2,7 +2,14 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from sklearn.preprocessing import OneHotEncoder
+
 DATA_PATH = '../data/'
+
+DATASET_DICT = {
+    'threshold': DATA_PATH + 'thresholded/',
+    'og': DATA_PATH + 'og/'
+}
 
 #==============================
 # Save and Load arrays
@@ -16,6 +23,15 @@ def save_array(array, fname):
     print('Saving {}'.format(fname))
     print('Shape: {}'.format(array.shape))
     pd.DataFrame(array).to_csv(fname, header=None, index=False)
+
+def load_dataset(name):
+    dataset_path = DATASET_DICT[name]
+    x_train = load_array(dataset_path + 'train_x.csv')
+    y_train = load_array(dataset_path + 'train_y.csv')
+    x_valid = load_array(dataset_path + 'valid_x.csv')
+    y_valid = load_array(dataset_path + 'valid_y.csv')
+    return x_train, y_train, x_valid, y_valid
+    
 
 
 #==============================
@@ -103,6 +119,11 @@ def create_threshold_dataset():
     
 
 #==============================
+def one_hot(arr):
+    enc = OneHotEncoder()
+    return enc.fit_transform(arr).toarray()
+
+
 #==============================
 
 if __name__ == '__main__':
