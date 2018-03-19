@@ -14,7 +14,7 @@ from sklearn.metrics import accuracy_score
 
 # load data
 DIM = 32
-modelname = "cnnModelHamed_biggest"
+modelname = "cnnModelGrant2562"
 submissionname = modelname+"result"
 # THRESHOLDED DATA
 #trainXPath = "../data/thresholded/train_x.csv"
@@ -37,7 +37,7 @@ testXPath = "../data/biggest/test_x.csv"
 #validYPath = "../data/og/valid_y.csv"
 #testXPath = "../data/test_x.csv"
 
-cudaenabled = False;
+cudaenabled = True
 dtype =  torch.FloatTensor
 if cudaenabled:
     dtype = torch.cuda.FloatTensor
@@ -107,10 +107,10 @@ class CNN(nn.Module):
         self.conv1 = nn.Sequential(  # input shape (1, 64, 64)
             nn.Conv2d(
                 in_channels=1,  # input height
-                out_channels=32,  # n_filters
-                kernel_size=3,  # filter size
+                out_channels=64,  # n_filters
+                kernel_size=5,  # filter size
                 stride=1,  # filter movement/step
-                padding=1,
+                padding=2,
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),  # output shape (16, 64, 64)
             nn.ReLU(),  # activation
@@ -118,15 +118,15 @@ class CNN(nn.Module):
         )
         self.conv2 = nn.Sequential(  # input shape (1, 14, 14)
             nn.Conv2d(
-                in_channels=32,  # input height
-                out_channels=32,  # n_filters
-                kernel_size=3,  # filter size
+                in_channels=64,  # input height
+                out_channels=64,  # n_filters
+                kernel_size=5,  # filter size
                 stride=1,  # filter movement/step
-                padding=1,
+                padding=2,
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),
             nn.ReLU(),  # activation
-            nn.BatchNorm2d(32),
+            nn.BatchNorm2d(64),
             nn.MaxPool2d(  # reduce the size
                 kernel_size=2,  # F
                 stride=2  # W = (W-F)/S+1
@@ -135,7 +135,7 @@ class CNN(nn.Module):
         )
         self.conv3 = nn.Sequential(  # input shape (1, 14, 14)
             nn.Conv2d(
-                in_channels=32,# input height
+                in_channels=64,# input height
                 out_channels=64,  # n_filters
                 kernel_size=3,  # filter size
                 stride=1,  # filter movement/step
@@ -152,23 +152,6 @@ class CNN(nn.Module):
         self.conv4 = nn.Sequential(  # input shape (1, 14, 14)
             nn.Conv2d(
                 in_channels=64,  # input height
-                out_channels=64,  # n_filters
-                kernel_size=3,  # filter size
-                stride=1,  # filter movement/step
-                padding=1,
-                # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
-            ),
-            nn.ReLU(),  # activation
-            nn.BatchNorm2d(64),
-            nn.MaxPool2d(  # reduce the size
-                kernel_size=2,  # F
-                stride=2  # W = (W-F)/S+1
-            ),  # output shape (32, 16 , 16)
-            nn.Dropout2d(p=0.25)
-        )
-        self.conv5 = nn.Sequential(
-            nn.Conv2d(
-                in_channels=64,  # input height
                 out_channels=128,  # n_filters
                 kernel_size=3,  # filter size
                 stride=1,  # filter movement/step
@@ -177,6 +160,13 @@ class CNN(nn.Module):
             ),
             nn.ReLU(),  # activation
             nn.BatchNorm2d(128),
+            nn.MaxPool2d(  # reduce the size
+                kernel_size=2,  # F
+                stride=2  # W = (W-F)/S+1
+            ),  # output shape (32, 16 , 16)
+            nn.Dropout2d(p=0.25)
+        )
+        self.conv5 = nn.Sequential(
             nn.Conv2d(
                 in_channels=128,  # input height
                 out_channels=128,  # n_filters
@@ -186,7 +176,7 @@ class CNN(nn.Module):
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),
             nn.ReLU(),  # activation
-            nn.BatchNorm2d(128),
+            nn.BatchNorm2d(128)
         )
         self.conv6 = nn.Sequential(
             nn.Conv2d(
@@ -199,30 +189,44 @@ class CNN(nn.Module):
             ),
             nn.ReLU(),  # activation
             nn.BatchNorm2d(128),
-            nn.MaxPool2d(  # reduce the size
-                kernel_size=2,  # F
-                stride=2  # W = (W-F)/S+1
-            ),  # output shape (32, 16 , 16)
+           # nn.MaxPool2d(  # reduce the size
+            #    kernel_size=2,  # F
+             #   stride=2  # W = (W-F)/S+1
+           # ),  # output shape (32, 16 , 16)
+            
+            #nn.Dropout2d(p=0.25)
+        )
+        self.conv7 = nn.Sequential(
             nn.Conv2d(
-                in_channels=128,  # input height
-                out_channels=128,  # n_filters
-                kernel_size=3,  # filter size
-                stride=1,  # filter movement/step
+                in_channels=128,
+                out_channels=256,
+                kernel_size=3,
+                stride=1,
                 padding=1,
-                # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),
-            nn.ReLU(),  # activation
-            nn.BatchNorm2d(128),
-            nn.Dropout2d(p=0.25)
+            nn.ReLU(),
+            nn.BatchNorm2d(256),
+        )
+        self.conv8 = nn.Sequential(
+            nn.Conv2d(
+                in_channels=256,
+                out_channels=256,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+            ),
+            nn.ReLU(),
+            nn.BatchNorm2d(256),
+            nn.Dropout(p=0.25)
         )
         self.linear1 = nn.Sequential(
             # nn.Linear(128*8*8,64*4),
             nn.ReLU(),
-            nn.Dropout(p=0.25)
+            nn.Dropout(p=0.5)
         )
 
         self.out = nn.Sequential(
-            nn.Linear(128 * int((DIM/(2**3))**2), 10),
+            nn.Linear(256*16*16, 10),
         )
 
     def forward(self, x):
@@ -233,6 +237,8 @@ class CNN(nn.Module):
         x = self.conv4(x)
         x = self.conv5(x)
         x = self.conv6(x)
+        x = self.conv7(x)
+        x = self.conv8(x)
         x = x.view(x.size(0), -1)  # flatten the output of conv2 to (batch_size, 32 * 16 * 16)
         x = self.linear1(x)
         output = self.out(x)
@@ -413,10 +419,10 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 
 if __name__ == '__main__':
-    trainCNN(EPOCH,trainXPath,trainYPath)
+    #trainCNN(EPOCH,trainXPath,trainYPath)
     # testCNN('cnnModelF3F3F5new1')
     #trainCNN(EPOCH,trainXPath,trainYPath)
-    #testCNN('cnnModelVINCENT_THRESH')
+    #testCNN('models/cnnModelVINCENT_THRESH_8')
     #separateTrainValid()
-    #testCNNResult('cnnModelVINCENT_BIG',validXPath, validYPath)
-    continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelVINCENT_THRESH')
+    #testCNNResult('cnnModelGrant256',validXPath, validYPath)
+    continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant2562')
