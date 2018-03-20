@@ -95,7 +95,7 @@ class testDataset(Dataset):
 # Hyper Parameters
 EPOCH = 60
 BATCH_SIZE = 300
-LR = 0.00001 # learning rate
+LR = 0.00000001 # learning rate
 
 
 class CNN(nn.Module):
@@ -320,8 +320,8 @@ class CNN(nn.Module):
         x = self.conv8(x)
 	x = self.conv9(x)
         x = self.conv10(x)
-        x = self.conv11(x)
-        x = self.conv12(x)
+        #x = self.conv11(x)
+        #x = self.conv12(x)
         x = x.view(x.size(0), -1)  # flatten the output of conv2 to (batch_size, 32 * 16 * 16)
         x = self.linear1(x)
         output = self.out(x)
@@ -417,8 +417,8 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                            100. * batch_idx / len(train_loader), loss.data[0]))
         if epoch % 1== 0:
-            torch.save(model, 'models/cnnModelGrant12lay')
-    	    testCNNResult('models/cnnModelGrant12lay',validXPath, validYPath)
+            torch.save(model, 'models/cnnModelGrant10lay')
+    	    testCNNResult('models/cnnModelGrant10lay',validXPath, validYPath)
 
     torch.save(model,'models/cnnModelGrant12lay')
 
@@ -503,4 +503,4 @@ if __name__ == '__main__':
     #testCNN('models/cnnModelGrant10lay')
     #separateTrainValid()
     #testCNNResult('cnnModelGrant256',validXPath, validYPath)
-    continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant12lay')
+    continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant10lay')
