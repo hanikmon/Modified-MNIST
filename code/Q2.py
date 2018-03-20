@@ -24,11 +24,11 @@ if __name__ == '__main__':
 
     nn = NeuralNetwork(
         #layers=[x_train.shape[1], 5, y_train.shape[1]], 
-        layers=[x_train.shape[1], 300, 200, y_train.shape[1]], 
+        layers=[x_train.shape[1], 500, 200, y_train.shape[1]], 
         activations=['tanh', 'tanh'], 
         learning_rate=0.1,
-        epochs=10,
-        name='threshold_1')
+        epochs=5,
+        name='threshold_500x200')
 
     training_costs, validation_costs = nn.fit(
         x_train, 
@@ -37,10 +37,8 @@ if __name__ == '__main__':
         y_valid, 
         minibatch_size=50, 
         verbose=True,
-        save_step=10)
+        save_step=1)
     
-    #plt.plot(training_costs, color='red')
-    #plt.plot(validation_costs, color='blue')
-    #plt.show()
-    
-    print('Accuracy on validation set: {}'.format(nn.accuracy(x_train, y_train)))
+    plt.plot(training_costs, color='red')
+    plt.plot(validation_costs, color='blue')
+    plt.show()

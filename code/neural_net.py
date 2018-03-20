@@ -51,7 +51,7 @@ class NeuralNetwork(object):
             valid_acc = self.accuracy(X_valid, Y_valid)
 
             if verbose:
-                print('\nEpoch {:5d} / {:5d}: Loss->{:.6f}  Accuracy->{:.6f}'.format(i+1, self.epochs, valid_costs[i], valid_acc))
+                print('\nEpoch {:5d} / {:5d}: Loss->{:.6f}(validation) {:.6f}(training) Accuracy->{:.6f}'.format(i+1, self.epochs, valid_costs[i], train_costs[i], valid_acc))
             
             if i % save_step == 0:
                 self.save()

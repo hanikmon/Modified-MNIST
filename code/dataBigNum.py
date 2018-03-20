@@ -339,8 +339,8 @@ if __name__ == '__main__':
     #train_valid_split(train_perc=TRAIN_PERCENT)
     #create_threshold_dataset()
     created_thresholdmed_dataset()
-    create_biggest_dataset()
+    #create_biggest_dataset()
     
-    showDataset(DATA_PATH+BIGGEST_DIR+'train_x.csv',DATA_PATH+BIGGEST_DIR+'train_y.csv','biggest')
-    showDataset(DATA_PATH+THRESHOLD_DIR+'train_x.csv',DATA_PATH+THRESHOLD_DIR+'train_y.csv','threshold')
-    showDataset(DATA_PATH+THRESHOLDMED_DIR+'train_x.csv',DATA_PATH+THRESHOLDMED_DIR+'train_y.csv','thresholdmed')
+    #showDataset(DATA_PATH+BIGGEST_DIR+'train_x.csv',DATA_PATH+BIGGEST_DIR+'train_y.csv','biggest')
+    #showDataset(DATA_PATH+THRESHOLD_DIR+'train_x.csv',DATA_PATH+THRESHOLD_DIR+'train_y.csv','threshold')
+    #showDataset(DATA_PATH+THRESHOLDMED_DIR+'train_x.csv',DATA_PATH+THRESHOLDMED_DIR+'train_y.csv','thresholdmed')

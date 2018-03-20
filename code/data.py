@@ -7,9 +7,18 @@ from sklearn.preprocessing import OneHotEncoder
 DATA_PATH = '../data/'
 
 DATASET_DICT = {
-    'threshold': DATA_PATH + 'thresholded/',
+    'threshold': DATA_PATH + 'thresholdmed/',
     'og': DATA_PATH + 'og/'
 }
+
+from skimage.measure import label, regionprops
+from skimage.morphology import disk, closing, square, erosion
+from skimage.filters.rank import median
+from skimage.transform import rotate
+
+LENGTHMAX = 30 # Expected MNIST image sizes
+DISKSIZE = 1 # for median filter
+OUTPUTSIZE = 32 # Size of data
 
 #==============================
 # Save and Load arrays
@@ -118,6 +127,165 @@ def create_threshold_dataset():
     save_array(og_x, DATA_PATH+THRESHOLD_DIR+'test_x.csv')
     
 
+
+def findBiggest(imth):
+    imth = imth.reshape(64,64)
+    #immed = medianfilter(imth,1)
+    try:
+        out = biggest(imth)
+    except:
+        try:
+            out = biggest(imth,erode =1)
+        except:
+            #try:
+                #bigNumImA,bigNumImaAS,bigNumImP,imageth= preprocess(image,erode =2)
+            #except:
+            out = biggest(imth,erode = -1)
+    return normalizeIm(out)
+
+def biggest(imth,erode = 0):
+    if erode == 0:
+        im = bigSegment(imth,median(imth, disk(DISKSIZE)))
+    elif erode == -1:
+        im = bigSegment(imth,median(imth, disk(DISKSIZE)),ignore = True)
+    else:
+        im = bigSegment(imth,erosion(imth,disk(erode)))  
+    return im
+
+def bigSegment(imageref,imageseg,ignore = False):
+    
+    bw = closing(imageseg, square(1))    
+    label_image = label(bw)
+    amax = -1
+    wmax = -1
+    for region in regionprops(label_image):
+        r0, c0, r1, c1 = region.bbox
+        length = np.max([r1-r0,c1-c0])
+        width = np.min([r1-r0,c1-c0])
+        if length<=LENGTHMAX or ignore:
+            a = length*width
+            segment = imageref[r0:r1,c0:c1]
+            if a>amax or (a== amax and width>wmax):
+                outIm = segment
+                amax = a
+                wmax = width            
+        else:
+            raise Exception('Merged Numbers')
+    return outIm
+
+def normalizeIm(im,size = OUTPUTSIZE):
+    im = im.astype(int)
+    isize = im.shape
+    hs = int(size/2) #half size for centering
+    w = int(isize[0]/2)
+    h = int(isize[1]/2)
+    if isize[0]>size:
+        im = im[w-hs:w+hs,:]
+        isize = im.shape
+        w = int(isize[0]/2)
+        
+    if isize[1]>size:
+        im = im[:,h-hs:h+hs]
+        isize = im.shape
+        h = int(isize[1]/2)
+            
+    rw = int(isize[0] %2)
+    rh = int(isize[1] %2)
+    
+    out = np.zeros((size,size),dtype=int)
+    out[hs-w:hs+w+rw,hs-h:hs+h+rh] = im
+    
+    return out 
+
+
+def rotate_img(img):
+    rots = []
+    rots.append(rotate(img.reshape((64, 64)), 27, preserve_range=True))
+    rots.append(rotate(img.reshape((64, 64)), -27, preserve_range=True))
+
+    #return rots
+    return [(r > 0.75).astype(int).reshape((1, 64**2)) for r in rots]
+
+
+BIG_MED_DIR = 'augmented_big/'
+AUG_TMED_DIR = 'augmented_tmed/'
+
+
+def augment_and_biggest():
+    dataset_path = DATASET_DICT['threshold']
+    
+    print('Loading values')
+    x = pd.read_csv(dataset_path+'train_x.csv', header=None).values
+    y = pd.read_csv(dataset_path+'train_y.csv', header=None).values
+    x_valid = pd.read_csv(dataset_path+'valid_x.csv', header=None).values
+    y_valid = pd.read_csv(dataset_path+'valid_y.csv', header=None).values
+
+    x = np.append(x, x_valid)
+    y = np.append(y, y_valid)
+    
+    augmented_x = np.zeros((x.shape[0]*3, 64**2))
+    augmented_y = np.zeros((y.shape[0]*3, y.shape[1]))
+    
+    
+    for i in range(x.shape[0]):
+        if (i+1)%50 == 0:
+            print('{:5d} / {:5d}\r'.format(i+1, x.shape[0]), end='')
+        
+        start_idx = i*3
+        img = x[i]
+        #img = (findBiggest(x[i])).reshape((1, 32**2))
+        rotations = rotate_img(img)
+        augmented_x[start_idx] = img
+        augmented_x[start_idx+1] = rotations[0]
+        augmented_x[start_idx+2] = rotations[1]
+        
+        augmented_y[start_idx] = y[i]
+        augmented_y[start_idx+1] = y[i]
+        augmented_y[start_idx+2] = y[i]
+    print('')
+    
+    
+    print('Shuffling')
+    state = np.random.get_state()
+    np.random.shuffle(augmented_x)
+    np.random.set_state(state)
+    np.random.shuffle(augmented_y)
+
+    print('Splitting')
+    valid_x = augmented_x[:3000, :]
+    valid_y = augmented_y[:3000, :]
+
+    print('Saving validation set')
+    save_array(valid_x, DATA_PATH+AUG_TMED_DIR+'valid_x.csv')
+    save_array(valid_y, DATA_PATH+AUG_TMED_DIR+'valid_y.csv')
+    
+    train_x = augmented_x[3000:, :]
+    train_y = augmented_y[3000:, :]
+
+    print('Saving train set')
+    save_array(train_x, DATA_PATH+AUG_TMED_DIR+'train_x.csv')
+    save_array(train_y, DATA_PATH+AUG_TMED_DIR+'train_y.csv')
+    
+    # do the same for the test set
+    x = pd.read_csv(dataset_path+'test_x.csv', header=None).values
+    augmented_x = np.zeros((x_test.shape[0]*3), x_test.shape[1])
+    for i in range(x.shape[0]):
+        if i%50 == 0:
+            print('{:5d} / {:5d}\r'.format(i, x.shape[0]), end='')
+        start_idx = i*3
+        augmented_x[start_idx] = x[i]
+        img = (findBiggest(x[i])).reshape((1, 64**2))
+        rotations = rotate_img(img)
+        augmented_x[start_idx+1] = rotations[0]
+        augmented_x[start_idx+2] = rotations[1]
+        
+        augmented_y[start_idx] = y[i]
+        augmented_y[start_idx+1] = y[i]
+        augmented_y[start_idx+2] = y[i]
+    print('')
+    save_array(augmented_x, DATA_PATH+AUG_TMED_DIR+'test_x.csv')
+
+
 #==============================
 def one_hot(arr):
     enc = OneHotEncoder()
@@ -127,4 +295,10 @@ def one_hot(arr):
 #==============================
 
 if __name__ == '__main__':
-    create_threshold_dataset()
+    augment_and_biggest()
+    
+    #train_x = load_array(DATA_PATH+AUG_TMED_DIR+'train_x.csv')
+    #train_y = load_array(DATA_PATH+AUG_TMED_DIR+'train_y.csv')
+
+    #for i in range(50):
+    #    show_random_image(train_x, train_y, dim=64)
