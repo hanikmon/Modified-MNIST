@@ -15,11 +15,19 @@ from sklearn.metrics import accuracy_score
 # load data
 
 # THRESHOLDED DATA
+<<<<<<< HEAD
 #trainXPath = "../data/thresholded/train_x.csv"
 #trainYPath = "../data/thresholded/train_y.csv"
 #validXPath = "../data/thresholded/valid_x.csv"
 #validYPath = "../data/thresholded/valid_y.csv"
 #testXPath = "../data/thresholded/test_x.csv"
+=======
+trainXPath = "../data/thresholded/train_x.csv"
+trainYPath = "../data/thresholded/train_y.csv"
+validXPath = "../data/thresholded/valid_x.csv"
+validYPath = "../data/thresholded/valid_y.csv"
+testXPath = "../data/thresholded/test_x.csv"
+>>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
 
 # BIGGEST NUMBER DATA
 #trainXPath = "../data/biggest/train_x.csv"
@@ -29,11 +37,19 @@ from sklearn.metrics import accuracy_score
 #testXPath = "../data/biggest/test_x.csv"
 
 # ORIGINAL
+<<<<<<< HEAD
 trainXPath = "../data/train_valid/train_x.csv"
 trainYPath = "../data/train_valid/train_y.csv"
 validXPath = "../data/train_valid/valid_x.csv"
 validYPath = "../data/train_valid/valid_y.csv"
 testXPath = "../data/test_x.csv"
+=======
+#trainXPath = "../data/og/train_x.csv"
+#trainYPath = "../data/og/train_y.csv"
+#validXPath = "../data/og/valid_x.csv"
+#validYPath = "../data/og/valid_y.csv"
+#testXPath = "../data/test_x.csv"
+>>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
 
 
 dtype = torch.cuda.FloatTensor
@@ -105,7 +121,11 @@ class CNN(nn.Module):
             nn.Conv2d(
                 in_channels=1,  # input height
                 out_channels=64,  # n_filters
+<<<<<<< HEAD
                 kernel_size=3,  # filter size
+=======
+                kernel_size=5,  # filter size
+>>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
                 stride=1,  # filter movement/step
                 padding=2,
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
@@ -264,7 +284,11 @@ class CNN(nn.Module):
 			),
             #nn.Dropout(p=0.25)
         )
+<<<<<<< HEAD
 	self.conv11 = nn.Sequential(
+=======
+		self.conv11 = nn.Sequential(
+>>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
             nn.Conv2d(
                 in_channels=1024,
                 out_channels=2048,
@@ -294,18 +318,30 @@ class CNN(nn.Module):
 					kernel_size=2,
 					stride=2,
 			),
+<<<<<<< HEAD
             nn.Dropout(p=0.25)
+=======
+            #nn.Dropout(p=0.25)
+>>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
         )
         self.linear1 = nn.Sequential(
             # nn.Linear(128*8*8,64*4),
             nn.ReLU(),
             nn.Dropout(p=0.5),
 	    #nn.BatchNorm1d(512*4*4)
+<<<<<<< HEAD
 	    nn.BatchNorm1d(1024*2*2)
         )
 
         self.out = nn.Sequential(
             nn.Linear(1024*2*2, 10),
+=======
+	    nn.BatchNorm1d(2048*1*1)
+        )
+
+        self.out = nn.Sequential(
+            nn.Linear(2048*1*1, 10),
+>>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
         )
 
     def forward(self, x):
@@ -318,10 +354,17 @@ class CNN(nn.Module):
         x = self.conv6(x)
         x = self.conv7(x)
         x = self.conv8(x)
+<<<<<<< HEAD
 	x = self.conv9(x)
         x = self.conv10(x)
         #x = self.conv11(x)
         #x = self.conv12(x)
+=======
+		x = self.conv9(x)
+        x = self.conv10(x)
+        x = self.conv11(x)
+        x = self.conv12(x)
+>>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
         x = x.view(x.size(0), -1)  # flatten the output of conv2 to (batch_size, 32 * 16 * 16)
         x = self.linear1(x)
         output = self.out(x)
@@ -378,15 +421,24 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
                     batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
     	
         if epoch% 1==0:
+<<<<<<< HEAD
             torch.save(cnn, 'models/cnnModelGrant10od')
         testCNNResult('models/cnnModelGrant10od',validXPath, validYPath)
+=======
+            torch.save(cnn, 'models/cnnModelGrant12lay')
+        testCNNResult('models/cnnModelGrant12lay',validXPath, validYPath)
+>>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
         'optimizer': optimizer.state_dict()
     }
     torch.save(state, 'models/rgrant')
+<<<<<<< HEAD
     torch.save(cnn,'models/cnnModelGrant10od')
+=======
+    torch.save(cnn,'models/cnnModelGrant12lay')
+>>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
 
 
 def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
@@ -424,10 +476,17 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                            100. * batch_idx / len(train_loader), loss.data[0]))
         if epoch % 1== 0:
+<<<<<<< HEAD
             torch.save(model, 'models/cnnModelGrant10ted')
     	    testCNNResult('models/cnnModelGrant10ted',validXPath, validYPath)
 
     torch.save(model,'models/cnnModelGrant10ted')
+=======
+            torch.save(model, 'models/cnnModelGrant12lay')
+    	    testCNNResult('models/cnnModelGrant12lay',validXPath, validYPath)
+
+    torch.save(model,'models/cnnModelGrant12lay')
+>>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
 
 def separateTrainValid():
     trainData = kaggleDatasetNoReshape(trainXPath, trainYPath)
@@ -510,5 +569,9 @@ if __name__ == '__main__':
     #testCNN('models/cnnModelGrant10lay')
     #separateTrainValid()
     #testCNNResult('cnnModelGrant256',validXPath, validYPath)
+<<<<<<< HEAD
     #continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant10ted')
 
+=======
+    #continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant12lay')
+>>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
