@@ -15,11 +15,11 @@ from sklearn.metrics import accuracy_score
 # load data
 
 # THRESHOLDED DATA
-trainXPath = "../data/thresholded/train_x.csv"
-trainYPath = "../data/thresholded/train_y.csv"
-validXPath = "../data/thresholded/valid_x.csv"
-validYPath = "../data/thresholded/valid_y.csv"
-testXPath = "../data/thresholded/test_x.csv"
+#trainXPath = "../data/thresholded/train_x.csv"
+#trainYPath = "../data/thresholded/train_y.csv"
+#validXPath = "../data/thresholded/valid_x.csv"
+#validYPath = "../data/thresholded/valid_y.csv"
+#testXPath = "../data/thresholded/test_x.csv"
 
 # BIGGEST NUMBER DATA
 #trainXPath = "../data/biggest/train_x.csv"
@@ -29,11 +29,11 @@ testXPath = "../data/thresholded/test_x.csv"
 #testXPath = "../data/biggest/test_x.csv"
 
 # ORIGINAL
-#trainXPath = "../data/og/train_x.csv"
-#trainYPath = "../data/og/train_y.csv"
-#validXPath = "../data/og/valid_x.csv"
-#validYPath = "../data/og/valid_y.csv"
-#testXPath = "../data/test_x.csv"
+trainXPath = "../data/train_valid/train_x.csv"
+trainYPath = "../data/train_valid/train_y.csv"
+validXPath = "../data/train_valid/valid_x.csv"
+validYPath = "../data/train_valid/valid_y.csv"
+testXPath = "../data/test_x.csv"
 
 
 dtype = torch.cuda.FloatTensor
@@ -95,7 +95,7 @@ class testDataset(Dataset):
 # Hyper Parameters
 EPOCH = 60
 BATCH_SIZE = 300
-LR = 0.00000001 # learning rate
+LR = 0.0001 # learning rate
 
 
 class CNN(nn.Module):
@@ -105,7 +105,7 @@ class CNN(nn.Module):
             nn.Conv2d(
                 in_channels=1,  # input height
                 out_channels=64,  # n_filters
-                kernel_size=5,  # filter size
+                kernel_size=3,  # filter size
                 stride=1,  # filter movement/step
                 padding=2,
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
@@ -294,18 +294,18 @@ class CNN(nn.Module):
 					kernel_size=2,
 					stride=2,
 			),
-            #nn.Dropout(p=0.25)
+            nn.Dropout(p=0.25)
         )
         self.linear1 = nn.Sequential(
             # nn.Linear(128*8*8,64*4),
             nn.ReLU(),
             nn.Dropout(p=0.5),
 	    #nn.BatchNorm1d(512*4*4)
-	    nn.BatchNorm1d(2048*1*1)
+	    nn.BatchNorm1d(1024*2*2)
         )
 
         self.out = nn.Sequential(
-            nn.Linear(2048*1*1, 10),
+            nn.Linear(1024*2*2, 10),
         )
 
     def forward(self, x):
@@ -348,13 +348,17 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
     print(cnn)
     cnn.double()
     cnn.train()
-    optimizer = torch.optim.Adam(cnn.parameters(), lr=LR)  # optimize all cnn parameters
+    LR = 0.0001
+    #optimizer = torch.optim.Adam(cnn.parameters(), lr=LR)  # optimize all cnn parameters
     # loss_func = nn.MultiLabelSoftMarginLoss()
     loss_func = nn.CrossEntropyLoss()  # the target label is not one-hotted
     for epoch in range(EPOCH):
         # load saved model
         # model = torch.load('cnnModelF5Pool2F5Pool2')
-
+	if (epoch %8 ==0 and epoch!=0):
+		LR = LR/10
+		print('LR changed to '+str(LR))
+	optimizer = torch.optim.Adam(cnn.parameters(),lr = LR)
         for batch_idx, (data, target) in enumerate(train_loader):
 
             # imgShower(data,target)
@@ -374,15 +378,15 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
                     batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
     	
         if epoch% 1==0:
-            torch.save(cnn, 'models/cnnModelGrant12lay')
-        testCNNResult('models/cnnModelGrant12lay',validXPath, validYPath)
+            torch.save(cnn, 'models/cnnModelGrant10od')
+        testCNNResult('models/cnnModelGrant10od',validXPath, validYPath)
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
         'optimizer': optimizer.state_dict()
     }
     torch.save(state, 'models/rgrant')
-    torch.save(cnn,'models/cnnModelGrant12lay')
+    torch.save(cnn,'models/cnnModelGrant10od')
 
 
 def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
@@ -391,11 +395,14 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
     model = torch.load(modelpath)
     model.cuda()
     model.train()
-    optimizer = torch.optim.Adam(model.parameters(), lr=LR)  # optimize all cnn parameters
+    #optimizer = torch.optim.Adam(model.parameters(), lr=LR)  # optimize all cnn parameters
     # loss_func = nn.MultiLabelSoftMarginLoss()
     loss_func = nn.CrossEntropyLoss()  # the target label is not one-hotted
+    LR = 0.000001
     for epoch in range(EPOCH):
-
+	if(epoch %8 ==0 and epoch != 0):
+		LR = LR /10
+	optimizer = torch.optim.Adam(model.parameters(),lr=LR)
         # load saved model
         # model = torch.load('cnnModelF5Pool2F5Pool2')
 
@@ -417,10 +424,10 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                            100. * batch_idx / len(train_loader), loss.data[0]))
         if epoch % 1== 0:
-            torch.save(model, 'models/cnnModelGrant10lay')
-    	    testCNNResult('models/cnnModelGrant10lay',validXPath, validYPath)
+            torch.save(model, 'models/cnnModelGrant10ted')
+    	    testCNNResult('models/cnnModelGrant10ted',validXPath, validYPath)
 
-    torch.save(model,'models/cnnModelGrant12lay')
+    torch.save(model,'models/cnnModelGrant10ted')
 
 def separateTrainValid():
     trainData = kaggleDatasetNoReshape(trainXPath, trainYPath)
@@ -499,8 +506,9 @@ def testCNNResult(modelName,ValidX,ValidY):
 
 if __name__ == '__main__':
     # testCNN('cnnModelF3F3F5new1')
-    #trainCNN(EPOCH,trainXPath,trainYPath)
+    trainCNN(EPOCH,trainXPath,trainYPath)
     #testCNN('models/cnnModelGrant10lay')
     #separateTrainValid()
     #testCNNResult('cnnModelGrant256',validXPath, validYPath)
-    continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant10lay')
+    #continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant10ted')
+

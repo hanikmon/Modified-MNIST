@@ -250,6 +250,6 @@ def create_biggest_dataset():
 #==============================
 
 if __name__ == '__main__':
-    #train_valid_split(train_perc=TRAIN_PERCENT)
+    train_valid_split(train_perc=TRAIN_PERCENT)
     create_threshold_dataset()
-    create_biggest_dataset()
+    #create_biggest_dataset()
