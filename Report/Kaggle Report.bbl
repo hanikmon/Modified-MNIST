@@ -35,4 +35,8 @@ W.~contributors, ``Mnist database --- wikipedia{,} the free encyclopedia,''
   \url{https://en.wikipedia.org/w/index.php?title=MNIST_database&oldid=829836442}
 \BIBentrySTDinterwordspacing
 
+\bibitem{bovik2009essential}
+A.~C. Bovik, \emph{The essential guide to image processing}.\hskip 1em plus
+  0.5em minus 0.4em\relax Academic Press, 2009.
+
 \end{thebibliography}

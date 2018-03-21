@@ -47,7 +47,7 @@ DISKSIZE = 1 # for median filter
 OUTPUTSIZE = 32 # Size of data
 
 # Figures Params
-FIG_PATH = '../figures/'
+FIG_PATH = '../report/figures/'
 if not os.path.exists(FIG_PATH):
     os.makedirs(FIG_PATH)
 
@@ -340,26 +340,76 @@ def augment(train_x, train_y, valid_x, valid_y):
 
 # =============================
 # Visualization
-def showDataset(fnamex,fnamey,datasetname,n=100):
+def showDataset(fnamex,fnamey,datasetname,nrows=10,ncols =10,indices = []):
     print('Showing '+datasetname+' dataset:')
     data = load_array(fnamex)
     labels = load_array(fnamey)
     dim = int(np.sqrt(data.shape[1]))
-    ncols = 10
-    nrows = n//ncols
-    fig, ax = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.4, nrows*1.5),
+    fig, ax = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.3, nrows*1.4),
                            sharex=True, sharey=True)
-    for i in range(n):
-        index = np.random.randint(0,high=data.shape[0])
+    if indices ==[]:
+        indices = np.random.randint(0,high=data.shape[0],size=nrows*ncols)
+    for i in range(nrows*ncols):
+        index = indices[i]
         image = data[index,:].reshape(dim,dim)
         x = i//ncols
         y = i%ncols
-        ax[x,y].imshow(image)
+        ax[x,y].imshow(image,cmap=plt.cm.gray)
         ax[x,y].axis('off')
         ax[x,y].set_title(format(labels[index]))
     fig.tight_layout()
     print(fnamex)
     fig.savefig(FIG_PATH+datasetname+'Dataset.pdf')
+    return indices
+
+def showallFilters(nrows=10,ncols=10,indices=[]):
+    print('Loading original dataset:')
+    data = load_array(DATA_PATH+'og/train_x.csv')
+    labels = load_array(DATA_PATH+BIGGEST_DIR+'train_y.csv')
+    dim = int(np.sqrt(data.shape[1]))
+    fig, ax = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.3, nrows*1.4),
+                           sharex=True, sharey=True)
+    figth, axth = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.3, nrows*1.4),
+                           sharex=True, sharey=True)
+    figthmed, axthmed = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.3, nrows*1.4),
+                           sharex=True, sharey=True)
+    figbig, axbig = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.3, nrows*1.4),
+                           sharex=True, sharey=True)
+    if indices ==[]:
+        indices = np.random.randint(0,high=data.shape[0],size=nrows*ncols)
+    for i in range(nrows*ncols):
+        index = indices[i]
+        image = data[index,:].reshape(dim,dim)
+        x = i//ncols
+        y = i%ncols
+        ax[x,y].imshow(image,cmap=plt.cm.gray)
+        ax[x,y].axis('off')
+        ax[x,y].set_title(format(labels[index]))
+        
+        axth[x,y].imshow(threshold_filter(image),cmap=plt.cm.gray)
+        axth[x,y].axis('off')
+        axth[x,y].set_title(format(labels[index]))
+        
+        axthmed[x,y].imshow(medianfilter(threshold_filter(image),1),cmap=plt.cm.gray)
+        axthmed[x,y].axis('off')
+        axthmed[x,y].set_title(format(labels[index]))
+        
+        axbig[x,y].imshow(findBiggest(threshold_filter(image)),cmap=plt.cm.gray)
+        axbig[x,y].axis('off')
+        axbig[x,y].set_title(format(labels[index]))
+    fig.tight_layout()
+    figth.tight_layout()
+    figthmed.tight_layout()
+    figbig.tight_layout()
+    
+    fig.savefig(FIG_PATH+'originalDataset.pdf')
+    figth.savefig(FIG_PATH+'thresholdDataset.pdf')
+    figthmed.savefig(FIG_PATH+'thresholdmedDataset.pdf')
+    figbig.savefig(FIG_PATH+'biggestDataset.pdf')
+
+
+    return indices
+        
 
 
 def show_image(img_as_array, dim=64):

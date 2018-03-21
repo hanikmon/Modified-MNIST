@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %2345678901234567890123456789012345678901234567890123456789012345678901234567890
 %        1         2         3         4         5         6         7         8
 
@@ -23,14 +23,13 @@
 % on the last page of the document
 
 % The following packages can be found on http:\\www.ctan.org
-%\usepackage{graphics} % for pdf, bitmapped graphics files
+\usepackage{graphicx} % for pdf, bitmapped graphics files
 %\usepackage{epsfig} % for postscript graphics files
 %\usepackage{mathptmx} % assumes new font selection scheme installed
 %\usepackage{times} % assumes new font selection scheme installed
-%\usepackage{amsmath} % assumes amsmath package installed
+\usepackage{amsmath} % assumes amsmath package installed
 %\usepackage{amssymb}  % assumes amsmath package installed
 \usepackage{url}
-\usepackage{gensymb}
 
 \title{\LARGE \bf
 COMP 551 Kaggle Competition: Classification of Modified MNIST*
@@ -38,7 +37,7 @@ COMP 551 Kaggle Competition: Classification of Modified MNIST*
 
 
 \author{Yingnan Zhao$^{1}$, Vincent d'Orsonnens$^{2}$ and Hamed Layeghi$^{3}$% <-this % stops a space
-\thanks{*This work was not supported by any organization}% <-this % stops a space
+\thanks{*Kaggle Team name: BetaGo, Best Score: 0.95899}% <-this % stops a space
 \thanks{$^{1}$Yingnan Zhao, Student ID: 260563769, Electrical Engineering, 
         McGill University,
         {\tt\small nan.zhao2@mail.mcgill.CA}}%
@@ -59,8 +58,7 @@ COMP 551 Kaggle Competition: Classification of Modified MNIST*
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-
-
+This paper provides the report for the Kaggle Competition (assignment 4) of COMP 551 using the provided Modified MNIST dataset. The dataset includes a set of 8-bit grayscale images that include 2 or 3 digits of different sizes that are rotated and scaled from the classic MNIST dataset. The goal is to design Machine Learning algorithms that identify the biggest digit in each image. Several algorithms have been used in the report. First, the logistic regression and linear SVM are used which lead to relatively lower precisions. Second, a forward neural network completely developed by the team was implemented. Finally, a convoluted neural network was trained and tested on the preprocessed dataset which showed the best performance.  
 \end{abstract}
 
 
@@ -69,19 +67,70 @@ COMP 551 Kaggle Competition: Classification of Modified MNIST*
 
 The MNIST database \cite{MNISTcreators} is a set of handwritten images that is popular for training and testing of Machine Learning algorithms \cite{wiki:MNIST}.
 
+\section{PREPROCESSING}
+The provided images in the Modified MNIST include 3 numbers that are rotated and scaled from the MNIST dataset and are written on random backgrounds.
+Some samples of the train dataset with their associated outputs are shown in Figure \ref{fig:original}
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{figures/originalDataset.pdf}  % The printed column width is 8.4 cm.
+		\caption{25 Random Samples of the original train dataset}
+		\label{fig:original}
+	\end{center}
+\end{figure}
+ The format for the images is 8-bit grayscale image, thus each pixel has 256 shades of gray represented by numbers 0 (black) to 255 (white) as shown in Figure \ref{fig:maxeig2}.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{FEATURE DESIGN}
-The provided images in the Modified MNIST include 3 numbers that are rotated and scaled from the MNIST dataset and are written on random backgrounds. 
+	
+\begin{figure}[h]
+	\begin{center}
+			\includegraphics[width=0.5\textwidth]{figures/21stepwide8bit.jpg}  % The printed column width is 8.4 cm.
+		\caption{8-bit Grayscale Shades of Gray}
+		\label{fig:maxeig2}
+	\end{center}
+\end{figure}
 
 Before, the data are used for training, the following preprocessing steps are used.
 
-\begin{itemize}
-	\item \textbf{Thresholding: } The idea of thresholding is to replace the color bit values of any pixel which is greater than a certain number with 1 (representing white or 255), and replace it with 0 (representing black or 0) otherwise.
-	
-\end{itemize}
+\subsection{Thresholding} 
+Since the numbers in the dataset match the 255 shade, a simple idea for preprocessing is to use \textit{image thresholding}. 
+The idea of thresholding is to compare the pixel values of the input image $f$ with some threshold $T$ and make a binary decision for the output binary image $g$ as below
+\begin{align}
+g(i,j) = \begin{cases}
+1 & f(i,j)\ge T\\
+0 & f(i,j)\le T
+\end{cases}
+\end{align}
+for all $i, j$ where $i, j$ represent the coordinates of the $ij$\textsuperscript{th} pixel \cite{bovik2009essential}.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The output of this filter is shown in Figure \ref{fig:thresholded}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{figures/thresholdDataset.pdf}  % The printed column width is 8.4 cm.
+		\caption{Output of thresholding on images from Figure \ref{fig:original}}
+		\label{fig:thresholded}
+	\end{center}
+\end{figure}
+
+\subsection{Median Filter}
+The output of this filter on thresholded images are shown in Figure \ref{fig:thresholdmed}.
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{figures/thresholdmedDataset.pdf}  % The printed column width is 8.4 cm.
+		\caption{Output of median filter on thresholded images from Figure \ref{fig:thresholded}}
+		\label{fig:thresholdmed}
+	\end{center}
+\end{figure}
+\subsection{Biggest Number}
+The output of this filter on thresholded images are shown in Figure \ref{fig:biggest}.
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{figures/biggestDataset.pdf}  % The printed column width is 8.4 cm.
+		\caption{Output of biggest number filter on thresholded images from Figure \ref{fig:thresholded}}
+		\label{fig:biggest}
+	\end{center}
+\end{figure}
+
+
 \section{ALGORITHMS}
 
 \subsection{Logistic Regression}
@@ -91,7 +140,7 @@ The second algorithm we used to solve the problem is a fully-connected neural ne
 
 \subsection{Convolutional Neural Network}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{METHODOLOGY}
 
 To start with, we had to split the original dataset into a training and validation set. We decided to go with a simple 90/10 split. Then we applied our preprocessing steps defined in the Feature Design section to generate 4 new datasets based on the original one.
@@ -109,59 +158,12 @@ All the transformations were applied to the original training, validation and te
 
 \subsection{Fully Connected Neural Network}
 
-
-
 \subsection{Convolutional Neural Network}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{RESULTS}
 
-Use this sample document as your LaTeX source file to create your document. Save this file as {\bf root.tex}. You have to make sure to use the cls file that came with this distribution. If you use a different style file, you cannot expect to get required margins. Note also that when you are creating your out PDF file, the source file is only part of the equation. {\it Your \TeX\ $\rightarrow$ PDF filter determines the output file size. Even if you make all the specifications to output a letter file in the source - if your filter is set to produce A4, you will only get A4 output. }
+\section{CONCLUSIONS}
 
-It is impossible to account for all possible situation, one would encounter using \TeX. If you are using multiple \TeX\ files you must make sure that the ``MAIN`` source file is called root.tex - this is particularly important if your conference is using PaperPlaza's built in \TeX\ to PDF conversion tool.
-
-\subsection{Headings, etc}
-
-Text heads organize the topics on a relational, hierarchical basis. For example, the paper title is the primary text head because all subsequent material relates and elaborates on this one topic. If there are two or more sub-topics, the next level head (uppercase Roman numerals) should be used and, conversely, if there are not at least two sub-topics, then no subheads should be introduced. Styles named ÒHeading 1Ó, ÒHeading 2Ó, ÒHeading 3Ó, and ÒHeading 4Ó are prescribed.
-
-\subsection{Figures and Tables}
-
-Positioning Figures and Tables: Place figures and tables at the top and bottom of columns. Avoid placing them in the middle of columns. Large figures and tables may span across both columns. Figure captions should be below the figures; table heads should appear above the tables. Insert figures and tables after they are cited in the text. Use the abbreviation ÒFig. 1Ó, even at the beginning of a sentence.
-
-\begin{table}[h]
-\caption{An Example of a Table}
-\label{table_example}
-\begin{center}
-\begin{tabular}{|c||c|}
-\hline
-One & Two\\
-\hline
-Three & Four\\
-\hline
-\end{tabular}
-\end{center}
-\end{table}
-
-
-   \begin{figure}[thpb]
-      \centering
-      \framebox{\parbox{3in}{We suggest that you use a text box to insert a graphic (which is ideally a 300 dpi TIFF or EPS file, with all fonts embedded) because, in an document, this method is somewhat more stable than directly inserting a picture.
-}}
-      %\includegraphics[scale=1.0]{figurefile}
-      \caption{Inductance of oscillation winding on amorphous
-       magnetic core versus DC bias magnetic field}
-      \label{figurelabel}
-   \end{figure}
-   
-
-Figure Labels: Use 8 point Times New Roman for Figure labels. Use words rather than symbols or abbreviations when writing Figure axis labels to avoid confusing the reader. As an example, write the quantity ÒMagnetizationÓ, or ÒMagnetization, MÓ, not just ÒMÓ. If including units in the label, present them within parentheses. Do not label axes only with units. In the example, write ÒMagnetization (A/m)Ó or ÒMagnetization {A[m(1)]}Ó, not just ÒA/mÓ. Do not label axes with a ratio of quantities and units. For example, write ÒTemperature (K)Ó, not ÒTemperature/K.Ó
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{DISCUSSION}
-
-A conclusion section is not required. Although a conclusion may review the main points of the paper, do not replicate the abstract as the conclusion. A conclusion might elaborate on the importance of the work or suggest applications and extensions. 
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
@@ -170,21 +172,28 @@ A conclusion section is not required. Although a conclusion may review the main 
                                   % so it should come on the page before the last. Make
                                   % sure that you do not shorten the textheight too much.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{STATEMENT OF CONTRIBUTIONS}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{REFERENCES}
 
 
 
-\clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{APPENDIX}
 
 Appendixes should appear before the acknowledgment.
+
+\section*{STATEMENT OF CONTRIBUTIONS}
+Yignan implemented the convolutional neural network.
+Vincent implemented the fully-connected feedforward neural
+network and the linear classifiers. Hamed implemented preprocessing and tested the linear classifiers. Yignan and Vincent implemented the algorithms on Amazon AWS. All three contributed to the report.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
 
@@ -192,7 +201,7 @@ Appendixes should appear before the acknowledgment.
 \bibliography{IEEEabrv,references}
 %\begin{thebibliography}{99}
 %
-%\bibitem{c1} G. O. Young, ÒSynthetic structure of industrial plastics (Book style with paper title and editor),Ó 	in Plastics, 2nd ed. vol. 3, J. Peters, Ed.  New York: McGraw-Hill, 1964, pp. 15Ð64.
+%\bibitem{c1} G. O. Young, �Synthetic structure of industrial plastics (Book style with paper title and editor),� 	in Plastics, 2nd ed. vol. 3, J. Peters, Ed.  New York: McGraw-Hill, 1964, pp. 15�64.
 %\end{thebibliography}
 
 
