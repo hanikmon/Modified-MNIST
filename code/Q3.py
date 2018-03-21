@@ -7,21 +7,22 @@ import pandas as pd
 # third-party library
 import torch
 import torch.nn as nn
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
-from sklearn.metrics import accuracy_score
 
 # load data
 DIM = 32
 modelname = "cnnModelGrant2562"
-submissionname = modelname+"result"
+submissionname = modelname + "result"
 # THRESHOLDED DATA
-#trainXPath = "../data/thresholded/train_x.csv"
-#trainYPath = "../data/thresholded/train_y.csv"
-#validXPath = "../data/thresholded/valid_x.csv"
-#validYPath = "../data/thresholded/valid_y.csv"
-#testXPath = "../data/thresholded/test_x.csv"
+# trainXPath = "../data/thresholded/train_x.csv"
+# trainYPath = "../data/thresholded/train_y.csv"
+# validXPath = "../data/thresholded/valid_x.csv"
+# validYPath = "../data/thresholded/valid_y.csv"
+# testXPath = "../data/thresholded/test_x.csv"
 
 # BIGGEST NUMBER DATA
 trainXPath = "../data/biggest/train_x.csv"
@@ -31,21 +32,22 @@ validYPath = "../data/biggest/valid_y.csv"
 testXPath = "../data/biggest/test_x.csv"
 
 # ORIGINAL
-#trainXPath = "../data/og/train_x.csv"
-#trainYPath = "../data/og/train_y.csv"
-#validXPath = "../data/og/valid_x.csv"
-#validYPath = "../data/og/valid_y.csv"
-#testXPath = "../data/test_x.csv"
+# trainXPath = "../data/og/train_x.csv"
+# trainYPath = "../data/og/train_y.csv"
+# validXPath = "../data/og/valid_x.csv"
+# validYPath = "../data/og/valid_y.csv"
+# testXPath = "../data/test_x.csv"
 
 cudaenabled = True
-dtype =  torch.FloatTensor
+dtype = torch.FloatTensor
 if cudaenabled:
     dtype = torch.cuda.FloatTensor
 
+
 class kaggleDataset(Dataset):
     def __init__(self, csv_pathX, csv_pathY, transforms=None):
-        self.x_data = pd.read_csv(csv_pathX,header=None)
-        self.y_data = pd.read_csv(csv_pathY,header=None).as_matrix()
+        self.x_data = pd.read_csv(csv_pathX, header=None)
+        self.y_data = pd.read_csv(csv_pathY, header=None).as_matrix()
         self.transforms = transforms
 
     def __getitem__(self, index):
@@ -64,8 +66,8 @@ class kaggleDataset(Dataset):
 
 class kaggleDatasetNoReshape(Dataset):
     def __init__(self, csv_pathX, csv_pathY, transforms=None):
-        self.x_data = pd.read_csv(csv_pathX,header=None)
-        self.y_data = pd.read_csv(csv_pathY,header=None).as_matrix()
+        self.x_data = pd.read_csv(csv_pathX, header=None)
+        self.y_data = pd.read_csv(csv_pathY, header=None).as_matrix()
         self.transforms = transforms
 
     def __getitem__(self, index):
@@ -81,13 +83,13 @@ class kaggleDatasetNoReshape(Dataset):
     def __len__(self):
         return len(self.x_data.index)
 
+
 class testDataset(Dataset):
     def __init__(self, csv_pathX, transforms=None):
-        self.x_data = pd.read_csv(csv_pathX,header=None)
+        self.x_data = pd.read_csv(csv_pathX, header=None)
         self.transforms = transforms
 
     def __getitem__(self, index):
-
         singleX = np.asarray(self.x_data.iloc[index]).reshape(1, DIM, DIM)
         x_tensor = torch.from_numpy(singleX).type(dtype)
         return x_tensor
@@ -95,10 +97,27 @@ class testDataset(Dataset):
     def __len__(self):
         return len(self.x_data.index)
 
+
+def plot_confusionMatrix(y_tar, y_pred, title='Confusion matrix', ):
+    cm = confusion_matrix(y_tar, y_pred, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    classes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    plt.figure()
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.show()
+
+
 # Hyper Parameters
 EPOCH = 60
 BATCH_SIZE = 200
-LR = 0.00000001 # learning rate
+LR = 0.00000001  # learning rate
 
 
 class CNN(nn.Module):
@@ -135,7 +154,7 @@ class CNN(nn.Module):
         )
         self.conv3 = nn.Sequential(  # input shape (1, 14, 14)
             nn.Conv2d(
-                in_channels=64,# input height
+                in_channels=64,  # input height
                 out_channels=64,  # n_filters
                 kernel_size=3,  # filter size
                 stride=1,  # filter movement/step
@@ -189,12 +208,12 @@ class CNN(nn.Module):
             ),
             nn.ReLU(),  # activation
             nn.BatchNorm2d(128),
-           # nn.MaxPool2d(  # reduce the size
+            # nn.MaxPool2d(  # reduce the size
             #    kernel_size=2,  # F
-             #   stride=2  # W = (W-F)/S+1
-           # ),  # output shape (32, 16 , 16)
-            
-            #nn.Dropout2d(p=0.25)
+            #   stride=2  # W = (W-F)/S+1
+            # ),  # output shape (32, 16 , 16)
+
+            # nn.Dropout2d(p=0.25)
         )
         self.conv7 = nn.Sequential(
             nn.Conv2d(
@@ -226,7 +245,7 @@ class CNN(nn.Module):
         )
 
         self.out = nn.Sequential(
-            nn.Linear(256*16*16, 10),
+            nn.Linear(256 * 16 * 16, 10),
         )
 
     def forward(self, x):
@@ -245,7 +264,7 @@ class CNN(nn.Module):
         return output
 
 
- # ,pin_memory=True)
+# ,pin_memory=True)
 
 
 def imgShower(data, target, numberOfExample):
@@ -257,10 +276,12 @@ def imgShower(data, target, numberOfExample):
         plt.imshow(data[i], cmap='gray')
         plt.show()
 
-def trainCNN(EPOCH,trainXPath, trainYPath):
+
+def trainCNN(EPOCH, trainXPath, trainYPath):
     print('Loading dataset')
     trainData = kaggleDataset(trainXPath, trainYPath)
-    train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True)  # , num_workers=1,pin_memory=True)
+    train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE,
+                              shuffle=True)  # , num_workers=1,pin_memory=True)
     cnn = CNN()
     if cudaenabled:
         cnn = cnn.cuda()
@@ -290,23 +311,24 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
             if batch_idx % 50 == 0:
                 print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                     epoch, batch_idx * len(data), len(train_loader.dataset),
-                    batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
-    	
-        if epoch% 1==0:
-            torch.save(cnn, 'models/'+modelname)
-        testCNNResult('models/'+modelname,validXPath, validYPath)
+                           batch_idx * BATCH_SIZE / len(train_loader.dataset), loss.data[0]))
+
+        if epoch % 1 == 0:
+            torch.save(cnn, 'models/' + modelname)
+        testCNNResult('models/' + modelname, validXPath, validYPath)
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
         'optimizer': optimizer.state_dict()
     }
-    torch.save(state, 'models/retrain_'+modelname)
-    torch.save(cnn,'models/'+modelname)
+    torch.save(state, 'models/retrain_' + modelname)
+    torch.save(cnn, 'models/' + modelname)
 
 
-def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
+def continueTrainCNN(EPOCH, trainXPath, trainYPath, modelpath):
     trainData = kaggleDataset(trainXPath, trainYPath)
-    train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True)  # , num_workers=1,pin_memory=True)
+    train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE,
+                              shuffle=True)  # , num_workers=1,pin_memory=True)
     model = torch.load(modelpath)
     if cudaenabled:
         model.cuda()
@@ -336,11 +358,12 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
                 print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                     epoch, batch_idx * len(data), len(train_loader.dataset),
                            100. * batch_idx / len(train_loader), loss.data[0]))
-        if epoch % 1== 0:
-            torch.save(model, 'models/'+modelname)
-            testCNNResult('models/'+modelname,validXPath, validYPath)
+        if epoch % 1 == 0:
+            torch.save(model, 'models/' + modelname)
+            testCNNResult('models/' + modelname, validXPath, validYPath)
 
-    torch.save(model,'models/'+modelname)
+    torch.save(model, 'models/' + modelname)
+
 
 def separateTrainValid():
     trainData = kaggleDatasetNoReshape(trainXPath, trainYPath)
@@ -352,45 +375,43 @@ def separateTrainValid():
         print(target.shape)
         dfx = pd.DataFrame(data)
         dfy = pd.DataFrame(target)
-        if ( batch_idx < 20):
+        if (batch_idx < 20):
             with open('fastTrain_x_1.csv', 'a') as f:
-                dfx.to_csv(f, index= False, header=False)
+                dfx.to_csv(f, index=False, header=False)
             dfy = pd.DataFrame(target)
             with open('fastTrain_y_1.csv', 'a') as f:
-                dfy.to_csv(f,index=False, header=False)
+                dfy.to_csv(f, index=False, header=False)
         else:
             with open('train_x_1.csv', 'a') as f:
-                dfx.to_csv(f,index=False, header=False)
+                dfx.to_csv(f, index=False, header=False)
 
             with open('train_y_1.csv', 'a') as f:
-                dfy.to_csv(f,index=False, header=False)
-
-
-
+                dfy.to_csv(f, index=False, header=False)
 
 
 def testCNN(modelName):
     testData = testDataset(testXPath)
-    test_loader = DataLoader(dataset=testData, batch_size=15,shuffle=False)  # , num_workers=1,pin_memory=True)
-    result=0
+    test_loader = DataLoader(dataset=testData, batch_size=15, shuffle=False)  # , num_workers=1,pin_memory=True)
+    result = 0
     model = torch.load(modelName)
     for batch_idx, data in enumerate(test_loader):
         data = Variable(data.type(dtype))
 
         output = model(data)
         pred = torch.max(output.cpu(), 1)[1].data.numpy()
-        if batch_idx <1:
+        if batch_idx < 1:
             result = pred
         else:
-            result = np.append(result,pred)
+            result = np.append(result, pred)
         print(len(result))
-    df = pd.DataFrame(np.transpose(result.reshape(1,-1)))
-    df.to_csv("submissions/"+submissionname+".csv",index_label='Id',header=['Label'])
+    df = pd.DataFrame(np.transpose(result.reshape(1, -1)))
+    df.to_csv("submissions/" + submissionname + ".csv", index_label='Id', header=['Label'])
 
-def testCNNResult(modelName,ValidX,ValidY):
-    testData = kaggleDataset(ValidX,ValidY)
-    test_loader = DataLoader(dataset=testData, batch_size=15,shuffle=False)  # , num_workers=1,pin_memory=True)
-    result=0
+
+def testCNNResult(modelName, ValidX, ValidY):
+    testData = kaggleDataset(ValidX, ValidY)
+    test_loader = DataLoader(dataset=testData, batch_size=15, shuffle=False)  # , num_workers=1,pin_memory=True)
+    result = 0
     trueRes = 0
     model = torch.load(modelName)
     if cudaenabled:
@@ -402,27 +423,30 @@ def testCNNResult(modelName,ValidX,ValidY):
 
         output = model(data)
         pred = torch.max(output.cpu(), 1)[1].data.numpy()
-        if batch_idx <1:
+        if batch_idx < 1:
             result = pred
             trueRes = target
         else:
-            result = np.append(result,pred)
-            trueRes = np.append(trueRes,target)
-        #if batch_idx%20 == 0:
+            result = np.append(result, pred)
+            trueRes = np.append(trueRes, target)
+        # if batch_idx%20 == 0:
         #    print(len(result))
         #    print(len(trueRes))
         #    print(accuracy_score(trueRes, result))
 
-
     print('final accuracy')
-    print(accuracy_score(trueRes,result))
+    print(accuracy_score(trueRes, result))
+    confusion_matrix(trueRes,result)
 
 
 if __name__ == '__main__':
-    #trainCNN(EPOCH,trainXPath,trainYPath)
+    # trainCNN(EPOCH,trainXPath,trainYPath)
     # testCNN('cnnModelF3F3F5new1')
-    #trainCNN(EPOCH,trainXPath,trainYPath)
-    #testCNN('models/cnnModelVINCENT_THRESH_8')
-    #separateTrainValid()
-    #testCNNResult('cnnModelGrant256',validXPath, validYPath)
-    continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrant2562')
+    # trainCNN(EPOCH,trainXPath,trainYPath)
+    # testCNN('models/cnnModelVINCENT_THRESH_8')
+    # separateTrainValid()
+    # testCNNResult('cnnModelGrant256',validXPath, validYPath)
+    #continueTrainCNN(EPOCH, trainXPath, trainYPath, 'models/cnnModelGrant2562')
+    y1 = [1,3,2,5,7,9,1,2,1,5,6,1,5,7,9,1,4,4,5,6,7,2,4,6,7,2,4,6]
+    y2 = [1, 3, 2, 5, 7, 9, 1, 2, 1, 5, 6, 1, 5, 7, 9, 1, 4, 4, 5, 6, 7, 2, 4, 6, 7, 2, 3, 2]
+    plot_confusionMatrix(y1,y2)
