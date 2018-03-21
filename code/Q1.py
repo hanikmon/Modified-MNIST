@@ -7,10 +7,10 @@ from sklearn.svm import LinearSVC
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 
-from data import load_dataset, one_hot
+from data import load_dataset, save_array
 
 FIG_PATH = '../report/figures/'
-npoints = 10
+npoints = 6
 
 def showCM(cm,methodname):
     # Show confusion matrix in a separate window
@@ -21,49 +21,54 @@ def showCM(cm,methodname):
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     plt.show()
-    fig1.savefig(FIG_PATH+methodname+'CM.pdf')
+    fig1.savefig(FIG_PATH+methodname+'Q1CM.pdf')
 
 if __name__ == '__main__':
-    x_train, y_train, x_valid, y_valid = load_dataset('threshold')
-    #y_train = one_hot(y_train)
-    #y_valid = one_hot(y_valid)
-
-    y_train = np.reshape(y_train, y_train.shape[0])
-    y_valid = np.reshape(y_valid, y_valid.shape[0])
-    Cspan = np.logspace(-3 ,2,num =npoints)
-    cm = np.zeros(npoints,10,10)
+    
+    results = np.zeros((10, 3))
     score = np.zeros(npoints)
-    for i in range(npoints):
-        
-    
-        clf = LinearSVC(
-            C=0.9,
-            verbose=1
-        )
-    
-        #clf = LogisticRegression(
-        #    C=0.9, 
-        #    solver='lbfgs', 
-        #    multi_class='multinomial', 
-        #    n_jobs=-1,
-        #    verbose=1)
-        
-    
-    
-        clf.fit(x_train, y_train)
-        y_pred = clf.fit(x_train, y_train).predict(x_valid)
+    i = 0
 
-        # Compute confusion matrix
-        cm[i,:,:] = confusion_matrix(y_valid, y_pred)
-        score[i] = clf.score(x_valid, y_valid)
-        print('Score for i = '+i+': '+score[i])
-        imax = np.argmax(score)
-        Cmax = Cspan[imax]
+    for dataset in ['big']:
+        print('Loading...')
+        x_train, y_train, x_valid, y_valid = load_dataset(dataset)
+        print('Done')
+
+        y_train = np.reshape(y_train, y_train.shape[0])
+        y_valid = np.reshape(y_valid, y_valid.shape[0])
+
+        Cspan = np.logspace(-3,0,npoints)
+        for i in range(npoints):
+            C = Cspan[i]
+            print('Dataset: {}, C: {}'.format(dataset, C))
+
+            clf = LinearSVC(
+                C=C, 
+                verbose=0)
+
+            clf.fit(x_train, y_train)
+        
+            train_acc = clf.score(x_train, y_train)
+            valid_acc = clf.score(x_valid, y_valid)
+            
+            print('C: {}'.format(C))
+            print('training accuracy: {}'.format(train_acc))
+            print('validation accuracy: {}\n'.format(valid_acc))
+
+            results[i,0] = C
+            results[i,1] = train_acc
+            results[i,2] = valid_acc
+            i += 1
+            
+            score[i] = valid_acc
+            cm[i,:,:] = confusion_matrix(y_valid, clf.predict(x_valid))
+            imax = np.argmax(score)
+            Cmax = Cspan[imax]
+            
+        print('\n') 
+    save_array(results, 'Q1_res.csv')
     showCM(cm[imax,:,:].reshape(10,10),'LinearSVM')
     np.savetxt(FIG_PATH+'LinearSVMCM.csv', np.array(score)[None,:], delimiter=' & ' ,newline=' \\\\\n',fmt = "%s")
     np.savetxt(FIG_PATH+'LinearSVMCMbest.csv', np.array(cm[imax,:,:]).reshape(10,10), delimiter=' & ' ,newline=' \\\\\n',fmt = "%s")
     np.savetxt(FIG_PATH+'LinearSVMCspan.csv', np.array(Cspan)[None,:], delimiter=' & ' ,newline=' \\\\\n',fmt = "%s")
-
-        
-
 

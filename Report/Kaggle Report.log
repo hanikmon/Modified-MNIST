@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  21 MAR 2018 17:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  21 MAR 2018 17:42
 entering extended mode
 **"./Kaggle Report.tex"
 ("Kaggle Report.tex"
@@ -182,22 +182,24 @@ LaTeX Info: Redefining \] on input line 2818.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\url\url.sty"
 \Urlmuskip=\muskip11
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\was\gensymb.sty"
+Package: gensymb 2003/07/02 v1.0 (WaS)
 ) ("Kaggle Report.aux")
 \openout1 = `"Kaggle Report.aux"'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
 ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count103
@@ -263,19 +265,30 @@ Package grfext Info: Graphics extension search list:
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 54.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 54.
+LaTeX Info: Redefining \celsius on input line 51.
+Package gensymb Info: Faking symbols for \degree and \celsius on input line 51.
 
+
+
+Package gensymb Warning: Not defining \perthousand.
+
+LaTeX Info: Redefining \ohm on input line 51.
+Package gensymb Info: Using \Omega for \ohm on input line 51.
+
+Package gensymb Warning: Not defining \micro.
+
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 55.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 55.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 <figures/originalDataset.pdf, id=1, pagebox=cropbox, 469.755pt x 505.89pt>
 File: figures/originalDataset.pdf Graphic file (type pdf)
 <use figures/originalDataset.pdf>
-Package pdftex.def Info: figures/originalDataset.pdf  used on input line 75. on
- input line 75.
+Package pdftex.def Info: figures/originalDataset.pdf  used on input line 76. on
+ input line 76.
 Package pdftex.def Info: Requested size: 202.3529pt x 217.91441pt on input line
- 75.
+ 76.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -283,12 +296,12 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/21stepwide8bit.jpg, id=2, 536.20325pt x 144.54pt>
 File: figures/21stepwide8bit.jpg Graphic file (type jpg)
 <use figures/21stepwide8bit.jpg>
-Package pdftex.def Info: figures/21stepwide8bit.jpg  used on input line 86. on 
-input line 86.
+Package pdftex.def Info: figures/21stepwide8bit.jpg  used on input line 87. on 
+input line 87.
 Package pdftex.def Info: Requested size: 252.94499pt x 68.18523pt on input line
- 86.
+ 87.
 
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 86--87
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 87--88
  [] 
  []
 
@@ -298,10 +311,10 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/thresholdDataset.pdf, id=3, pagebox=cropbox, 469.755pt x 505.89pt>
 File: figures/thresholdDataset.pdf Graphic file (type pdf)
 <use figures/thresholdDataset.pdf>
-Package pdftex.def Info: figures/thresholdDataset.pdf  used on input line 109. 
-on input line 109.
+Package pdftex.def Info: figures/thresholdDataset.pdf  used on input line 110. 
+on input line 110.
 Package pdftex.def Info: Requested size: 202.3529pt x 217.91441pt on input line
- 109.
+ 110.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -309,36 +322,32 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 File: figures/thresholdmedDataset.pdf Graphic file (type pdf)
 <use figures/thresholdmedDataset.pdf>
 Package pdftex.def Info: figures/thresholdmedDataset.pdf  used on input line 12
-4. on input line 124.
+5. on input line 125.
 Package pdftex.def Info: Requested size: 202.3529pt x 217.91441pt on input line
- 124.
+ 125.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 <figures/biggestDataset.pdf, id=5, pagebox=cropbox, 469.755pt x 505.89pt>
 File: figures/biggestDataset.pdf Graphic file (type pdf)
 <use figures/biggestDataset.pdf>
-Package pdftex.def Info: figures/biggestDataset.pdf  used on input line 133. on
- input line 133.
+Package pdftex.def Info: figures/biggestDataset.pdf  used on input line 134. on
+ input line 134.
 Package pdftex.def Info: Requested size: 202.3529pt x 217.91441pt on input line
- 133.
-
-Overfull \vbox (336.63313pt too high) has occurred while \output is active []
-
-
+ 134.
 [1{C:/Users/hamed/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
- <./figures/originalDataset.pdf> <./figures/21stepwide8bit.jpg>]
-Underfull \vbox (badness 2057) has occurred while \output is active []
-
-
-("Kaggle Report.bbl" [2 <./figures/thresholdDataset.pdf> <./figures/thresholdme
-dDataset.pdf
+ <./figures/originalDataset.pdf> <./figures/21stepwide8bit.jpg>] [2 <./figures/
+thresholdDataset.pdf> <./figures/thresholdmedDataset.pdf
 
 pdfTeX warning: pdflatex.exe (file ./figures/thresholdmedDataset.pdf): PDF incl
 usion: multiple pdfs with page group included in a single page
->])
+> <./figures/biggestDataset.pdf
+
+pdfTeX warning: pdflatex.exe (file ./figures/biggestDataset.pdf): PDF inclusion
+: multiple pdfs with page group included in a single page
+>] ("Kaggle Report.bbl")
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -350,29 +359,32 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-[3 <./figures/biggestDataset.pdf>] ("Kaggle Report.aux") ) 
+[3
+
+] ("Kaggle Report.aux") ) 
 Here is how much of TeX's memory you used:
- 2793 strings out of 493312
- 41236 string characters out of 3138899
- 107411 words of memory out of 3000000
- 6307 multiletter control sequences out of 15000+200000
+ 2841 strings out of 493312
+ 41859 string characters out of 3138899
+ 108666 words of memory out of 3000000
+ 6351 multiletter control sequences out of 15000+200000
  40809 words of font info for 84 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,14n,25p,763b,311s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiK
-TeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
-/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb
-><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Progr
-am Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files
-/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fon
-ts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/time
-s/utmbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:
-/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on "Kaggle Report.pdf" (3 pages, 477064 bytes).
+ 41i,14n,25p,763b,309s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.e
+nc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
+sfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a
+.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program 
+Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/MiKTeX 2.9
+/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/
+times/utmri8a.pfb>
+Output written on "Kaggle Report.pdf" (3 pages, 481056 bytes).
 PDF statistics:
- 333 PDF objects out of 1000 (max. 8388607)
+ 336 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
