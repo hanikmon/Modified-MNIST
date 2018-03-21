@@ -91,22 +91,23 @@ def create_threshold_dataset():
     og_x = pd.read_csv(DATA_PATH+'og/train_x.csv', header=None).values
     og_y = pd.read_csv(DATA_PATH+'og/train_y.csv', header=None).values
     og_tx = pd.read_csv(DATA_PATH+'og/test_x.csv', header=None).values
-    save_array(og_x, DATA_PATH+THRESHOLD_DIR+'train_xog.csv')
-    save_array(og_y, DATA_PATH+THRESHOLD_DIR+'train_yog.csv')
 
 
     num_train = int(TRAIN_PERCENT*og_x.shape[0])
 
     print('Applying filter')
     og_x = threshold_filter(og_x)
-    og_tx = threshold_filter(og_x)
+    og_tx = threshold_filter(og_tx)
 
     
-    print('Shuffling')
-    state = np.random.get_state()
-    np.random.shuffle(og_x)
-    np.random.set_state(state)
-    np.random.shuffle(og_y)
+   # print('Shuffling')
+    #state = np.random.get_state()
+    #np.random.shuffle(og_x)
+    #np.random.set_state(state)
+    #np.random.shuffle(og_y)
+    print('Splitting')
+    save_array(og_x, DATA_PATH+THRESHOLD_DIR+'train_xog.csv')
+    save_array(og_y, DATA_PATH+THRESHOLD_DIR+'train_yog.csv')
 
     print('Splitting')
     valid_x = og_x[num_train:, :]
