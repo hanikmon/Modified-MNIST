@@ -12,7 +12,7 @@ from skimage.filters.rank import median
 DATA_PATH = '../data/'
 TRAIN_PERCENT = 0.98
 # Threshold filter
-THRESHOLD = 250
+THRESHOLD = 230
 THRESHOLD_DIR = 'thresholded/'
 
 # Biggest Number
@@ -91,7 +91,8 @@ def create_threshold_dataset():
     og_x = pd.read_csv(DATA_PATH+'og/train_x.csv', header=None).values
     og_y = pd.read_csv(DATA_PATH+'og/train_y.csv', header=None).values
     og_tx = pd.read_csv(DATA_PATH+'og/test_x.csv', header=None).values
-
+    save_array(og_x, DATA_PATH+THRESHOLD_DIR+'train_xog.csv')
+    save_array(og_y, DATA_PATH+THRESHOLD_DIR+'train_yog.csv')
 
 
     num_train = int(TRAIN_PERCENT*og_x.shape[0])
@@ -250,12 +251,8 @@ def create_biggest_dataset():
 #==============================
 
 if __name__ == '__main__':
-<<<<<<< HEAD
-    train_valid_split(train_perc=TRAIN_PERCENT)
-    create_threshold_dataset()
-    #create_biggest_dataset()
-=======
+
     #train_valid_split(train_perc=TRAIN_PERCENT)
     create_threshold_dataset()
-    create_biggest_dataset()
->>>>>>> f429a08cad0afd08ecd69d1e39b72ae6eff0c54b
+    #create_biggest_dataset()
+
