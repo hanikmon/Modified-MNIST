@@ -12,7 +12,7 @@ from skimage.filters.rank import median
 DATA_PATH = '../data/'
 TRAIN_PERCENT = 0.98
 # Threshold filter
-THRESHOLD = 254
+THRESHOLD = 255
 THRESHOLD_DIR = 'thresholded/'
 THRESHOLDMED_DIR = 'thresholdmed/'
 # Biggest Number
@@ -23,7 +23,7 @@ DISKSIZE = 1 # for median filter
 OUTPUTSIZE = 32 # Size of data
 
 # Figures Params
-FIG_PATH = '../figures/'
+FIG_PATH = '../report/figures/'
 if not os.path.exists(DATA_PATH+THRESHOLD_DIR):
     os.makedirs(DATA_PATH+THRESHOLD_DIR)
 if not os.path.exists(DATA_PATH+THRESHOLDMED_DIR):
@@ -90,7 +90,7 @@ def show_random_image(imgs_as_array, labels, dim=64):
 #==============================
 
 def threshold_filter(images):
-    return (images > THRESHOLD).astype(int)
+    return (images >= THRESHOLD).astype(int)
 
 def create_threshold_dataset():
     print('Reading old data')    
@@ -309,27 +309,79 @@ def created_thresholdmed_dataset():
     print('Saving test set')
     save_array(thmed_tx, DATA_PATH+THRESHOLDMED_DIR+'test_x.csv')
 
-def showDataset(fnamex,fnamey,datasetname,n=100):
+def showDataset(fnamex,fnamey,datasetname,nrows=10,ncols =10,indices = []):
     print('Showing '+datasetname+' dataset:')
     data = load_array(fnamex)
     labels = load_array(fnamey)
     dim = int(np.sqrt(data.shape[1]))
-    ncols = 10
-    nrows = n//ncols
-    fig, ax = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.4, nrows*1.5),
+    fig, ax = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.3, nrows*1.4),
                            sharex=True, sharey=True)
-    for i in range(n):
-        index = np.random.randint(0,high=data.shape[0])
+    if indices ==[]:
+        indices = np.random.randint(0,high=data.shape[0],size=nrows*ncols)
+    for i in range(nrows*ncols):
+        index = indices[i]
         image = data[index,:].reshape(dim,dim)
         x = i//ncols
         y = i%ncols
-        ax[x,y].imshow(image)
+        ax[x,y].imshow(image,cmap=plt.cm.gray)
         ax[x,y].axis('off')
         ax[x,y].set_title(format(labels[index]))
     fig.tight_layout()
     print(fnamex)
     fig.savefig(FIG_PATH+datasetname+'Dataset.pdf')
+    return indices
 
+def showallFilters(nrows=10,ncols=10,indices=[]):
+    print('Loading original dataset:')
+    data = load_array(DATA_PATH+'og/train_x.csv')
+    labels = load_array(DATA_PATH+BIGGEST_DIR+'train_y.csv')
+    dim = int(np.sqrt(data.shape[1]))
+    fig, ax = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.3, nrows*1.4),
+                           sharex=True, sharey=True)
+    figth, axth = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.3, nrows*1.4),
+                           sharex=True, sharey=True)
+    figthmed, axthmed = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.3, nrows*1.4),
+                           sharex=True, sharey=True)
+    figbig, axbig = plt.subplots(nrows=nrows, ncols=ncols, figsize=(ncols*1.3, nrows*1.4),
+                           sharex=True, sharey=True)
+    if indices ==[]:
+        indices = np.random.randint(0,high=data.shape[0],size=nrows*ncols)
+    for i in range(nrows*ncols):
+        index = indices[i]
+        image = data[index,:].reshape(dim,dim)
+        x = i//ncols
+        y = i%ncols
+        ax[x,y].imshow(image,cmap=plt.cm.gray)
+        ax[x,y].axis('off')
+        ax[x,y].set_title(format(labels[index]))
+        
+        axth[x,y].imshow(threshold_filter(image),cmap=plt.cm.gray)
+        axth[x,y].axis('off')
+        axth[x,y].set_title(format(labels[index]))
+        
+        axthmed[x,y].imshow(medianfilter(threshold_filter(image),1),cmap=plt.cm.gray)
+        axthmed[x,y].axis('off')
+        axthmed[x,y].set_title(format(labels[index]))
+        
+        axbig[x,y].imshow(findBiggest(threshold_filter(image)),cmap=plt.cm.gray)
+        axbig[x,y].axis('off')
+        axbig[x,y].set_title(format(labels[index]))
+    fig.tight_layout()
+    figth.tight_layout()
+    figthmed.tight_layout()
+    figbig.tight_layout()
+    
+    fig.savefig(FIG_PATH+'originalDataset.pdf')
+    figth.savefig(FIG_PATH+'thresholdDataset.pdf')
+    figthmed.savefig(FIG_PATH+'thresholdmedDataset.pdf')
+    figbig.savefig(FIG_PATH+'biggestDataset.pdf')
+
+
+    return indices
+        
+        
+        
+    
     
     
 #==============================
@@ -338,9 +390,13 @@ def showDataset(fnamex,fnamey,datasetname,n=100):
 if __name__ == '__main__':
     #train_valid_split(train_perc=TRAIN_PERCENT)
     #create_threshold_dataset()
-    created_thresholdmed_dataset()
+    #created_thresholdmed_dataset()
     #create_biggest_dataset()
-    
+    #indices1 = showDataset(DATA_PATH+'og/train_x.csv',DATA_PATH+'og/train_y.csv',
+    #                      'original',nrows = 5,ncols=5)
+
     #showDataset(DATA_PATH+BIGGEST_DIR+'train_x.csv',DATA_PATH+BIGGEST_DIR+'train_y.csv','biggest')
-    #showDataset(DATA_PATH+THRESHOLD_DIR+'train_x.csv',DATA_PATH+THRESHOLD_DIR+'train_y.csv','threshold')
+    #showDataset(DATA_PATH+THRESHOLD_DIR+'train_x.csv',DATA_PATH+THRESHOLD_DIR+'train_y.csv',
+    #           'threshold',nrows = 5,ncols=5)
     #showDataset(DATA_PATH+THRESHOLDMED_DIR+'train_x.csv',DATA_PATH+THRESHOLDMED_DIR+'train_y.csv','thresholdmed')
+    indices = showallFilters(nrows=5,ncols=5,indices=[])
