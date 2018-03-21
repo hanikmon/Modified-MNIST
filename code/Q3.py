@@ -7,45 +7,48 @@ import pandas as pd
 # third-party library
 import torch
 import torch.nn as nn
+from sklearn.metrics import accuracy_score
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
-from sklearn.metrics import accuracy_score
 
 # load data
 
 # THRESHOLDED DATA
 
-trainXPath = "../data/augmented_tmed/train_x.csv"
-trainYPath = "../data/augmented_tmed/train_y.csv"
-validXPath = "../data/augmented_tmed/valid_x.csv"
-validYPath = "../data/augmented_tmed/valid_y.csv"
+# trainXPath = "../data/treshold/train_x.csv"
+# trainYPath = "../data/treshold/train_y.csv"
+trainXPath = "../data/treshold/train_xog.csv"
+trainYPath = "../data/treshold/train_yog.csv"
+validXPath = "../data/treshold/valid_x.csv"
+validYPath = "../data/treshold/valid_y.csv"
 testXPath = "../data/augmented_tmed/test_x.csv"
 
-
 # BIGGEST NUMBER DATA
-#trainXPath = "../data/aug_big_mnist/train_x.csv"
-#trainYPath = "../data/aug_big_mnist/train_y.csv"
-#validXPath = "../data/aug_big_mnist/valid_x.csv"
-#validYPath = "../data/aug_big_mnist/valid_y.csv"
-#testXPath = "../data/aug_big_mnist/test_x.csv"
+# trainXPath = "../data/aug_big_mnist/train_x.csv"
+# trainYPath = "../data/aug_big_mnist/train_y.csv"
+# validXPath = "../data/aug_big_mnist/valid_x.csv"
+# validYPath = "../data/aug_big_mnist/valid_y.csv"
+# testXPath = "../data/aug_big_mnist/test_x.csv"
 
 # ORIGINAL
 
-#trainXPath = "../data/train_valid/train_x.csv"
-#trainYPath = "../data/train_valid/train_y.csv"
-#validXPath = "../data/train_valid/valid_x.csv"
-#validYPath = "../data/train_valid/valid_y.csv"
-#testXPath = "../data/test_x.csv"
+# trainXPath = "../data/train_valid/train_x.csv"
+# trainYPath = "../data/train_valid/train_y.csv"
+# validXPath = "../data/train_valid/valid_x.csv"
+# validYPath = "../data/train_valid/valid_y.csv"
+# testXPath = "../data/test_x.csv"
 
 
 dtype = torch.cuda.FloatTensor
-#dtype =  torch.FloatTensor
+
+
+# dtype =  torch.FloatTensor
 
 class kaggleDataset(Dataset):
     def __init__(self, csv_pathX, csv_pathY, transforms=None):
-        self.x_data = pd.read_csv(csv_pathX,header=None)
-        self.y_data = pd.read_csv(csv_pathY,header=None).as_matrix()
+        self.x_data = pd.read_csv(csv_pathX, header=None)
+        self.y_data = pd.read_csv(csv_pathY, header=None).as_matrix()
         self.transforms = transforms
 
     def __getitem__(self, index):
@@ -64,8 +67,8 @@ class kaggleDataset(Dataset):
 
 class kaggleDatasetNoReshape(Dataset):
     def __init__(self, csv_pathX, csv_pathY, transforms=None):
-        self.x_data = pd.read_csv(csv_pathX,header=None)
-        self.y_data = pd.read_csv(csv_pathY,header=None).as_matrix()
+        self.x_data = pd.read_csv(csv_pathX, header=None)
+        self.y_data = pd.read_csv(csv_pathY, header=None).as_matrix()
         self.transforms = transforms
 
     def __getitem__(self, index):
@@ -81,13 +84,13 @@ class kaggleDatasetNoReshape(Dataset):
     def __len__(self):
         return len(self.x_data.index)
 
+
 class testDataset(Dataset):
     def __init__(self, csv_pathX, transforms=None):
-        self.x_data = pd.read_csv(csv_pathX,header=None)
+        self.x_data = pd.read_csv(csv_pathX, header=None)
         self.transforms = transforms
 
     def __getitem__(self, index):
-
         singleX = np.asarray(self.x_data.iloc[index]).reshape(1, 64, 64)
         x_tensor = torch.from_numpy(singleX).type(dtype)
         return x_tensor
@@ -95,10 +98,11 @@ class testDataset(Dataset):
     def __len__(self):
         return len(self.x_data.index)
 
+
 # Hyper Parameters
 EPOCH = 60
 BATCH_SIZE = 300
-LR = 0.0001 # learning rate
+LR = 0.0001  # learning rate
 
 
 class CNN(nn.Module):
@@ -113,7 +117,9 @@ class CNN(nn.Module):
                 padding=2,
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),  # output shape (16, 64, 64)
+
             nn.ReLU(),  # activation
+            nn.BatchNorm2d(64),
             #  choose max value in 2x2 area, output shape (16, 32, 32)
         )
         self.conv2 = nn.Sequential(  # input shape (1, 14, 14)
@@ -126,15 +132,16 @@ class CNN(nn.Module):
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),
             nn.ReLU(),  # activation
+            nn.BatchNorm2d(64),
             nn.MaxPool2d(  # reduce the size
                 kernel_size=2,  # F
-		stride=2  # W = (W-F)/S+1
+                stride=2  # W = (W-F)/S+1
             ),  # output shape (32, 16 , 16)
             nn.Dropout2d(p=0.25)
         )
         self.conv3 = nn.Sequential(  # input shape (1, 14, 14)
             nn.Conv2d(
-                in_channels=64,# input height
+                in_channels=64,  # input height
                 out_channels=128,  # n_filters
                 kernel_size=3,  # filter size
                 stride=1,  # filter movement/step
@@ -142,11 +149,8 @@ class CNN(nn.Module):
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),
             nn.ReLU(),  # activation
-	    nn.Dropout2d(p=0.25),
-            #nn.MaxPool2d(  # reduce the size
-            #    kernel_size=2,  # F
-            #    stride=2  # W = (W-F)/S+1
-            # ) # output shape (32, 16 , 16)
+            nn.BatchNorm2d(128),
+            nn.Dropout2d(p=0.25),
         )
         self.conv4 = nn.Sequential(  # input shape (1, 14, 14)
             nn.Conv2d(
@@ -158,11 +162,12 @@ class CNN(nn.Module):
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),
             nn.ReLU(),  # activation
+            nn.BatchNorm2d(128),
             nn.MaxPool2d(  # reduce the size
                 kernel_size=2,  # F
                 stride=2  # W = (W-F)/S+1
             ),  # output shape (32, 16 , 16)
-            #nn.Dropout2d(p=0.25)
+            nn.Dropout2d(p=0.25)
         )
         self.conv5 = nn.Sequential(
             nn.Conv2d(
@@ -173,13 +178,9 @@ class CNN(nn.Module):
                 padding=1,
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),
-            nn.ReLU(),  # activation
-			#nn.MaxPool2d(
-			#	kernel_size=2,
-			#	stride=2
-		    #
-			#),
-	    nn.Dropout(0.25)
+            nn.ReLU(),  #
+            nn.BatchNorm2d(256),
+            nn.Dropout(0.25)
         )
         self.conv6 = nn.Sequential(
             nn.Conv2d(
@@ -191,29 +192,15 @@ class CNN(nn.Module):
                 # if want same width and length of this image after con2d, padding=(kernel_size-1)/2 if stride=1
             ),
             nn.ReLU(),  # activation
+            nn.BatchNorm2d(256),
             nn.MaxPool2d(  # reduce the size
                 kernel_size=2,  # F
                 stride=2  # W = (W-F)/S+1
             ),  # output shape (32, 16 , 16)
-            
-            #nn.Dropout2d(p=0.25)
+
+            nn.Dropout2d(p=0.25)
         )
         self.conv7 = nn.Sequential(
-            nn.Conv2d(
-                in_channels=256,
-                out_channels=256,
-                kernel_size=3,
-                stride=1,
-                padding=1,
-            ),
-            nn.ReLU(),
-	    nn.MaxPool2d(
-	        kernel_size=2,
-	        stride=2,
-	    ),
-	    nn.Dropout2d(p=0.25)
-        )
-        self.conv8 = nn.Sequential(
             nn.Conv2d(
                 in_channels=256,
                 out_channels=512,
@@ -222,89 +209,70 @@ class CNN(nn.Module):
                 padding=1,
             ),
             nn.ReLU(),
-	#    nn.MaxPool2d(
-#		kernel_size=2,
-#		stride=2,
-#	    ),
-            #nn.Dropout(p=0.25)
+            nn.BatchNorm2d(512),
+            # nn.MaxPool2d(
+            #     kernel_size=2,
+            #     stride=2,
+            # ),
+            nn.Dropout2d(p=0.25)
         )
-        #self.conv9 = nn.Sequential(
-        #    nn.Conv2d(
-        #        in_channels=512,
-        #        out_channels=1024,
-        #        kernel_size=3,
-        #        stride=1,
-        #        padding=1,
-        #    ),
-        #    nn.ReLU(),
-        #    nn.BatchNorm2d(1024),
-	    #nn.MaxPool2d(
-		#kernel_size=2,
-		#stride=2,
-	    #),
-	#    nn.Dropout2d(p=0.25)
-        #)
-        #self.conv10 = nn.Sequential(
-        #    nn.Conv2d(
-        #        in_channels=1024,
-        #        out_channels=1024,
-        #        kernel_size=3,
-        #        stride=1,
-        #        padding=1,
-        #    ),
-        #    nn.ReLU(),
-        #    nn.BatchNorm2d(1024),
-	#    nn.MaxPool2d(
-	#        kernel_size=2,
-#		stride=2,
-#	    ),
-            #nn.Dropout(p=0.25)
- #       )
-	#self.conv11 = nn.Sequential(
-        #    nn.Conv2d(
-        #        in_channels=1024,
-        #        out_channels=2048,
-        #        kernel_size=3,
-        #        stride=1,
-        #        padding=1,
-        #    ),
-        #    nn.ReLU(),
-        #    nn.BatchNorm2d(2048),
-	#    #nn.MaxPool2d(
-	#		kernel_size=2,
-	#		stride=2,
-			#),
-	#    nn.Dropout2d(p=0.25)
-        #)
-        #self.conv12 = nn.Sequential(
-        #    nn.Conv2d(
-        #        in_channels=2048,
-        #        out_channels=2048,
-        #        kernel_size=3,
-        #        stride=1,
-        #        padding=1,
-        #    ),
-        #    nn.ReLU(),
-        #    nn.BatchNorm2d(2048),
-#		nn.MaxPool2d(
-#			kernel_size=2,
-#			stride=2,
-#		),
-#            nn.Dropout(p=0.25)
- #       )
-        self.linear1 = nn.Sequential(
-            nn.Linear(512*4*4,300),
+        self.conv8 = nn.Sequential(
+            nn.Conv2d(
+                in_channels=512,
+                out_channels=512,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+            ),
             nn.ReLU(),
-            nn.Dropout(p=0.5),
+            nn.BatchNorm2d(512),
+            nn.MaxPool2d(
+                kernel_size=2,
+                stride=2,
+            ),
+            nn.Dropout(p=0.25)
         )
-        self.linear2 = nn.Sequential(
-            nn.Linear(300,200),
+        self.conv9 = nn.Sequential(
+            nn.Conv2d(
+                in_channels=512,
+                out_channels=1024,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+            ),
+            nn.ReLU(),
+            nn.BatchNorm2d(1024),
+            # nn.MaxPool2d(
+            #     kernel_size=2,
+            #     stride=2,
+            # ),
+            nn.Dropout2d(p=0.25)
+        )
+        self.conv10 = nn.Sequential(
+            nn.Conv2d(
+                in_channels=1024,
+                out_channels=1024,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+            ),
+            nn.ReLU(),
+            nn.BatchNorm2d(1024),
+            nn.MaxPool2d(
+                kernel_size=2,
+                stride=2,
+            ),
+            nn.Dropout(p=0.25)
+        )
+
+        self.fullConnect = nn.Sequential(
             nn.ReLU(),
             nn.Dropout(p=0.5),
         )
 
+
         self.out = nn.Sequential(
-            nn.Linear(200, 10),
+            nn.Linear(1024*2*2, 10),
         )
 
     def forward(self, x):
@@ -317,18 +285,18 @@ class CNN(nn.Module):
         x = self.conv6(x)
         x = self.conv7(x)
         x = self.conv8(x)
-	#x = self.conv9(x)
-        #x = self.conv10(x)
-        #x = self.conv11(x)
-        #x = self.conv12(x)
+        x = self.conv9(x)
+        x = self.conv10(x)
+        # x = self.conv11(x)
+        # x = self.conv12(x)
         x = x.view(x.size(0), -1)  # flatten the output of conv2 to (batch_size, 32 * 16 * 16)
-        x = self.linear1(x)
+        x = self.fullConnect(x)
         x = self.linear2(x)
         output = self.out(x)
         return output
 
 
- # ,pin_memory=True)
+# ,pin_memory=True)
 
 
 def imgShower(data, target, numberOfExample):
@@ -340,25 +308,27 @@ def imgShower(data, target, numberOfExample):
         plt.imshow(data[i], cmap='gray')
         plt.show()
 
-def trainCNN(EPOCH,trainXPath, trainYPath):
+
+def trainCNN(EPOCH, trainXPath, trainYPath):
     print('Loading dataset')
     trainData = kaggleDataset(trainXPath, trainYPath)
-    train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True)  # , num_workers=1,pin_memory=True)
+    train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE,
+                              shuffle=True)  # , num_workers=1,pin_memory=True)
     cnn = CNN().cuda()
     print(cnn)
     cnn.double()
     cnn.train()
     LR = 0.03
-    #optimizer = torch.optim.Adam(cnn.parameters(), lr=LR)  # optimize all cnn parameters
+    # optimizer = torch.optim.Adam(cnn.parameters(), lr=LR)  # optimize all cnn parameters
     # loss_func = nn.MultiLabelSoftMarginLoss()
     loss_func = nn.CrossEntropyLoss()  # the target label is not one-hotted
     for epoch in range(EPOCH):
         # load saved model
         # model = torch.load('cnnModelF5Pool2F5Pool2')
-	if (epoch %4 ==0 and epoch!=0):
-		LR = LR/10
-		print('LR changed to '+str(LR))
-	optimizer = torch.optim.Adam(cnn.parameters(),lr = LR)
+        if (epoch % 8 == 0 and epoch != 0):
+            LR = LR / 10
+            print('LR changed to ' + str(LR))
+        optimizer = torch.optim.Adam(cnn.parameters(), lr=LR)
         for batch_idx, (data, target) in enumerate(train_loader):
 
             # imgShower(data,target)
@@ -372,36 +342,38 @@ def trainCNN(EPOCH,trainXPath, trainYPath):
             loss.backward()  # backpropagation, compute gradients
             optimizer.step()  # apply gradients
 
-            if (batch_idx) % 50 == 0:
+            if batch_idx % 50 == 0:
                 print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                    epoch, (batch_idx) * len(data), len(train_loader.dataset),
-                    batch_idx*BATCH_SIZE/ len(train_loader.dataset), loss.data[0]))
-    	
-        if epoch% 1==0:
-            torch.save(cnn, 'models/cnnModelVINCENT_8L_augthresh')
-        testCNNResult('models/cnnModelVINCENT_8L_augthresh',validXPath, validYPath)
+                    epoch, (batch_idx + 1) * len(data), len(train_loader.dataset),
+                           (batch_idx + 1) / len(train_loader), loss.data[0]))
+
+        if epoch % 1 == 0:
+            torch.save(cnn, 'models/cnnModelGrantFinal')
+        # testCNNResult('models/cnnModelVINCENT_8L_augthresh', validXPath, validYPath)
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
         'optimizer': optimizer.state_dict()
     }
-    torch.save(state, 'models/rvincent')
-    torch.save(cnn,'models/cnnModelVINCENT_8L_augthresh')
+    torch.save(state, 'models/GrantFinal')
+    torch.save(cnn, 'models/cnnModelGrantFinal')
 
-def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
+
+def continueTrainCNN(EPOCH, trainXPath, trainYPath, modelpath):
     trainData = kaggleDataset(trainXPath, trainYPath)
-    train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True)  # , num_workers=1,pin_memory=True)
+    train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE,
+                              shuffle=True)  # , num_workers=1,pin_memory=True)
     model = torch.load(modelpath)
     model.cuda()
     model.train()
-    #optimizer = torch.optim.Adam(model.parameters(), lr=LR)  # optimize all cnn parameters
+    # optimizer = torch.optim.Adam(model.parameters(), lr=LR)  # optimize all cnn parameters
     # loss_func = nn.MultiLabelSoftMarginLoss()
     loss_func = nn.CrossEntropyLoss()  # the target label is not one-hotted
     LR = 0.003
     for epoch in range(EPOCH):
-	if(epoch %8 ==0 and epoch != 0):
-		LR = LR /10
-	optimizer = torch.optim.Adam(model.parameters(),lr=LR)
+        if (epoch % 8 == 0 and epoch != 0):
+            LR = LR / 10
+        optimizer = torch.optim.Adam(model.parameters(), lr=LR)
         # load saved model
         # model = torch.load('cnnModelF5Pool2F5Pool2')
 
@@ -420,14 +392,13 @@ def continueTrainCNN(EPOCH,trainXPath, trainYPath, modelpath):
 
             if batch_idx % 50 == 0:
                 print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                    epoch, (batch_idx+1) * len(data), len(train_loader.dataset),
-                           (batch_idx+1) / len(train_loader), loss.data[0]))
-        if epoch % 1== 0:
-
+                    epoch, (batch_idx + 1) * len(data), len(train_loader.dataset),
+                           (batch_idx + 1) / len(train_loader), loss.data[0]))
+        if epoch % 1 == 0:
             torch.save(model, modelpath)
-    	    testCNNResult(modelpath,validXPath, validYPath)
+            #testCNNResult(modelpath, validXPath, validYPath)
 
-    torch.save(model,modelpath)
+    torch.save(model, modelpath)
 
 
 def separateTrainValid():
@@ -440,45 +411,43 @@ def separateTrainValid():
         print(target.shape)
         dfx = pd.DataFrame(data)
         dfy = pd.DataFrame(target)
-        if ( batch_idx < 20):
+        if (batch_idx < 20):
             with open('fastTrain_x_1.csv', 'a') as f:
-                dfx.to_csv(f, index= False, header=False)
+                dfx.to_csv(f, index=False, header=False)
             dfy = pd.DataFrame(target)
             with open('fastTrain_y_1.csv', 'a') as f:
-                dfy.to_csv(f,index=False, header=False)
+                dfy.to_csv(f, index=False, header=False)
         else:
             with open('train_x_1.csv', 'a') as f:
-                dfx.to_csv(f,index=False, header=False)
+                dfx.to_csv(f, index=False, header=False)
 
             with open('train_y_1.csv', 'a') as f:
-                dfy.to_csv(f,index=False, header=False)
-
-
-
+                dfy.to_csv(f, index=False, header=False)
 
 
 def testCNN(modelName):
     testData = testDataset(testXPath)
-    test_loader = DataLoader(dataset=testData, batch_size=50,shuffle=False)  # , num_workers=1,pin_memory=True)
-    result=0
+    test_loader = DataLoader(dataset=testData, batch_size=50, shuffle=False)  # , num_workers=1,pin_memory=True)
+    result = 0
     model = torch.load(modelName)
     for batch_idx, data in enumerate(test_loader):
         data = Variable(data.type(dtype))
 
         output = model(data)
         pred = torch.max(output.cpu(), 1)[1].data.numpy()
-        if batch_idx <1:
+        if batch_idx < 1:
             result = pred
         else:
-            result = np.append(result,pred)
+            result = np.append(result, pred)
         print(len(result))
-    df = pd.DataFrame(np.transpose(result.reshape(1,-1)))
-    df.to_csv("submissions/test_y_vincent_8L_augthresh.csv",index_label='Id',header=['Label'])
+    df = pd.DataFrame(np.transpose(result.reshape(1, -1)))
+    df.to_csv("submissions/test_y_vincent_8L_augthresh.csv", index_label='Id', header=['Label'])
 
-def testCNNResult(modelName,ValidX,ValidY):
-    testData = kaggleDataset(ValidX,ValidY)
-    test_loader = DataLoader(dataset=testData, batch_size=15,shuffle=False)  # , num_workers=1,pin_memory=True)
-    result=0
+
+def testCNNResult(modelName, ValidX, ValidY):
+    testData = kaggleDataset(ValidX, ValidY)
+    test_loader = DataLoader(dataset=testData, batch_size=15, shuffle=False)  # , num_workers=1,pin_memory=True)
+    result = 0
     trueRes = 0
     model = torch.load(modelName)
     model.cuda()
@@ -489,27 +458,25 @@ def testCNNResult(modelName,ValidX,ValidY):
 
         output = model(data)
         pred = torch.max(output.cpu(), 1)[1].data.numpy()
-        if batch_idx <1:
+        if batch_idx < 1:
             result = pred
             trueRes = target
         else:
-            result = np.append(result,pred)
-            trueRes = np.append(trueRes,target)
-        #if batch_idx%20 == 0:
+            result = np.append(result, pred)
+            trueRes = np.append(trueRes, target)
+        # if batch_idx%20 == 0:
         #    print(len(result))
         #    print(len(trueRes))
         #    print(accuracy_score(trueRes, result))
 
-
     print('final accuracy')
-    print(accuracy_score(trueRes,result))
+    print(accuracy_score(trueRes, result))
 
 
 if __name__ == '__main__':
     # testCNN('cnnModelF3F3F5new1')
-    trainCNN(EPOCH,trainXPath,trainYPath)
-    #testCNN('models/cnnModelVINCENT_8L_augthresh')
-    #separateTrainValid()
-    #testCNNResult('cnnModelGrant256',validXPath, validYPath)
-    #continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelVINCENT_8L_augthresh')
-
+    trainCNN(EPOCH, trainXPath, trainYPath)
+    # testCNN('models/cnnModelVINCENT_8L_augthresh')
+    # separateTrainValid()
+    # testCNNResult('cnnModelGrant256',validXPath, validYPath)
+    # continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrantFinal')
