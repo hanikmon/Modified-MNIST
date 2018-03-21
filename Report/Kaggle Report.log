@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  21 MAR 2018 15:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  21 MAR 2018 17:37
 entering extended mode
 **"./Kaggle Report.tex"
 ("Kaggle Report.tex"
@@ -283,12 +283,12 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/21stepwide8bit.jpg, id=2, 536.20325pt x 144.54pt>
 File: figures/21stepwide8bit.jpg Graphic file (type jpg)
 <use figures/21stepwide8bit.jpg>
-Package pdftex.def Info: figures/21stepwide8bit.jpg  used on input line 85. on 
-input line 85.
+Package pdftex.def Info: figures/21stepwide8bit.jpg  used on input line 86. on 
+input line 86.
 Package pdftex.def Info: Requested size: 252.94499pt x 68.18523pt on input line
- 85.
+ 86.
 
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 85--86
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 86--87
  [] 
  []
 
@@ -298,32 +298,47 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/thresholdDataset.pdf, id=3, pagebox=cropbox, 469.755pt x 505.89pt>
 File: figures/thresholdDataset.pdf Graphic file (type pdf)
 <use figures/thresholdDataset.pdf>
-Package pdftex.def Info: figures/thresholdDataset.pdf  used on input line 108. 
-on input line 108.
+Package pdftex.def Info: figures/thresholdDataset.pdf  used on input line 109. 
+on input line 109.
 Package pdftex.def Info: Requested size: 202.3529pt x 217.91441pt on input line
- 108.
+ 109.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 <figures/thresholdmedDataset.pdf, id=4, pagebox=cropbox, 469.755pt x 505.89pt>
 File: figures/thresholdmedDataset.pdf Graphic file (type pdf)
 <use figures/thresholdmedDataset.pdf>
-Package pdftex.def Info: figures/thresholdmedDataset.pdf  used on input line 11
-8. on input line 118.
+Package pdftex.def Info: figures/thresholdmedDataset.pdf  used on input line 12
+4. on input line 124.
 Package pdftex.def Info: Requested size: 202.3529pt x 217.91441pt on input line
- 118.
+ 124.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 <figures/biggestDataset.pdf, id=5, pagebox=cropbox, 469.755pt x 505.89pt>
 File: figures/biggestDataset.pdf Graphic file (type pdf)
 <use figures/biggestDataset.pdf>
-Package pdftex.def Info: figures/biggestDataset.pdf  used on input line 127. on
- input line 127.
+Package pdftex.def Info: figures/biggestDataset.pdf  used on input line 133. on
+ input line 133.
 Package pdftex.def Info: Requested size: 202.3529pt x 217.91441pt on input line
- 127.
-("Kaggle Report.bbl"
+ 133.
+
 Overfull \vbox (336.63313pt too high) has occurred while \output is active []
 
 
 [1{C:/Users/hamed/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
- <./figures/originalDataset.pdf> <./figures/21stepwide8bit.jpg>])
+ <./figures/originalDataset.pdf> <./figures/21stepwide8bit.jpg>]
+Underfull \vbox (badness 2057) has occurred while \output is active []
+
+
+("Kaggle Report.bbl" [2 <./figures/thresholdDataset.pdf> <./figures/thresholdme
+dDataset.pdf
+
+pdfTeX warning: pdflatex.exe (file ./figures/thresholdmedDataset.pdf): PDF incl
+usion: multiple pdfs with page group included in a single page
+>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -335,33 +350,27 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-[2 <./figures/thresholdDataset.pdf> <./figures/thresholdmedDataset.pdf
-
-pdfTeX warning: pdflatex.exe (file ./figures/thresholdmedDataset.pdf): PDF incl
-usion: multiple pdfs with page group included in a single page
->] [3
-
- <./figures/biggestDataset.pdf>] ("Kaggle Report.aux") ) 
+[3 <./figures/biggestDataset.pdf>] ("Kaggle Report.aux") ) 
 Here is how much of TeX's memory you used:
  2793 strings out of 493312
  41236 string characters out of 3138899
- 108411 words of memory out of 3000000
+ 107411 words of memory out of 3000000
  6307 multiletter control sequences out of 15000+200000
  40809 words of font info for 84 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,14n,25p,763b,311s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTe
-X 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/publ
-ic/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfo
-nts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
-mr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><
-C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program
- Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/M
-iKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/
-utmbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/P
-rogram Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on "Kaggle Report.pdf" (3 pages, 476341 bytes).
+{C:/Program Files/MiK
+TeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/pu
+blic/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
+/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb
+><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Progr
+am Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files
+/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/time
+s/utmbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:
+/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on "Kaggle Report.pdf" (3 pages, 477064 bytes).
 PDF statistics:
  333 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
