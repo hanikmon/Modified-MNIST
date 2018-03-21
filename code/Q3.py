@@ -7,6 +7,7 @@ import pandas as pd
 # third-party library
 import torch
 import torch.nn as nn
+from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
@@ -297,7 +298,20 @@ class CNN(nn.Module):
 
 
 # ,pin_memory=True)
-
+def plot_confusionMatrix(y_tar, y_pred, title='Confusion matrix', ):
+    cm = confusion_matrix(y_tar, y_pred, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    classes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    plt.figure()
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.show()
 
 def imgShower(data, target, numberOfExample):
     data = data.numpy()
@@ -472,6 +486,7 @@ def testCNNResult(modelName, ValidX, ValidY):
 
     print('final accuracy')
     print(accuracy_score(trueRes, result))
+    confusion_matrix(trueRes,result)
 
 
 if __name__ == '__main__':
@@ -481,3 +496,6 @@ if __name__ == '__main__':
     # separateTrainValid()
     # testCNNResult('cnnModelGrant256',validXPath, validYPath)
     continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrantFinal')
+    y1 = [1, 3, 2, 5, 7, 9, 1, 2, 1, 5, 6, 1, 5, 7, 9, 1, 4, 4, 5, 6, 7, 2, 4, 6, 7, 2, 4, 6]
+    y2 = [1, 3, 2, 5, 7, 9, 1, 2, 1, 5, 6, 1, 5, 7, 9, 1, 4, 4, 5, 6, 7, 2, 4, 6, 7, 2, 3, 2]
+    plot_confusionMatrix(y1, y2)
