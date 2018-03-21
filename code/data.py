@@ -8,7 +8,8 @@ DATA_PATH = '../data/'
 
 DATASET_DICT = {
     'threshold': DATA_PATH + 'thresholdmed/',
-    'og': DATA_PATH + 'og/'
+    'og': DATA_PATH + 'og/',
+    'big': DATA_PATH+'big/'
 }
 
 from skimage.measure import label, regionprops
@@ -18,7 +19,7 @@ from skimage.transform import rotate
 
 LENGTHMAX = 30 # Expected MNIST image sizes
 DISKSIZE = 1 # for median filter
-OUTPUTSIZE = 32 # Size of data
+OUTPUTSIZE = 28 # Size of data
 
 #==============================
 # Save and Load arrays
@@ -163,7 +164,7 @@ def bigSegment(imageref,imageseg,ignore = False):
         length = np.max([r1-r0,c1-c0])
         width = np.min([r1-r0,c1-c0])
         if length<=LENGTHMAX or ignore:
-            a = length*width
+            a = length*length
             segment = imageref[r0:r1,c0:c1]
             if a>amax or (a== amax and width>wmax):
                 outIm = segment
@@ -212,78 +213,79 @@ AUG_TMED_DIR = 'augmented_tmed/'
 
 
 def augment_and_biggest():
-    dataset_path = DATASET_DICT['threshold']
+    dataset_path = DATASET_DICT['og']
     
     print('Loading values')
     x = pd.read_csv(dataset_path+'train_x.csv', header=None).values
     y = pd.read_csv(dataset_path+'train_y.csv', header=None).values
-    x_valid = pd.read_csv(dataset_path+'valid_x.csv', header=None).values
-    y_valid = pd.read_csv(dataset_path+'valid_y.csv', header=None).values
+    #x_valid = pd.read_csv(dataset_path+'valid_x.csv', header=None).values
+    #y_valid = pd.read_csv(dataset_path+'valid_y.csv', header=None).values
 
-    x = np.append(x, x_valid)
-    y = np.append(y, y_valid)
+    #x = np.append(x, x_valid)
+    #y = np.append(y, y_valid)
     
-    augmented_x = np.zeros((x.shape[0]*3, 64**2))
-    augmented_y = np.zeros((y.shape[0]*3, y.shape[1]))
-    
+    #augmented_x = np.zeros((x.shape[0]*3, 64**2))
+    #augmented_y = np.zeros((y.shape[0]*3, y.shape[1]))
+    x = threshold_filter(x) 
+    big_x = np.zeros((x.shape[0], OUTPUTSIZE*OUTPUTSIZE))
     
     for i in range(x.shape[0]):
         if (i+1)%50 == 0:
             print('{:5d} / {:5d}\r'.format(i+1, x.shape[0]), end='')
         
-        start_idx = i*3
-        img = x[i]
-        #img = (findBiggest(x[i])).reshape((1, 32**2))
-        rotations = rotate_img(img)
-        augmented_x[start_idx] = img
-        augmented_x[start_idx+1] = rotations[0]
-        augmented_x[start_idx+2] = rotations[1]
+        start_idx = i
+        #img = x[i]
+        img = (findBiggest(x[i])).reshape((1, OUTPUTSIZE**2))
+        #rotations = rotate_img(img)
+        big_x[start_idx] = img
+        #augmented_x[start_idx+1] = rotations[0]
+        #augmented_x[start_idx+2] = rotations[1]
         
-        augmented_y[start_idx] = y[i]
-        augmented_y[start_idx+1] = y[i]
-        augmented_y[start_idx+2] = y[i]
+        #augmented_y[start_idx] = y[i]
+        #augmented_y[start_idx+1] = y[i]
+        #augmented_y[start_idx+2] = y[i]
     print('')
     
     
     print('Shuffling')
     state = np.random.get_state()
-    np.random.shuffle(augmented_x)
+    np.random.shuffle(big_x)
     np.random.set_state(state)
-    np.random.shuffle(augmented_y)
+    np.random.shuffle(y)
 
     print('Splitting')
-    valid_x = augmented_x[:3000, :]
-    valid_y = augmented_y[:3000, :]
+    valid_x = big_x[:2000, :]
+    valid_y = y[:2000, :]
 
     print('Saving validation set')
-    save_array(valid_x, DATA_PATH+AUG_TMED_DIR+'valid_x.csv')
-    save_array(valid_y, DATA_PATH+AUG_TMED_DIR+'valid_y.csv')
+    save_array(valid_x, DATA_PATH+'big/'+'valid_x.csv')
+    save_array(valid_y, DATA_PATH+'big/'+'valid_y.csv')
     
-    train_x = augmented_x[3000:, :]
-    train_y = augmented_y[3000:, :]
+    train_x = big_x[2000:, :]
+    train_y = y[2000:, :]
 
     print('Saving train set')
-    save_array(train_x, DATA_PATH+AUG_TMED_DIR+'train_x.csv')
-    save_array(train_y, DATA_PATH+AUG_TMED_DIR+'train_y.csv')
+    save_array(train_x, DATA_PATH+'big/'+'train_x.csv')
+    save_array(train_y, DATA_PATH+'big/'+'train_y.csv')
     
     # do the same for the test set
-    x = pd.read_csv(dataset_path+'test_x.csv', header=None).values
-    augmented_x = np.zeros((x_test.shape[0]*3), x_test.shape[1])
-    for i in range(x.shape[0]):
-        if i%50 == 0:
-            print('{:5d} / {:5d}\r'.format(i, x.shape[0]), end='')
-        start_idx = i*3
-        augmented_x[start_idx] = x[i]
-        img = (findBiggest(x[i])).reshape((1, 64**2))
-        rotations = rotate_img(img)
-        augmented_x[start_idx+1] = rotations[0]
-        augmented_x[start_idx+2] = rotations[1]
+    #x = pd.read_csv(dataset_path+'test_x.csv', header=None).values
+    #augmented_x = np.zeros((x_test.shape[0]*3), x_test.shape[1])
+    #for i in range(x.shape[0]):
+    #    if i%50 == 0:
+    #        print('{:5d} / {:5d}\r'.format(i, x.shape[0]), end='')
+    #    start_idx = i*3
+    #    augmented_x[start_idx] = x[i]
+    #    img = (findBiggest(x[i])).reshape((1, 64**2))
+    #    rotations = rotate_img(img)
+    #    augmented_x[start_idx+1] = rotations[0]
+    #    augmented_x[start_idx+2] = rotations[1]
         
-        augmented_y[start_idx] = y[i]
-        augmented_y[start_idx+1] = y[i]
-        augmented_y[start_idx+2] = y[i]
-    print('')
-    save_array(augmented_x, DATA_PATH+AUG_TMED_DIR+'test_x.csv')
+    #    augmented_y[start_idx] = y[i]
+    #    augmented_y[start_idx+1] = y[i]
+    #    augmented_y[start_idx+2] = y[i]
+    #print('')
+    #save_array(augmented_x, DATA_PATH+AUG_TMED_DIR+'test_x.csv')
 
 
 #==============================
