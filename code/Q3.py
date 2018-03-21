@@ -18,11 +18,11 @@ from torch.utils.data.dataset import Dataset
 
 # trainXPath = "../data/treshold/train_x.csv"
 # trainYPath = "../data/treshold/train_y.csv"
-trainXPath = "../data/treshold/train_xog.csv"
-trainYPath = "../data/treshold/train_yog.csv"
-validXPath = "../data/treshold/valid_x.csv"
-validYPath = "../data/treshold/valid_y.csv"
-testXPath = "../data/augmented_tmed/test_x.csv"
+trainXPath = "../data/thresholded/train_xog.csv"
+trainYPath = "../data/thresholded/train_yog.csv"
+validXPath = "../data/thresholded/valid_x.csv"
+validYPath = "../data/thresholded/valid_y.csv"
+testXPath = "../data/thresholded/test_x.csv"
 
 # BIGGEST NUMBER DATA
 # trainXPath = "../data/aug_big_mnist/train_x.csv"
@@ -291,7 +291,7 @@ class CNN(nn.Module):
         # x = self.conv12(x)
         x = x.view(x.size(0), -1)  # flatten the output of conv2 to (batch_size, 32 * 16 * 16)
         x = self.fullConnect(x)
-        x = self.linear2(x)
+        #x = self.linear2(x)
         output = self.out(x)
         return output
 
@@ -369,10 +369,11 @@ def continueTrainCNN(EPOCH, trainXPath, trainYPath, modelpath):
     # optimizer = torch.optim.Adam(model.parameters(), lr=LR)  # optimize all cnn parameters
     # loss_func = nn.MultiLabelSoftMarginLoss()
     loss_func = nn.CrossEntropyLoss()  # the target label is not one-hotted
-    LR = 0.003
+    LR = 0.0001
     for epoch in range(EPOCH):
-        if (epoch % 8 == 0 and epoch != 0):
+        if (epoch % 5 == 0 and epoch != 0):
             LR = LR / 10
+	    print('LR changed to '+str(LR))
         optimizer = torch.optim.Adam(model.parameters(), lr=LR)
         # load saved model
         # model = torch.load('cnnModelF5Pool2F5Pool2')
@@ -475,8 +476,8 @@ def testCNNResult(modelName, ValidX, ValidY):
 
 if __name__ == '__main__':
     # testCNN('cnnModelF3F3F5new1')
-    trainCNN(EPOCH, trainXPath, trainYPath)
+    # trainCNN(EPOCH, trainXPath, trainYPath)
     # testCNN('models/cnnModelVINCENT_8L_augthresh')
     # separateTrainValid()
     # testCNNResult('cnnModelGrant256',validXPath, validYPath)
-    # continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrantFinal')
+    continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrantFinal')
