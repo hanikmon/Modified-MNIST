@@ -30,6 +30,7 @@
 %\usepackage{amsmath} % assumes amsmath package installed
 %\usepackage{amssymb}  % assumes amsmath package installed
 \usepackage{url}
+\usepackage{gensymb}
 
 \title{\LARGE \bf
 COMP 551 Kaggle Competition: Classification of Modified MNIST*
@@ -86,36 +87,31 @@ Before, the data are used for training, the following preprocessing steps are us
 \subsection{Logistic Regression}
 
 \subsection{Fully-connected Neural Network}
-The second algorithm we used to solve the problem is a fully-connected neural network. It was implemented by hand using the Numpy library. We trained the network using backpropagation and minibatch gradient-descent.
+The second algorithm we used to solve the problem is a fully-connected neural network. It was implemented by hand using the Numpy library. We trained the network using backpropagation and minibatch gradient-descent. Because this is a classification problem, the last layer of the network is a softmax layer, allowing the network to output a probability distribution.
 
 \subsection{Convolutional Neural Network}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{METHODOLOGY}
 
-Before you begin to format your paper, first write and save the content as a separate text file. Keep your text and graphic files separate until after the text has been formatted and styled. Do not use hard tabs, and limit use of hard returns to only one return at the end of a paragraph. Do not add any kind of pagination anywhere in the paper. Do not number text heads-the template will do that for you.
-
-Finally, complete content and organizational editing before formatting. Please take note of the following items when proofreading spelling and grammar:
-
-\subsection{Abbreviations and Acronyms} Define abbreviations and acronyms the first time they are used in the text, even after they have been defined in the abstract. Abbreviations such as IEEE, SI, MKS, CGS, sc, dc, and rms do not have to be defined. Do not use abbreviations in the title or heads unless they are unavoidable.
-
-\subsection{Units}
+To start with, we had to split the original dataset into a training and validation set. We decided to go with a simple 90/10 split. Then we applied our preprocessing steps defined in the Feature Design section to generate 4 new datasets based on the original one.
 
 \begin{itemize}
-
-\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as Ò3.5-inch disk driveÓ.
-\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
-\item Do not mix complete spellings and abbreviations of units: ÒWb/m2Ó or Òwebers per square meterÓ, not Òwebers/m2Ó.  Spell out units when they appear in text: Ò. . . a few henriesÓ, not Ò. . . a few HÓ.
-\item Use a zero before decimal points: Ò0.25Ó, not Ò.25Ó. Use Òcm3Ó, not ÒccÓ. (bullet list)
-
+\item The first new dataset is the thresholded version of the original one.
+\item The second is the one where the biggest number from each image in the thresholded dataset set are extracted.
+\item The third one is the augmented version of the first new dataset, where the images are rotated 27\degree and -27\degree.
+\item The fourth one is the augmented version of the second new dataset, with the same rotations as the third one.
 \end{itemize}
 
-\subsection{Some Common Mistakes}
-\begin{itemize}
+All the transformations were applied to the original training, validation and test set, except for the 3rd and 4th dataset where the transformations were only applied to the training set, because we wanted the validation set to stay as close as possible to the test set. So the validation and test sets for the 1st dataset are identical to the validation and test sets of the 3rd dataset, same for the 2nd and the 4th. This gave us two datasets with 45,000 training and 5,000 validation examples, and two datasets with 135,000 training and 5,000 validation examples.
 
-\item The word ÒdataÓ is plural, not singular.
+\subsection{Logistic Regression}
 
-\end{itemize}
+\subsection{Fully Connected Neural Network}
+
+
+
+\subsection{Convolutional Neural Network}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -6,31 +6,42 @@ from sklearn.svm import LinearSVC
 
 from sklearn.metrics import accuracy_score
 
-from data import load_dataset, one_hot
+from data import load_dataset, save_array
 
 if __name__ == '__main__':
-    x_train, y_train, x_valid, y_valid = load_dataset('big')
-    #y_train = one_hot(y_train)
-    #y_valid = one_hot(y_valid)
-
-    y_train = np.reshape(y_train, y_train.shape[0])
-    y_valid = np.reshape(y_valid, y_valid.shape[0])
-
-    #clf = LinearSVC(
-    #    C=0.9,
-    #    verbose=1
-    #)
-
     
-    for C in np.logspace(-4,2,10):
+    results = np.zeros((30, 3))
+    i = 0
 
-        clf = LogisticRegression(
-            C=C, 
-            n_jobs=-1,
-            verbose=0)
+    for dataset in ['big', 'og', 'threshold']:
+        print('Loading...')
+        x_train, y_train, x_valid, y_valid = load_dataset(dataset)
+        print('Done')
 
-        clf.fit(x_train, y_train)
+        y_train = np.reshape(y_train, y_train.shape[0])
+        y_valid = np.reshape(y_valid, y_valid.shape[0])
+
+        for C in np.logspace(-4,0,10):
+            print('Dataset: {}, C: {}'.format(dataset, C))
+
+            clf = LinearSVC(
+                C=C, 
+                verbose=0)
+
+            clf.fit(x_train, y_train)
         
-        print('C: {}'.format(C))
-        print('training accuracy: {}'.format(clf.score(x_train, y_train)))
-        print('validation accuracy: {}\n'.format(clf.score(x_valid, y_valid)))
+            train_acc = clf.score(x_train, y_train)
+            valid_acc = clf.score(x_valid, y_valid)
+            
+            print('C: {}'.format(C))
+            print('training accuracy: {}'.format(train_acc))
+            print('validation accuracy: {}\n'.format(valid_acc))
+
+            results[i,0] = C
+            results[i,1] = train_acc
+            results[i,2] = valid_acc
+            i += 1
+        print('\n') 
+    save_array(results, 'Q1_res.csv')
+
+
