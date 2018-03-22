@@ -73,7 +73,7 @@ The provided images in the Modified MNIST include 3 numbers that are rotated and
 Some samples of the train dataset with their associated outputs are shown in Figure \ref{fig:original}.
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.4\textwidth]{figures/originalDataset.pdf}  % The printed column width is 8.4 cm.
+		\includegraphics[width=0.5\textwidth]{figures/originalDataset.pdf}  % The printed column width is 8.4 cm.
 		\caption{25 Random Samples of the original train dataset}
 		\label{fig:original}
 	\end{center}
@@ -107,7 +107,7 @@ The output of this filter is shown in Figure \ref{fig:thresholded}
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.4\textwidth]{figures/thresholdDataset.pdf}  % The printed column width is 8.4 cm.
+		\includegraphics[width=0.5\textwidth]{figures/thresholdDataset.pdf}  % The printed column width is 8.4 cm.
 		\caption{Output of thresholding on images from Figure \ref{fig:original}}
 		\label{fig:thresholded}
 	\end{center}
@@ -122,16 +122,16 @@ The idea of median filter is to choose the median of the pixel values in a neigh
 The output of the median filter using a disk of radius 1 applied on thresholded images are shown in Figure \ref{fig:thresholdmed}.
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.4\textwidth]{figures/thresholdmedDataset.pdf}  % The printed column width is 8.4 cm.
+		\includegraphics[width=0.5\textwidth]{figures/thresholdmedDataset.pdf}  % The printed column width is 8.4 cm.
 		\caption{Output of median filter on thresholded images from Figure \ref{fig:thresholded}}
 		\label{fig:thresholdmed}
 	\end{center}
 \end{figure}
 \subsection{Biggest Number}
 The output of this filter on thresholded images are shown in Figure \ref{fig:biggest}.
-\begin{figure}[b]
+\begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.4\textwidth]{figures/BiggestDataset.pdf}  % The printed column width is 8.4 cm.
+		\includegraphics[width=0.5\textwidth]{figures/BiggestDataset.pdf}  % The printed column width is 8.4 cm.
 		\caption{Output of biggest number filter on thresholded images from Figure \ref{fig:thresholded}}
 		\label{fig:biggest}
 	\end{center}
@@ -158,18 +158,42 @@ We decided to keep the architecture of our neural network simple, since it is co
 \item One hidden layer with 350 neurons
 \item Two hidden layers, 200 and 100 neurons respectively
 \end{itemize}
-Since we are dealing with a 10-class classification problem, the last layer of our network is a 10 neurons softmax layer which outputs a probability distribution, the neuron in the final layer with the highest activation value can then be interpreted as the class with the highest probability. It then makes sense to use the cross-entropy loss function defined as
+Since we are dealing with a 10-class classification problem, the last layer of our network is a 10 neurons soft-max layer which outputs a probability distribution, the neuron in the final layer with the highest activation value can then be interpreted as the class with the highest probability. It then makes sense to use the cross-entropy loss function defined as
 \begin{center}
 $$loss = - \sum_{k=1}^{K}Y_k \log{P_k}$$
 \end{center}
 where $Y$ is the target and $P$ the prediction.
-For both architectures, we used the $tanh$ activation function for every hidden layers and trained them on the second dataset described earlier, with the biggest number extracted, because the number of features is reduced and it's less expensive to train. We used gradient descent in conjunction with backpropagation to train the network and tried two different values for the learning rate, $0.1$ and $0.03$ and picked the one giving the best result based on the validation performance.
+For both architectures, we used the $tanh$ activation function for every hidden layers and trained them on the second dataset described earlier, with the biggest number extracted, because the number of features is reduced and it's less expensive to train. We used gradient descent in conjunction with back-propagation to train the network and tried two different values for the learning rate, $0.1$ and $0.03$ and picked the one giving the best result based on the validation performance.
 
 
+\subsection{Convolutional Neural Networks}
+When it comes to image recognition, a convolutional neural network is one of the best options. For this project, a 10-convolutional layer CNN was built. There are 5 max pooling layers in total, one after every two convolutional layers to reduce the spatial size, each pooling layer will exactly reduce the input length and width by half. Also, there are 5 dropout regulations being applied, one after every two convolutional layers which has a drop out probability of 0.25, and one dropout after the fully connected layer which has a drop out probability of 0.5, the team believe this will prevent overfitting and reduce the interdependent learning amongst the neurons [1]. As shown in the flow chart 1 below, there are max pooling layers after convolutional layer 2, 4, 6, 8, 10, and dropout regulations after convolutional layer 3,5,7,9 and the fully connected layer. Activation function rectified linear unit (ReLU) is used after every convolutional layer and the fully connected layer, and batch normalization is applied after the activation function.
+
+\begin{table*}[t]
+	\centering
+	\caption{hyper-parameters for CNN}
+	\label{tab:hyperparams}
+	\begin{tabular}{|c|c|c|c|c|c|c|l|l|l|l|l|}
+		\hline
+	&cov 1	&cov2	&cov 3	&cov 4	&cov 5	&cov 6	&cov 7&	cov 8&	cov 9	&cov 10&	fully connected\\\hline
+number of filters&	64	&64	&128	&128	&256	&256	&512	&512&	1024	&1024	&n/a \\\hline
+filter size&5&3	&3	&3	&3	&3	&3	&3	&3	&3	&n/a\\\hline
+stride	&1	&1	&1	&1	&1	&1	&1	&1	&1	&1	&n/a\\\hline
+zero padding &2	&1	&1	&1	&1	&1	&1	&1	&1	&1	&n/a\\\hline
+max pooling	&no&	yes&	no&	yes&	no&	yes&	no&	yes&	no	&yes&n/a\\\hline
+kernel size&	n/a&	2&	n/a&	2&	n/a&	2	&n/a	&2	&n/a&2&n/a\\\hline
+stride	&n/a&2&	n/a	&2	&n/a&2	&n/a&2	&n/a&2&	n/a\\\hline
+dropout	&no&	no&	0.25&	no	&0.25&	no&	0.25&no&0.25&no&0.5\\\hline
+activation function &	ReLU&	ReLU&	ReLU&	ReLU&	ReLU&	ReLU&	ReLU&	ReLU	&ReLU&	ReLU&	ReLU\\\hline
+\end{tabular}
+\end{table*}
+Firstly, custom training set and validation set was produced, the training set has 95\% of the data and the validation set has 5\%, the train set is set to be 95\% of the data because the CNN network have a huge amount of parameters and the team wants to use as many data as possible to train the model. Moreover, 5\% of the original training dataset is still 2500 data points, it can produce a reasonable result in a short amount of time. 
+Data is fed into the CNN network a batch at a time, using the pytorch data loader class, and the batch size is set to be 300.
+
+
+\section{HYPERPARAMETER SELECTION}
 \subsection{Convolutional Neural Network}
-
-
-
+As shown in the tables below there are close to 100 hyper-parameters, it is impossible to tune them all. The first filter size is chosen to be 5 as recommended by \cite{dhingra2017model}, on MNIST dataset 5x5 filter size gives the best result as shown in chart 1. And the study also showed that there is a trade of between complexity and accuracy, but if the model gets too complex without sufficient data points it has the risk of over-fitting. The number of convolution layers was chosen by gradually increasing the number of convolution layers and record the performance on the validation set. The team has find 10 convolution layers yields the best result, as shown in the chart 2, the performance increases until it reaches 12 layers, it overfits. While pooling layer was used to decreasing the number of neurons towards the bottom as suggested by \cite{lattner2016}, to be specific, after every two convolution layers a pooling layer will be employed to reduce the number of neurons by half (decrease both length and width by half and increase the depth by 2). For the number of filters of the first convolution layer (the number for the rest of the convolution will just double every two layers), different values were tested, the accuracy was improving when the number of filters go from 8 to 64 for the first convolution layer, and the improvement was not very significant after the number passed 64, and the computing time increases exponentially as the number of the filters increases. Drop out is proven to be an efficient and effective strategy to prevent overfitting \cite{srivastava2014dropout}, thus it is used as the regulation strategy for this project, 25\% of tensors get dropped every 2 convolution layers. Adam optimizer were used because it has an adaptive learning rate and momentum, it is shown to be more effective that other optimizers \cite{walia2017opt}.
 
 \section{RESULTS}
 
@@ -205,11 +229,11 @@ Using every combinations of learning rates and layer architectures to find the b
 
 
 \subsection{Convolutional Neural Network}
-
+Using the 10-layer CNN model have both advantages and disadvantages. The CNN network can be very accurate on image recognition tasks, our model is able to achieve an accuracy of 95.9\% training on only 47500 samples, and there is still room for improvement if more time is given. The drawback of the model is the complexity, it is slow to train and have large memory footprint, according to \cite{dhingra2017model}, there is a trade off between complexity and accuracy. Since there is no requirement about the speed or complexity in the assignment handout, a complex model with 10 layers was chosen. 
 
 \section{DISCUSSION}
 
-Choosing to use the biggest number dataset for the Linear SVM training and the Fully Connected Network training was a good choice because it's the dataset with the least number of features, which can help reduce overfitting, and it makes the training faster on our computationnally restricted devices. \\
+Choosing to use the biggest number dataset for the Linear SVM training and the Fully Connected Network training was a good choice because it's the dataset with the least number of features, which can help reduce overfitting, and it makes the training faster on our computationally restricted devices. \\
 For the Linear SVM model, the accuracy score is the lowest of the three approaches. This was predictable since it assumes that the data is linearly separable, which is probably not the case for this problem.\\
 For the fully connected network, we see in Figure \ref{fig:fnnconf} a very high accuracy for the digits 0 and 1, which are the easiest to classify and a low accuracy for the digits 2 and 5. Also, the network tends to misclassify an 8 by a 5 quite often.
 The best feed forward network is the one with the most neurons, one improvement we could try is to augment the number of neurons in each layers to try to get a better validation performance on the same dataset. \\
@@ -233,7 +257,7 @@ The best feed forward network is the one with the most neurons, one improvement 
 \section*{STATEMENT OF CONTRIBUTIONS}
 Yignan implemented the convolutional neural network.
 Vincent implemented the fully-connected feedforward neural
-network and the linear classifiers. Hamed implemented preprocessing and tested the linear classifiers. Yignan and Vincent implemented the algorithms on Amazon AWS. All three contributed to the report.
+network and the linear classifiers. Hamed implemented preprocessing and tested the linear classifiers. Yignan and Vincent performed the heavy simulations using on-line clouds. All three contributed to the report.
 
 
 
@@ -241,7 +265,7 @@ network and the linear classifiers. Hamed implemented preprocessing and tested t
 
 
 
-
+\Urlmuskip=0mu plus 1mu\relax
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,references}
 %\begin{thebibliography}{99}
