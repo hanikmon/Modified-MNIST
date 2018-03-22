@@ -277,8 +277,6 @@ class CNN(nn.Module):
         x = self.conv8(x)
         x = self.conv9(x)
         x = self.conv10(x)
-        # x = self.conv11(x)
-        # x = self.conv12(x)
         x = x.view(x.size(0), -1)  # flatten the output of conv2 to (batch_size, 32 * 16 * 16)
         x = self.fullConnect(x)
         #x = self.linear2(x)
@@ -287,7 +285,7 @@ class CNN(nn.Module):
 
 
 #function to visualize the confusion matrix
-def plot_confusionMatrix(y_tar, y_pred, title='Confusion matrix', ):
+def plot_confusionMatrix(y_tar, y_pred, title='Confusion matrix'):
     cm = confusion_matrix(y_tar, y_pred, labels=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     classes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     plt.figure()
@@ -323,8 +321,6 @@ def trainCNN(EPOCH, trainXPath, trainYPath, patience=8):
     cnn.double()
     cnn.train()
     LR = 0.03
-    # optimizer = torch.optim.Adam(cnn.parameters(), lr=LR)  # optimize all cnn parameters
-    # loss_func = nn.MultiLabelSoftMarginLoss()
     loss_func = nn.CrossEntropyLoss()  # the target label is not one-hotted
     for epoch in range(EPOCH):
         # load saved model
@@ -353,7 +349,7 @@ def trainCNN(EPOCH, trainXPath, trainYPath, patience=8):
 
         if epoch % 1 == 0:
             torch.save(cnn, 'models/cnnModelGrantFinal')
-        # testCNNResult('models/cnnModelVINCENT_8L_augthresh', validXPath, validYPath)
+            testCNNResult('models/cnnModelVINCENT_8L_augthresh', validXPath, validYPath)
     state = {
         'epoch': EPOCH,
         'state_dict': cnn.state_dict(),
@@ -364,7 +360,7 @@ def trainCNN(EPOCH, trainXPath, trainYPath, patience=8):
 
 #continue to train a saved cnn model with a changing learn rate, it will train as many epoch as the patience (number) then divide the learning rate by 10 and train again
 #for every epoch the trained model will be saved 
-def continueTrainCNN(EPOCH, trainXPath, trainYPath, modelpath,):
+def continueTrainCNN(EPOCH, trainXPath, trainYPath, modelpath,patience = 8):
     trainData = kaggleDataset(trainXPath, trainYPath)
     train_loader = DataLoader(dataset=trainData, batch_size=BATCH_SIZE,
                               shuffle=True)  # , num_workers=1,pin_memory=True)
@@ -376,7 +372,7 @@ def continueTrainCNN(EPOCH, trainXPath, trainYPath, modelpath,):
     loss_func = nn.CrossEntropyLoss()  # the target label is not one-hotted
     LR = 0.0001
     for epoch in range(EPOCH):
-        if (epoch % 5 == 0 and epoch != 0):
+        if (epoch % patience == 0 and epoch != 0):
             LR = LR / 10
 	    print('LR changed to '+str(LR))
         optimizer = torch.optim.Adam(model.parameters(), lr=LR)
@@ -402,7 +398,7 @@ def continueTrainCNN(EPOCH, trainXPath, trainYPath, modelpath,):
                            (batch_idx + 1) / len(train_loader), loss.data[0]))
         if epoch % 1 == 0:
             torch.save(model, modelpath)
-            #testCNNResult(modelpath, validXPath, validYPath)
+            testCNNResult(modelpath, validXPath, validYPath)
 
     torch.save(model, modelpath)
 
@@ -451,8 +447,8 @@ def testCNN(modelName):
     df = pd.DataFrame(np.transpose(result.reshape(1, -1)))
     df.to_csv("submissions/test_y_vincent_8L_augthresh.csv", index_label='Id', header=['Label'])
 
-#this function evaluate the validation set and produce the accuracy score
-def testCNNResult(modelName, ValidX, ValidY):
+#this function evaluate the validation set and produce the accuracy score and plot the confusian matrix
+def testCNNResult(modelName, ValidX, ValidY, plotCM = False):
     testData = kaggleDataset(ValidX, ValidY)
     test_loader = DataLoader(dataset=testData, batch_size=15, shuffle=False)  # , num_workers=1,pin_memory=True)
     result = 0
@@ -479,7 +475,8 @@ def testCNNResult(modelName, ValidX, ValidY):
 
     print('final accuracy')
     print(accuracy_score(trueRes, result))
-    confusion_matrix(trueRes,result)
+    if plotCM == True:
+	confusion_matrix(trueRes,result) 
 
 
 if __name__ == '__main__':
@@ -489,6 +486,5 @@ if __name__ == '__main__':
     # separateTrainValid()
     # testCNNResult('cnnModelGrant256',validXPath, validYPath)
     continueTrainCNN(EPOCH,trainXPath,trainYPath,'models/cnnModelGrantFinal')
-    y1 = [1, 3, 2, 5, 7, 9, 1, 2, 1, 5, 6, 1, 5, 7, 9, 1, 4, 4, 5, 6, 7, 2, 4, 6, 7, 2, 4, 6]
-    y2 = [1, 3, 2, 5, 7, 9, 1, 2, 1, 5, 6, 1, 5, 7, 9, 1, 4, 4, 5, 6, 7, 2, 4, 6, 7, 2, 3, 2]
+    
     plot_confusionMatrix(y1, y2)
