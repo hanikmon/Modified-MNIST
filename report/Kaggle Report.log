@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  22 MAR 2018 15:31
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  22 MAR 2018 17:06
 entering extended mode
 **"./Kaggle Report.tex"
 ("Kaggle Report.tex"
@@ -403,53 +403,68 @@ Overfull \hbox (7.22688pt too wide) in paragraph at lines 215--216
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+<figures/CNNaccuvsLayers.pdf, id=168, pagebox=cropbox, 433.62pt x 289.08pt>
+File: figures/CNNaccuvsLayers.pdf Graphic file (type pdf)
+<use figures/CNNaccuvsLayers.pdf>
+Package pdftex.def Info: figures/CNNaccuvsLayers.pdf  used on input line 225. o
+n input line 225.
+Package pdftex.def Info: Requested size: 252.94499pt x 168.63252pt on input lin
+e 225.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 225--226
+ [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 [3 <./figures/BiggestDataset.pdf> <./figures/allDataset.pdf
 
 pdfTeX warning: pdflatex.exe (file ./figures/allDataset.pdf): PDF inclusion: mu
 ltiple pdfs with page group included in a single page
 >]
-<figures/svm_conf.png, id=254, 346.896pt x 346.896pt>
+<figures/svm_conf.png, id=255, 346.896pt x 346.896pt>
 File: figures/svm_conf.png Graphic file (type png)
 <use figures/svm_conf.png>
-Package pdftex.def Info: figures/svm_conf.png  used on input line 232. on input
- line 232.
+Package pdftex.def Info: figures/svm_conf.png  used on input line 241. on input
+ line 241.
 Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
-e 232.
+e 241.
 
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 232--233
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 241--242
  [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/fnn_conf.png, id=255, 346.896pt x 346.896pt>
+<figures/fnn_conf.png, id=256, 346.896pt x 346.896pt>
 File: figures/fnn_conf.png Graphic file (type png)
 <use figures/fnn_conf.png>
-Package pdftex.def Info: figures/fnn_conf.png  used on input line 244. on input
- line 244.
+Package pdftex.def Info: figures/fnn_conf.png  used on input line 253. on input
+ line 253.
 Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
-e 244.
+e 253.
 
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 244--245
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 253--254
  [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Overfull \hbox (32.73633pt too wide) in paragraph at lines 258--270
+[4 <./figures/CNNflowchart.png>]
+Overfull \hbox (32.73633pt too wide) in paragraph at lines 267--279
  [][] 
  []
 
-[4 <./figures/CNNflowchart.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 288--292
+
+Underfull \hbox (badness 10000) in paragraph at lines 297--301
 
  []
 
-[5 <./figures/svm_tuning.png> <./figures/svm_conf.png> <./figures/fnn_conf.png>
-] ("Kaggle Report.bbl"
+[5 <./figures/svm_tuning.png> <./figures/CNNaccuvsLayers.pdf> <./figures/svm_co
+nf.png>] ("Kaggle Report.bbl"
 Underfull \hbox (badness 2790) in paragraph at lines 44--48
 \OT1/ptm/m/n/8 [On-line]. Avail-able: $https : / / medium . com / @amarbudhiraj
 a /
@@ -479,32 +494,32 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-[6] ("Kaggle Report.aux") ) 
+[6 <./figures/fnn_conf.png>] ("Kaggle Report.aux") ) 
 Here is how much of TeX's memory you used:
- 2883 strings out of 493312
- 42706 string characters out of 3138899
- 117749 words of memory out of 3000000
- 6386 multiletter control sequences out of 15000+200000
+ 2890 strings out of 493312
+ 42914 string characters out of 3138899
+ 115767 words of memory out of 3000000
+ 6392 multiletter control sequences out of 15000+200000
  42533 words of font info for 86 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,14n,25p,1931b,313s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r
-.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:
-/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program
- Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/Mi
-KTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/
-fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
-1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
-/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.p
-fb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program 
-Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/
-fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/
-times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb
->
-Output written on "Kaggle Report.pdf" (6 pages, 641769 bytes).
+ 41i,14n,25p,1178b,313s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.
+9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
+msfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
+cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7
+.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts
+/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courie
+r/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/Mi
+KTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
+pe1/urw/times/utmri8a.pfb>
+Output written on "Kaggle Report.pdf" (6 pages, 655107 bytes).
 PDF statistics:
- 313 PDF objects out of 1000 (max. 8388607)
+ 352 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 51 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 

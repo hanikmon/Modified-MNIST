@@ -202,7 +202,7 @@ Because a CNN is able to learn filters on its own, we decided to use the simple 
 Data is fed into the CNN network a batch at a time, using the pytorch data loader class, and the batch size is set to be 300.
 
 
-\section{HYPERPARAMETER SELECTION}
+\section{HYPERPARAMETER SELECTION}\label{sec:hyperParams}
 \subsection{Linear SVM}
 Because of the computational difficulty of training, only 5 values of $C$ on a logarithmic scale from 0.001 to 1 were chosen for tuning. 
 \begin{figure}[h]
@@ -218,12 +218,22 @@ We decided to keep the architecture of our neural network simple, since it is co
 To train the networks, we tried two different values for the learning rate, $0.1$ and $0.03$ and picked the combination giving the best result based on the validation performance.
 
 \subsection{Convolutional Neural Network}
-As shown in the tables below there are close to 100 hyper-parameters, it is impossible to tune them all. The first filter size is chosen to be 5 as recommended by \cite{dhingra2017model}, on MNIST dataset 5x5 filter size gives the best result as shown in chart 1. And the study also showed that there is a trade of between complexity and accuracy, but if the model gets too complex without sufficient data points it has the risk of over-fitting. The number of convolution layers was chosen by gradually increasing the number of convolution layers and record the performance on the validation set. The team has find 10 convolution layers yields the best result, as shown in the chart 2, the performance increases until it reaches 12 layers, it overfits. While pooling layer was used to decreasing the number of neurons towards the bottom as suggested by \cite{lattner2016}, to be specific, after every two convolution layers a pooling layer will be employed to reduce the number of neurons by half (decrease both length and width by half and increase the depth by 2). For the number of filters of the first convolution layer (the number for the rest of the convolution will just double every two layers), different values were tested, the accuracy was improving when the number of filters go from 8 to 64 for the first convolution layer, and the improvement was not very significant after the number passed 64, and the computing time increases exponentially as the number of the filters increases. Drop out is proven to be an efficient and effective strategy to prevent overfitting \cite{srivastava2014dropout}, thus it is used as the regulation strategy for this project, 25\% of tensors get dropped every 2 convolution layers. Adam optimizer were used because it has an adaptive learning rate and momentum, it is shown to be more effective that other optimizers \cite{walia2017opt}.
+As shown in the Tables \ref{tab:hyperparams} and \ref{tab:CNNmodels} there are close to 100 hyper-parameters, it is impossible to tune them all. The first filter size is chosen to be 5 as recommended by \cite{dhingra2017model}, on MNIST dataset 5x5 filter size gives the best result as shown in chart 1. And the study also showed that there is a trade of between complexity and accuracy, but if the model gets too complex without sufficient data points it has the risk of over-fitting. The number of convolution layers was chosen by gradually increasing the number of convolution layers and record the performance on the validation set. The team has find 10 convolution layers yields the best result, as shown in the Figure \ref{fig:cnnAccuvsLayers}, the performance increases until it reaches 12 layers, it overfits. 
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{figures/CNNaccuvsLayers.pdf}  % The printed column width is 8.4 cm.
+		\caption{Effect of Number of Layers on Convolutional Neural Network Accuracy}
+		\label{fig:cnnAccuvsLayers}
+	\end{center}
+\end{figure}
+
+While pooling layer was used to decreasing the number of neurons towards the bottom as suggested by \cite{lattner2016}, to be specific, after every two convolution layers a pooling layer will be employed to reduce the number of neurons by half (decrease both length and width by half and increase the depth by 2). For the number of filters of the first convolution layer (the number for the rest of the convolution will just double every two layers), different values were tested, the accuracy was improving when the number of filters go from 8 to 64 for the first convolution layer, and the improvement was not very significant after the number passed 64, and the computing time increases exponentially as the number of the filters increases. Drop out is proven to be an efficient and effective strategy to prevent overfitting \cite{srivastava2014dropout}, thus it is used as the regulation strategy for this project, 25\% of tensors get dropped every 2 convolution layers. Adam optimizer were used because it has an adaptive learning rate and momentum, it is shown to be more effective that other optimizers \cite{walia2017opt}.
 
 \section{RESULTS}
 
 \subsection{Linear SVM}
 The accuracy on training and validation sets for different values of $C$ are shown in Figure \ref{fig:svmtuning}. The best accuracy was achieved for $C=1$. The resulting SVM classifier achieved an accuracy of 0.543 on the validation set. It could be seen that the accuracy of the linear classifier does not vary a lot with the parameter tuning and that is because the linearity assumption limits the performance of the classifier to a certain maximum. Figure \ref{fig:svmconf} shows the confusion matrix for this model.
+
 
 \begin{figure}[h]
 	\begin{center}
@@ -299,7 +309,7 @@ Table \ref{tab:perfAll} gives a summary of all the classifiers discussed in the 
 \end{table}
 
 Choosing to use the biggest number dataset for the Linear SVM training and the Fully Connected Network training was a good choice because it's the dataset with the least number of features, which can help reduce overfitting, and it makes the training faster on our computationally restricted devices. \\
-For the Linear SVM model, the accuracy score is the lowest of the three approaches. This was predictable since it assumes that the data is linearly separable, which is probably not the case for this problem.\\
+For the Linear SVM model, the accuracy score is the lowest of the three approaches. This was predictable since it assumes that the data is linearly separable, which is probably not the case for this problem. The confusion matrix in Figure \ref{fig:svmconf} suggests that the digits 0, 1, 7, 6 and to some level 3 are able to be found by an acceptable accuracy using a linear classifier. However, the remaining digits 8, 5, 9, 2 and 4 are not predicted very well by linear SVM. The confusion matrix shows that 5, 8 and 9 are often misclassified by 8, 2, and 7, respectively which can be justified by their similar forms.many numbers are misclassified to 1 and 8.\\
 For the fully connected network, we see in Figure \ref{fig:fnnconf} a very high accuracy for the digits 0, 1 and 7, which are the easiest to classify because of their geometric form and a low accuracy for the digits 2 and 5. Also, the network tends to misclassify 9 by 5 and 5 by 8 quite often. In general, a lot of numbers are wrongly classified as 8 and then 5 which suggests that these are the two numbers which were not correctly learned.
 One improvement we could try is to add another hidden layer to our network. \\
 
