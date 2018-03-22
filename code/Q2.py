@@ -23,63 +23,64 @@ if __name__ == '__main__':
     y_valid = one_hot(y_valid)
 
 
-    nn = NeuralNetwork.load('big_350')
-    preds = nn.predict(x_valid)
-    save_array(preds, 'big_350_preds')
-    print(nn.accuracy(x_valid, y_valid))
+    #nn = NeuralNetwork.load('big_350')
+    #preds = nn.predict(x_valid)
+    #save_array(preds, 'big_350_preds')
+    #print(nn.accuracy(x_valid, y_valid))
 
+    training_errors = []
+    validation_errors = []
+    training_acc = []
+    validation_acc = []
 
+    for n_hidden in [100, 200, 300, 400]:
 
+        nn = NeuralNetwork(
+            layers=[x_train.shape[1], n_hidden, y_train.shape[1]], 
+            activations=['tanh'], 
+            learning_rate=0.03,
+            epochs=15,
+            name='big_{}'.format(n_hidden))
 
+        training_costs, validation_costs = nn.fit(
+            x_train, 
+            y_train, 
+            x_valid, 
+            y_valid, 
+            minibatch_size=100, 
+            verbose=True,
+            save_step=1)
     
-    #nn = NeuralNetwork(
-    #    #layers=[x_train.shape[1], 5, y_train.shape[1]], 
-    #    layers=[x_train.shape[1], 350, y_train.shape[1]], 
-    #    activations=['tanh'], 
-    #    learning_rate=0.03,
-    #    epochs=15,
-    #    name='big_350')
+        # plot learning curve
+        plt.plot(training_costs, color='red', label='training error')
+        plt.plot(validation_costs, color='blue', label='validation error')
+        plt.title('Learning curve for one hidden layer with {} neurons'.format(n_hidden))
+        plt.legend()
+        plt.show()
+    
+        print(training_costs)
+        print(validation_costs)
+        
+        training_errors.append(training_costs[-1])
+        validation_errors.append(validation_costs[-1])
+    
+        training_acc.append(nn.accuracy(x_train, y_train))
+        validation_acc.append(nn.accuracy(x_valid, y_valid))
 
-    #training_costs, validation_costs = nn.fit(
-    #    x_train, 
-    #    y_train, 
-    #    x_valid, 
-    #    y_valid, 
-    #    minibatch_size=100, 
-    #    verbose=True,
-    #    save_step=1)
-    
-    #plt.plot(training_costs, color='red', label='training error')
-    #plt.plot(validation_costs, color='blue', label='validation error')
-    #plt.title('Learning curve for one hidden layer with 350 neurons')
-    #plt.legend()
-    #plt.show()
-    
-    #print(training_costs)
-    #print(validation_costs)
 
-    
-    #nn = NeuralNetwork(
-    #    #layers=[x_train.shape[1], 5, y_train.shape[1]], 
-    #    layers=[x_train.shape[1], 200, 100, y_train.shape[1]], 
-    #    activations=['tanh', 'tanh'], 
-    #    learning_rate=0.03,
-    #    epochs=15,
-    #    name='big_200_100')
+    # plot training-validation errors 
+    plt.plot([100, 200, 300, 400], training_errors, color='red', label='training error')
+    plt.plot([100, 200, 300, 400], validation_errors, color='blue', label='validation error')
+    plt.xlabel('Number of hidden neurons')
+    plt.ylabel('Error')
+    plt.legend()
+    plt.show()
 
-    #training_costs, validation_costs = nn.fit(
-    #    x_train, 
-    #    y_train, 
-    #    x_valid, 
-    #    y_valid, 
-    #    minibatch_size=100, 
-    #    verbose=True,
-    #    save_step=1)
-    
-    #plt.plot(training_costs, color='red', label='training error')
-    #plt.plot(validation_costs, color='blue', label='validation error')
-    #plt.title('Learning curve for two hidden layers, 200 and 100 neurons')
-    #plt.legend()
-    #plt.show()
-    #print(training_costs)
-    #print(validation_costs)
+     
+    # plot training-validation accuracy
+    plt.plot([100, 200, 300, 400], training_acc, color='red', label='training')
+    plt.plot([100, 200, 300, 400], validation_acc, color='blue', label='validation')
+    plt.xlabel('Number of hidden neurons')
+    plt.ylabel('Accuracy')
+    plt.legend()
+    plt.show()
