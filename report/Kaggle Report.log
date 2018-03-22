@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  22 MAR 2018 12:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  22 MAR 2018 14:44
 entering extended mode
 **"./Kaggle Report.tex"
 ("Kaggle Report.tex"
@@ -361,67 +361,108 @@ Overfull \hbox (7.22688pt too wide) in paragraph at lines 134--135
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+<figures/allDataset.pdf, id=67, pagebox=cropbox, 361.35pt x 361.35pt>
+File: figures/allDataset.pdf Graphic file (type pdf)
+<use figures/allDataset.pdf>
+Package pdftex.def Info: figures/allDataset.pdf  used on input line 144. on inp
+ut line 144.
+Package pdftex.def Info: Requested size: 252.94499pt x 252.94327pt on input lin
+e 144.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 144--145
+ [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 [2 <./figures/thresholdDataset.pdf> <./figures/thresholdmedDataset.pdf
 
 pdfTeX warning: pdflatex.exe (file ./figures/thresholdmedDataset.pdf): PDF incl
 usion: multiple pdfs with page group included in a single page
 >]
-<figures/svm_tuning.png, id=176, 462.528pt x 346.896pt>
+<figures/CNNflowchart.png, id=165, 509.832pt x 222.723pt>
+File: figures/CNNflowchart.png Graphic file (type png)
+<use figures/CNNflowchart.png>
+Package pdftex.def Info: figures/CNNflowchart.png  used on input line 183. on i
+nput line 183.
+Package pdftex.def Info: Requested size: 505.89pt x 221.00621pt on input line 1
+83.
+ [3 <./figures/BiggestDataset.pdf> <./figures/allDataset.pdf
+
+pdfTeX warning: pdflatex.exe (file ./figures/allDataset.pdf): PDF inclusion: mu
+ltiple pdfs with page group included in a single page
+>]
+<figures/svm_tuning.png, id=252, 462.528pt x 346.896pt>
 File: figures/svm_tuning.png Graphic file (type png)
 <use figures/svm_tuning.png>
-Package pdftex.def Info: figures/svm_tuning.png  used on input line 205. on inp
-ut line 205.
+Package pdftex.def Info: figures/svm_tuning.png  used on input line 221. on inp
+ut line 221.
 Package pdftex.def Info: Requested size: 252.94499pt x 189.70827pt on input lin
-e 205.
+e 221.
 
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 205--206
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 221--222
  [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/svm_conf.png, id=178, 346.896pt x 346.896pt>
+<figures/svm_conf.png, id=254, 346.896pt x 346.896pt>
 File: figures/svm_conf.png Graphic file (type png)
 <use figures/svm_conf.png>
-Package pdftex.def Info: figures/svm_conf.png  used on input line 212. on input
- line 212.
+Package pdftex.def Info: figures/svm_conf.png  used on input line 228. on input
+ line 228.
 Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
-e 212.
+e 228.
 
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 212--213
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 228--229
  [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/fnn_conf.png, id=179, 346.896pt x 346.896pt>
+<figures/fnn_conf.png, id=255, 346.896pt x 346.896pt>
 File: figures/fnn_conf.png Graphic file (type png)
 <use figures/fnn_conf.png>
-Package pdftex.def Info: figures/fnn_conf.png  used on input line 224. on input
- line 224.
+Package pdftex.def Info: figures/fnn_conf.png  used on input line 240. on input
+ line 240.
 Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
-e 224.
+e 240.
 
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 224--225
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 240--241
  [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[3 <./figures/BiggestDataset.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 236--240
+
+Overfull \hbox (32.73633pt too wide) in paragraph at lines 254--266
+ [][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 270--274
 
  []
 
-("Kaggle Report.bbl"
-Overfull \vbox (336.63315pt too high) has occurred while \output is active []
+[4 <./figures/CNNflowchart.png>] ("Kaggle Report.bbl" [5 <./figures/svm_tuning.
+png> <./figures/svm_conf.png> <./figures/fnn_conf.png>]
+Underfull \hbox (badness 2790) in paragraph at lines 44--48
+\OT1/ptm/m/n/8 [On-line]. Avail-able: $https : / / medium . com / @amarbudhiraj
+a /
+ []
 
 
-[4 <./figures/svm_tuning.png> <./figures/svm_conf.png>]
-Overfull \hbox (114.21054pt too wide) in paragraph at lines 60--64
+Overfull \hbox (138.30238pt too wide) in paragraph at lines 44--48
+\OT1/ptm/m/n/8 https-[]medium-[]com-[]amarbudhiraja-[]learning-[]less-[]to-[]le
+arn-[]better-[]dropout-[]in-[]deep-[]machine-[]learning-[]74334da4bfc5$ 
+ []
+
+
+Overfull \hbox (114.21054pt too wide) in paragraph at lines 67--71
 \OT1/ptm/m/n/8 types-[]of-[]optimization-[]algorithms-[]used-[]in-[]neural-[]ne
 tworks-[]and-[]ways-[]to-[]optimize-[]gradient-[]95ae5d39529f.$ 
  []
@@ -438,32 +479,33 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-[5 <./figures/fnn_conf.png>] ("Kaggle Report.aux") ) 
+[6
+
+] ("Kaggle Report.aux") ) 
 Here is how much of TeX's memory you used:
- 2868 strings out of 493312
- 42358 string characters out of 3138899
- 116710 words of memory out of 3000000
- 6373 multiletter control sequences out of 15000+200000
+ 2882 strings out of 493312
+ 42684 string characters out of 3138899
+ 118739 words of memory out of 3000000
+ 6385 multiletter control sequences out of 15000+200000
  42533 words of font info for 86 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,14n,25p,1931b,313s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.
-9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
-cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7
-.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/
-Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Fi
-les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX
- 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courie
-r/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/
-Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/Mi
-KTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
-pe1/urw/times/utmri8a.pfb>
-Output written on "Kaggle Report.pdf" (5 pages, 542045 bytes).
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.e
+nc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
+public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+msy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb
+><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fo
+nts/type1/urw/times/utmbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/ti
+mes/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on "Kaggle Report.pdf" (6 pages, 640985 bytes).
 PDF statistics:
- 286 PDF objects out of 1000 (max. 8388607)
+ 313 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 

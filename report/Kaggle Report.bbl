@@ -39,6 +39,13 @@ W.~contributors, ``Mnist database --- wikipedia{,} the free encyclopedia,''
 A.~C. Bovik, \emph{The essential guide to image processing}.\hskip 1em plus
   0.5em minus 0.4em\relax Academic Press, 2009.
 
+\bibitem{Budhiraja2016}
+\BIBentryALTinterwordspacing
+A.~Budhiraja, ``Dropout in (deep) machine learning,'' 2016. [Online].
+  Available:
+  \url{https://medium.com/@amarbudhiraja/https-medium-com-amarbudhiraja-learning-less-to-learn-better-dropout-in-deep-machine-learning-74334da4bfc5}
+\BIBentrySTDinterwordspacing
+
 \bibitem{dhingra2017model}
 A.~Dhingra, ``Model complexity-accuracy trade-off for a convolutional neural
   network,'' \emph{arXiv preprint arXiv:1705.03338}, 2017.

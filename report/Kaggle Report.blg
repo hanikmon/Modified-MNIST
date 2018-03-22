@@ -2,7 +2,9 @@ This is BibTeX, Version 0.99dThe top-level auxiliary file: Kaggle Report.aux
 The style file: IEEEtran.bst
 Database file #1: IEEEabrv.bib
 Database file #2: references.bib
-I was expecting a `,' or a `}'---line 29 of file references.bib
+Warning--entry type for "Budhiraja2016" isn't style-file defined
+--line 1 of file references.bib
+I was expecting a `,' or a `}'---line 36 of file references.bib
  :  
  :  note = {Accessed: 22- Mar- 2018}
 (Error may have been on previous line)
