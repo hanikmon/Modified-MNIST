@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  21 MAR 2018 17:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  22 MAR 2018 12:07
 entering extended mode
 **"./Kaggle Report.tex"
 ("Kaggle Report.tex"
@@ -282,13 +282,17 @@ LaTeX Font Info:    Try loading font information for OT1+pcr on input line 55.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-<figures/originalDataset.pdf, id=1, pagebox=cropbox, 469.755pt x 505.89pt>
+<figures/originalDataset.pdf, id=1, pagebox=cropbox, 404.712pt x 433.62pt>
 File: figures/originalDataset.pdf Graphic file (type pdf)
 <use figures/originalDataset.pdf>
 Package pdftex.def Info: figures/originalDataset.pdf  used on input line 76. on
  input line 76.
-Package pdftex.def Info: Requested size: 202.3529pt x 217.91441pt on input line
- 76.
+Package pdftex.def Info: Requested size: 252.94499pt x 271.01183pt on input lin
+e 76.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 76--77
+ [] 
+ []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -308,46 +312,121 @@ Overfull \hbox (7.22688pt too wide) in paragraph at lines 87--88
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/thresholdDataset.pdf, id=3, pagebox=cropbox, 469.755pt x 505.89pt>
+<figures/thresholdDataset.pdf, id=3, pagebox=cropbox, 404.712pt x 433.62pt>
 File: figures/thresholdDataset.pdf Graphic file (type pdf)
 <use figures/thresholdDataset.pdf>
 Package pdftex.def Info: figures/thresholdDataset.pdf  used on input line 110. 
 on input line 110.
-Package pdftex.def Info: Requested size: 202.3529pt x 217.91441pt on input line
- 110.
+Package pdftex.def Info: Requested size: 252.94499pt x 271.01183pt on input lin
+e 110.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 110--111
+ [] 
+ []
+
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/thresholdmedDataset.pdf, id=4, pagebox=cropbox, 469.755pt x 505.89pt>
+<figures/thresholdmedDataset.pdf, id=4, pagebox=cropbox, 404.712pt x 433.62pt>
 File: figures/thresholdmedDataset.pdf Graphic file (type pdf)
 <use figures/thresholdmedDataset.pdf>
 Package pdftex.def Info: figures/thresholdmedDataset.pdf  used on input line 12
 5. on input line 125.
-Package pdftex.def Info: Requested size: 202.3529pt x 217.91441pt on input line
- 125.
+Package pdftex.def Info: Requested size: 252.94499pt x 271.01183pt on input lin
+e 125.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 125--126
+ [] 
+ []
+
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/biggestDataset.pdf, id=5, pagebox=cropbox, 469.755pt x 505.89pt>
-File: figures/biggestDataset.pdf Graphic file (type pdf)
-<use figures/biggestDataset.pdf>
-Package pdftex.def Info: figures/biggestDataset.pdf  used on input line 134. on
+<figures/BiggestDataset.pdf, id=5, pagebox=cropbox, 404.712pt x 433.62pt>
+File: figures/BiggestDataset.pdf Graphic file (type pdf)
+<use figures/BiggestDataset.pdf>
+Package pdftex.def Info: figures/BiggestDataset.pdf  used on input line 134. on
  input line 134.
-Package pdftex.def Info: Requested size: 202.3529pt x 217.91441pt on input line
- 134.
+Package pdftex.def Info: Requested size: 252.94499pt x 271.01183pt on input lin
+e 134.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 134--135
+ [] 
+ []
+
 [1{C:/Users/hamed/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
- <./figures/originalDataset.pdf> <./figures/21stepwide8bit.jpg>] [2 <./figures/
-thresholdDataset.pdf> <./figures/thresholdmedDataset.pdf
+ <./figures/originalDataset.pdf> <./figures/21stepwide8bit.jpg>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2 <./figures/thresholdDataset.pdf> <./figures/thresholdmedDataset.pdf
 
 pdfTeX warning: pdflatex.exe (file ./figures/thresholdmedDataset.pdf): PDF incl
 usion: multiple pdfs with page group included in a single page
-> <./figures/biggestDataset.pdf
+>]
+<figures/svm_tuning.png, id=176, 462.528pt x 346.896pt>
+File: figures/svm_tuning.png Graphic file (type png)
+<use figures/svm_tuning.png>
+Package pdftex.def Info: figures/svm_tuning.png  used on input line 205. on inp
+ut line 205.
+Package pdftex.def Info: Requested size: 252.94499pt x 189.70827pt on input lin
+e 205.
 
-pdfTeX warning: pdflatex.exe (file ./figures/biggestDataset.pdf): PDF inclusion
-: multiple pdfs with page group included in a single page
->] ("Kaggle Report.bbl")
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 205--206
+ [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<figures/svm_conf.png, id=178, 346.896pt x 346.896pt>
+File: figures/svm_conf.png Graphic file (type png)
+<use figures/svm_conf.png>
+Package pdftex.def Info: figures/svm_conf.png  used on input line 212. on input
+ line 212.
+Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
+e 212.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 212--213
+ [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<figures/fnn_conf.png, id=179, 346.896pt x 346.896pt>
+File: figures/fnn_conf.png Graphic file (type png)
+<use figures/fnn_conf.png>
+Package pdftex.def Info: figures/fnn_conf.png  used on input line 224. on input
+ line 224.
+Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
+e 224.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 224--225
+ [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[3 <./figures/BiggestDataset.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 236--240
+
+ []
+
+("Kaggle Report.bbl"
+Overfull \vbox (336.63315pt too high) has occurred while \output is active []
+
+
+[4 <./figures/svm_tuning.png> <./figures/svm_conf.png>]
+Overfull \hbox (114.21054pt too wide) in paragraph at lines 60--64
+\OT1/ptm/m/n/8 types-[]of-[]optimization-[]algorithms-[]used-[]in-[]neural-[]ne
+tworks-[]and-[]ways-[]to-[]optimize-[]gradient-[]95ae5d39529f.$ 
+ []
+
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -359,32 +438,32 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-[3
-
-] ("Kaggle Report.aux") ) 
+[5 <./figures/fnn_conf.png>] ("Kaggle Report.aux") ) 
 Here is how much of TeX's memory you used:
- 2841 strings out of 493312
- 41859 string characters out of 3138899
- 108666 words of memory out of 3000000
- 6351 multiletter control sequences out of 15000+200000
- 40809 words of font info for 84 fonts, out of 3000000 for 9000
+ 2868 strings out of 493312
+ 42358 string characters out of 3138899
+ 116710 words of memory out of 3000000
+ 6373 multiletter control sequences out of 15000+200000
+ 42533 words of font info for 86 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,14n,25p,763b,309s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.e
-nc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/P
-rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program F
-iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fon
-ts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
-sfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a
-.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program 
-Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/MiKTeX 2.9
-/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/
-times/utmri8a.pfb>
-Output written on "Kaggle Report.pdf" (3 pages, 481056 bytes).
+ 41i,14n,25p,1931b,313s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.
+9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
+msfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
+cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7
+.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts
+/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courie
+r/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/Mi
+KTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
+pe1/urw/times/utmri8a.pfb>
+Output written on "Kaggle Report.pdf" (5 pages, 542045 bytes).
 PDF statistics:
- 336 PDF objects out of 1000 (max. 8388607)
+ 286 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

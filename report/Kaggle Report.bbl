@@ -39,4 +39,27 @@ W.~contributors, ``Mnist database --- wikipedia{,} the free encyclopedia,''
 A.~C. Bovik, \emph{The essential guide to image processing}.\hskip 1em plus
   0.5em minus 0.4em\relax Academic Press, 2009.
 
+\bibitem{dhingra2017model}
+A.~Dhingra, ``Model complexity-accuracy trade-off for a convolutional neural
+  network,'' \emph{arXiv preprint arXiv:1705.03338}, 2017.
+
+\bibitem{lattner2016}
+\BIBentryALTinterwordspacing
+S.~Lattner. Accessed: 22- Mar- 2018. [Online]. Available:
+  \url{https://www.researchgate.net/post/Could_you_give_me_some_advices_about_how_to_improve_the_performance_of_Convolutional_Neural_Networks}
+\BIBentrySTDinterwordspacing
+
+\bibitem{srivastava2014dropout}
+N.~Srivastava, G.~Hinton, A.~Krizhevsky, I.~Sutskever, and R.~Salakhutdinov,
+  ``Dropout: A simple way to prevent neural networks from overfitting,''
+  \emph{The Journal of Machine Learning Research}, vol.~15, no.~1, pp.
+  1929--1958, 2014.
+
+\bibitem{walia2017opt}
+\BIBentryALTinterwordspacing
+A.~S. Walia. (2017) Types of optimization algorithms used in neural networks
+  and ways to optimize gradient descent. [Online]. Available:
+  \url{https://towardsdatascience.com/types-of-optimization-algorithms-used-in-neural-networks-and-ways-to-optimize-gradient-95ae5d39529f.}
+\BIBentrySTDinterwordspacing
+
 \end{thebibliography}
