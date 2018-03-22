@@ -3,15 +3,10 @@ The style file: IEEEtran.bst
 Database file #1: IEEEabrv.bib
 Database file #2: references.bib
 Warning--entry type for "Budhiraja2016" isn't style-file defined
---line 1 of file references.bib
-I was expecting a `,' or a `}'---line 36 of file references.bib
- :  
- :  note = {Accessed: 22- Mar- 2018}
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
+--line 16 of file references.bib
 -- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 
 Done.
-(There was 1 error message)
+(There was 1 warning)
