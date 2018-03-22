@@ -208,21 +208,25 @@ Data is fed into the CNN network a batch at a time, using the pytorch data loade
 
 
 \section{HYPERPARAMETER SELECTION}
+\subsection{Linear SVM}
+Because of the computational difficulty of training, only 5 values of $C$ on a logarithmic scale from 0.001 to 1 were chosen for tuning. The accuracy on training and validation sets for different values of $C$ are shown in Figure \ref{fig:svmtuning}. The best accuracy was achieved for $C=1$. The resulting SVM classifier achieved an accuracy of 0.543 on the validation set. It could be seen that the accuracy of the linear classifier does not vary a lot with the parameter tuning and that is because the linearity assumption limits the performance of the classifier to a certain maximum.
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{figures/svm_tuning.png}  % The printed column width is 8.4 cm.
+		\caption{Training and validation performance for different value of C}
+		\label{fig:svmtuning}
+	\end{center}
+\end{figure}
+
 \subsection{Convolutional Neural Network}
 As shown in the tables below there are close to 100 hyper-parameters, it is impossible to tune them all. The first filter size is chosen to be 5 as recommended by \cite{dhingra2017model}, on MNIST dataset 5x5 filter size gives the best result as shown in chart 1. And the study also showed that there is a trade of between complexity and accuracy, but if the model gets too complex without sufficient data points it has the risk of over-fitting. The number of convolution layers was chosen by gradually increasing the number of convolution layers and record the performance on the validation set. The team has find 10 convolution layers yields the best result, as shown in the chart 2, the performance increases until it reaches 12 layers, it overfits. While pooling layer was used to decreasing the number of neurons towards the bottom as suggested by \cite{lattner2016}, to be specific, after every two convolution layers a pooling layer will be employed to reduce the number of neurons by half (decrease both length and width by half and increase the depth by 2). For the number of filters of the first convolution layer (the number for the rest of the convolution will just double every two layers), different values were tested, the accuracy was improving when the number of filters go from 8 to 64 for the first convolution layer, and the improvement was not very significant after the number passed 64, and the computing time increases exponentially as the number of the filters increases. Drop out is proven to be an efficient and effective strategy to prevent overfitting \cite{srivastava2014dropout}, thus it is used as the regulation strategy for this project, 25\% of tensors get dropped every 2 convolution layers. Adam optimizer were used because it has an adaptive learning rate and momentum, it is shown to be more effective that other optimizers \cite{walia2017opt}.
 
 \section{RESULTS}
 
 \subsection{Linear SVM}
-Using the gridsearch approach, we found that the best value of C, the error penalty of the model, is $C=1$. This model achieved an accuracy of 0.543 on the validation set. Figure \ref{fig:svmconf} shows the confusion matrix for this model.
+Figure \ref{fig:svmconf} shows the confusion matrix for this model.
 
-\begin{figure}[h]
-	\begin{center}
-			\includegraphics[width=0.5\textwidth]{figures/svm_tuning.png}  % The printed column width is 8.4 cm.
-		\caption{Training and validation performance for different value of C}
-		\label{fig:svmtuning}
-	\end{center}
-\end{figure}
+
 \begin{figure}[h]
 	\begin{center}
 			\includegraphics[width=0.5\textwidth]{figures/svm_conf.png}  % The printed column width is 8.4 cm.
@@ -250,7 +254,7 @@ Using the 10-layer CNN model have both advantages and disadvantages. The CNN net
 \begin{table}
 	\centering
 	\caption{Specification of the trained CNN models and their accuracy on Validation Set}
-	\label{tab:}
+	\label{tab:CNNmodels}
 	\begin{tabular}{|c|c|c|c|c|c|}
 		\hline
 		model	&layers&	regulation&	max pooling layer&preprocessing&accuracy\\\hline
@@ -266,6 +270,20 @@ Using the 10-layer CNN model have both advantages and disadvantages. The CNN net
 \end{table}
 
 \section{DISCUSSION}
+Table \ref{tab:perfAll} gives a summary of all the classifiers discussed in the report
+\begin{table}
+	\centering
+	\caption{Performance of Different Classifiers for Modified MNIST}
+	\label{tab:perfAll}
+	\begin{tabular}{cccc}
+		\hline
+		Classifier & Dataset& Parameters & Accuracy\\\hline
+		Linear SVM & Biggest &C=1 & 0.593\\
+		Forward NN & Biggest & &0.9215\\
+		CNN model 8& Biggest & see Table \ref{tab:hyperparams}\&\ref{tab:CNNmodels} &0.9693\\	
+		CNN model 8& Threshold & see Table \ref{tab:hyperparams}\&\ref{tab:CNNmodels} &0.9693\\					
+	\end{tabular}
+\end{table}
 
 Choosing to use the biggest number dataset for the Linear SVM training and the Fully Connected Network training was a good choice because it's the dataset with the least number of features, which can help reduce overfitting, and it makes the training faster on our computationally restricted devices. \\
 For the Linear SVM model, the accuracy score is the lowest of the three approaches. This was predictable since it assumes that the data is linearly separable, which is probably not the case for this problem.\\
