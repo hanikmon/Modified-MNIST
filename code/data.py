@@ -35,7 +35,7 @@ VALID_X = 'valid_x.csv'
 VALID_Y = 'valid_y.csv'
 TEST_X = 'test_x.csv'
 
-TRAIN_PERCENT = 0.90
+TRAIN_PERCENT = 0.95
 
 # threshold value
 THRESHOLD = 230
