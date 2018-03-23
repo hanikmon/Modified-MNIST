@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  22 MAR 2018 18:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  22 MAR 2018 21:24
 entering extended mode
 **"./Kaggle Report.tex"
 ("Kaggle Report.tex"
@@ -185,34 +185,42 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 ("C:\Program Files\MiKTeX 2.9\tex\latex\was\gensymb.sty"
 Package: gensymb 2003/07/02 v1.0 (WaS)
-) ("Kaggle Report.aux")
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\enumerate.sty"
+Package: enumerate 2015/07/23 v3.00 enumerate extensions (DPC)
+\@enLab=\toks21
+)
+\c@thm=\count103
+
+("Kaggle Report.aux")
 \openout1 = `"Kaggle Report.aux"'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
-LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+
 ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count103
+\scratchcounter=\count104
 \scratchdimen=\dimen124
 \scratchbox=\box29
-\nofMPsegments=\count104
-\nofMParguments=\count105
-\everyMPshowfont=\toks21
-\MPscratchCnt=\count106
+\nofMPsegments=\count105
+\nofMParguments=\count106
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count107
 \MPscratchDim=\dimen125
-\MPnumerator=\count107
-\makeMPintoPDFobject=\count108
-\everyMPtoPDFconversion=\toks22
+\MPnumerator=\count108
+\makeMPintoPDFobject=\count109
+\everyMPtoPDFconversion=\toks23
 ) ("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\epstopdf-base.sty"
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -265,32 +273,32 @@ Package grfext Info: Graphics extension search list:
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
-LaTeX Info: Redefining \celsius on input line 51.
-Package gensymb Info: Faking symbols for \degree and \celsius on input line 51.
+LaTeX Info: Redefining \celsius on input line 54.
+Package gensymb Info: Faking symbols for \degree and \celsius on input line 54.
 
 
 
 Package gensymb Warning: Not defining \perthousand.
 
-LaTeX Info: Redefining \ohm on input line 51.
-Package gensymb Info: Using \Omega for \ohm on input line 51.
+LaTeX Info: Redefining \ohm on input line 54.
+Package gensymb Info: Using \Omega for \ohm on input line 54.
 
 Package gensymb Warning: Not defining \micro.
 
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 55.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 55.
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 58.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 58.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 <figures/originalDataset.pdf, id=1, pagebox=cropbox, 404.712pt x 433.62pt>
 File: figures/originalDataset.pdf Graphic file (type pdf)
 <use figures/originalDataset.pdf>
-Package pdftex.def Info: figures/originalDataset.pdf  used on input line 76. on
- input line 76.
+Package pdftex.def Info: figures/originalDataset.pdf  used on input line 77. on
+ input line 77.
 Package pdftex.def Info: Requested size: 252.94499pt x 271.01183pt on input lin
-e 76.
+e 77.
 
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 76--77
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 77--78
  [] 
  []
 
@@ -309,127 +317,80 @@ Overfull \hbox (7.22688pt too wide) in paragraph at lines 87--88
  [] 
  []
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<figures/thresholdDataset.pdf, id=3, pagebox=cropbox, 404.712pt x 433.62pt>
-File: figures/thresholdDataset.pdf Graphic file (type pdf)
-<use figures/thresholdDataset.pdf>
-Package pdftex.def Info: figures/thresholdDataset.pdf  used on input line 110. 
-on input line 110.
-Package pdftex.def Info: Requested size: 252.94499pt x 271.01183pt on input lin
-e 110.
-
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 110--111
- [] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<figures/thresholdmedDataset.pdf, id=4, pagebox=cropbox, 404.712pt x 433.62pt>
-File: figures/thresholdmedDataset.pdf Graphic file (type pdf)
-<use figures/thresholdmedDataset.pdf>
-Package pdftex.def Info: figures/thresholdmedDataset.pdf  used on input line 12
-5. on input line 125.
-Package pdftex.def Info: Requested size: 252.94499pt x 271.01183pt on input lin
-e 125.
-
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 125--126
- [] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<figures/BiggestDataset.pdf, id=5, pagebox=cropbox, 404.712pt x 433.62pt>
-File: figures/BiggestDataset.pdf Graphic file (type pdf)
-<use figures/BiggestDataset.pdf>
-Package pdftex.def Info: figures/BiggestDataset.pdf  used on input line 134. on
- input line 134.
-Package pdftex.def Info: Requested size: 252.94499pt x 271.01183pt on input lin
-e 134.
-
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 134--135
- [] 
- []
-
 [1{C:/Users/hamed/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
  <./figures/originalDataset.pdf> <./figures/21stepwide8bit.jpg>]
+<figures/thresholdDataset.pdf, id=61, pagebox=cropbox, 404.712pt x 433.62pt>
+File: figures/thresholdDataset.pdf Graphic file (type pdf)
+<use figures/thresholdDataset.pdf>
+Package pdftex.def Info: figures/thresholdDataset.pdf  used on input line 115. 
+on input line 115.
+Package pdftex.def Info: Requested size: 252.94499pt x 271.01183pt on input lin
+e 115.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 115--116
+ [] 
+ []
 
-<figures/allDataset.pdf, id=67, pagebox=cropbox, 361.35pt x 361.35pt>
-File: figures/allDataset.pdf Graphic file (type pdf)
-<use figures/allDataset.pdf>
-Package pdftex.def Info: figures/allDataset.pdf  used on input line 144. on inp
-ut line 144.
-Package pdftex.def Info: Requested size: 252.94499pt x 252.94327pt on input lin
-e 144.
+<figures/thresholdmedDataset.pdf, id=62, pagebox=cropbox, 404.712pt x 433.62pt>
 
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 144--145
+File: figures/thresholdmedDataset.pdf Graphic file (type pdf)
+<use figures/thresholdmedDataset.pdf>
+Package pdftex.def Info: figures/thresholdmedDataset.pdf  used on input line 13
+0. on input line 130.
+Package pdftex.def Info: Requested size: 252.94499pt x 271.01183pt on input lin
+e 130.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 130--131
  [] 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
+
+<figures/BiggestDataset.pdf, id=63, pagebox=cropbox, 404.712pt x 433.62pt>
+File: figures/BiggestDataset.pdf Graphic file (type pdf)
+<use figures/BiggestDataset.pdf>
+Package pdftex.def Info: figures/BiggestDataset.pdf  used on input line 158. on
+ input line 158.
+Package pdftex.def Info: Requested size: 252.94499pt x 271.01183pt on input lin
+e 158.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 158--159
+ [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<figures/allDataset.pdf, id=64, pagebox=cropbox, 361.35pt x 361.35pt>
+File: figures/allDataset.pdf Graphic file (type pdf)
+<use figures/allDataset.pdf>
+Package pdftex.def Info: figures/allDataset.pdf  used on input line 168. on inp
+ut line 168.
+Package pdftex.def Info: Requested size: 252.94499pt x 252.94327pt on input lin
+e 168.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 168--169
+ [] 
+ []
 
 [2 <./figures/thresholdDataset.pdf> <./figures/thresholdmedDataset.pdf
 
 pdfTeX warning: pdflatex.exe (file ./figures/thresholdmedDataset.pdf): PDF incl
 usion: multiple pdfs with page group included in a single page
 >]
-<figures/CNNflowchart.png, id=165, 509.832pt x 222.723pt>
-File: figures/CNNflowchart.png Graphic file (type png)
-<use figures/CNNflowchart.png>
-Package pdftex.def Info: figures/CNNflowchart.png  used on input line 180. on i
-nput line 180.
-Package pdftex.def Info: Requested size: 505.89pt x 221.00621pt on input line 1
-80.
-
-Underfull \vbox (badness 4193) has occurred while \output is active []
-
-<figures/svm_tuning.png, id=166, 462.528pt x 346.896pt>
-File: figures/svm_tuning.png Graphic file (type png)
-<use figures/svm_tuning.png>
-Package pdftex.def Info: figures/svm_tuning.png  used on input line 212. on inp
-ut line 212.
-Package pdftex.def Info: Requested size: 252.94499pt x 189.70827pt on input lin
-e 212.
-
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 212--213
- [] 
- []
-
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/cnncomplexity.png, id=168, 557.08125pt x 457.71pt>
-File: figures/cnncomplexity.png Graphic file (type png)
-<use figures/cnncomplexity.png>
-Package pdftex.def Info: figures/cnncomplexity.png  used on input line 226. on 
-input line 226.
-Package pdftex.def Info: Requested size: 252.94499pt x 207.82536pt on input lin
-e 226.
-
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 226--227
- [] 
- []
-
-<figures/CNNaccuvsLayers.pdf, id=169, pagebox=cropbox, 433.62pt x 289.08pt>
-File: figures/CNNaccuvsLayers.pdf Graphic file (type pdf)
-<use figures/CNNaccuvsLayers.pdf>
-Package pdftex.def Info: figures/CNNaccuvsLayers.pdf  used on input line 234. o
-n input line 234.
-Package pdftex.def Info: Requested size: 252.94499pt x 168.63252pt on input lin
-e 234.
-
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 234--235
- [] 
- []
-
+<figures/svmSlack.png, id=165, 128.8815pt x 131.2905pt>
+File: figures/svmSlack.png Graphic file (type png)
+<use figures/svmSlack.png>
+Package pdftex.def Info: figures/svmSlack.png  used on input line 201. on input
+ line 201.
+Package pdftex.def Info: Requested size: 151.76854pt x 154.6109pt on input line
+ 201.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -438,106 +399,128 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 pdfTeX warning: pdflatex.exe (file ./figures/allDataset.pdf): PDF inclusion: mu
 ltiple pdfs with page group included in a single page
 >]
+<figures/CNNflowchart.png, id=254, 509.832pt x 222.723pt>
+File: figures/CNNflowchart.png Graphic file (type png)
+<use figures/CNNflowchart.png>
+Package pdftex.def Info: figures/CNNflowchart.png  used on input line 222. on i
+nput line 222.
+Package pdftex.def Info: Requested size: 505.89pt x 221.00621pt on input line 2
+22.
+<figures/svm_tuning.png, id=255, 462.528pt x 346.896pt>
+File: figures/svm_tuning.png Graphic file (type png)
+<use figures/svm_tuning.png>
+Package pdftex.def Info: figures/svm_tuning.png  used on input line 254. on inp
+ut line 254.
+Package pdftex.def Info: Requested size: 227.64894pt x 170.73744pt on input lin
+e 254.
+
 
 LaTeX Warning: `h' float specifier changed to `ht'.
+
+<figures/cnncomplexity.png, id=257, 557.08125pt x 457.71pt>
+File: figures/cnncomplexity.png Graphic file (type png)
+<use figures/cnncomplexity.png>
+Package pdftex.def Info: figures/cnncomplexity.png  used on input line 268. on 
+input line 268.
+Package pdftex.def Info: Requested size: 227.64894pt x 187.04073pt on input lin
+e 268.
+<figures/CNNaccuvsLayers.pdf, id=258, pagebox=cropbox, 433.62pt x 289.08pt>
+File: figures/CNNaccuvsLayers.pdf Graphic file (type pdf)
+<use figures/CNNaccuvsLayers.pdf>
+Package pdftex.def Info: figures/CNNaccuvsLayers.pdf  used on input line 276. o
+n input line 276.
+Package pdftex.def Info: Requested size: 252.94499pt x 168.63252pt on input lin
+e 276.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 276--277
+ [] 
+ []
+
+[4 <./figures/svmSlack.png>]
+<figures/svm_conf.png, id=264, 346.896pt x 346.896pt>
+File: figures/svm_conf.png Graphic file (type png)
+<use figures/svm_conf.png>
+Package pdftex.def Info: figures/svm_conf.png  used on input line 294. on input
+ line 294.
+Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
+e 294.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 294--295
+ [] 
+ []
+
+[5 <./figures/CNNflowchart.png> <./figures/svm_tuning.png>]
+<figures/fnn_tune.png, id=270, 462.528pt x 346.896pt>
+File: figures/fnn_tune.png Graphic file (type png)
+<use figures/fnn_tune.png>
+Package pdftex.def Info: figures/fnn_tune.png  used on input line 306. on input
+ line 306.
+Package pdftex.def Info: Requested size: 252.94499pt x 189.70827pt on input lin
+e 306.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 306--307
+ [] 
+ []
+
+<figures/fnn_conf.png, id=271, 346.896pt x 346.896pt>
+File: figures/fnn_conf.png Graphic file (type png)
+<use figures/fnn_conf.png>
+Package pdftex.def Info: figures/fnn_conf.png  used on input line 313. on input
+ line 313.
+Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
+e 313.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 313--314
+ [] 
+ []
+
+<figures/cnn_conf.png, id=272, 346.896pt x 346.896pt>
+File: figures/cnn_conf.png Graphic file (type png)
+<use figures/cnn_conf.png>
+Package pdftex.def Info: figures/cnn_conf.png  used on input line 324. on input
+ line 324.
+Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
+e 324.
+
+Overfull \hbox (7.22688pt too wide) in paragraph at lines 324--325
+ [] 
+ []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-<figures/svm_conf.png, id=256, 346.896pt x 346.896pt>
-File: figures/svm_conf.png Graphic file (type png)
-<use figures/svm_conf.png>
-Package pdftex.def Info: figures/svm_conf.png  used on input line 250. on input
- line 250.
-Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
-e 250.
-
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 250--251
- [] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[4 <./figures/CNNflowchart.png>]
-<figures/fnn_tune.png, id=261, 462.528pt x 346.896pt>
-File: figures/fnn_tune.png Graphic file (type png)
-<use figures/fnn_tune.png>
-Package pdftex.def Info: figures/fnn_tune.png  used on input line 262. on input
- line 262.
-Package pdftex.def Info: Requested size: 252.94499pt x 189.70827pt on input lin
-e 262.
-
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 262--263
- [] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<figures/fnn_conf.png, id=262, 346.896pt x 346.896pt>
-File: figures/fnn_conf.png Graphic file (type png)
-<use figures/fnn_conf.png>
-Package pdftex.def Info: figures/fnn_conf.png  used on input line 269. on input
- line 269.
-Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
-e 269.
-
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 269--270
- [] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<figures/cnn_conf.png, id=263, 346.896pt x 346.896pt>
-File: figures/cnn_conf.png Graphic file (type png)
-<use figures/cnn_conf.png>
-Package pdftex.def Info: figures/cnn_conf.png  used on input line 280. on input
- line 280.
-Package pdftex.def Info: Requested size: 252.94499pt x 252.94614pt on input lin
-e 280.
-
-Overfull \hbox (7.22688pt too wide) in paragraph at lines 280--281
- [] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 321--325
+ [6 <./figures/cnncomplexity.png> <./figures/CNNaccuvsLayers.pdf> <./figures/sv
+m_conf.png> <./figures/fnn_tune.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 365--369
 
  []
 
-[5 <./figures/svm_tuning.png> <./figures/cnncomplexity.png> <./figures/CNNaccuv
-sLayers.pdf> <./figures/svm_conf.png>] ("Kaggle Report.bbl"
-Overfull \vbox (336.63315pt too high) has occurred while \output is active []
 
+Underfull \vbox (badness 2846) has occurred while \output is active []
 
-[6 <./figures/fnn_tune.png> <./figures/fnn_conf.png>]
-Underfull \hbox (badness 4940) in paragraph at lines 58--62
+ [7 <./figures/fnn_conf.png> <./figures/cnn_conf.png>] ("Kaggle Report.bbl"
+Underfull \hbox (badness 4940) in paragraph at lines 67--71
 []\OT1/ptm/m/n/8 A. Bud-hi-raja, ``Dropout in (deep) ma-chine
  []
 
 
-Underfull \hbox (badness 3724) in paragraph at lines 58--62
+Underfull \hbox (badness 3724) in paragraph at lines 67--71
 \OT1/ptm/m/n/8 learn-ing,'' 2016, [Ac-cessed 22-March-2018]. [On-
  []
 
 
-Underfull \hbox (badness 4832) in paragraph at lines 58--62
+Underfull \hbox (badness 4832) in paragraph at lines 67--71
 \OT1/ptm/m/n/8 line]. Avail-able: $https : / / medium . com / @amarbudhiraja /
  []
 
 
-Overfull \hbox (142.30238pt too wide) in paragraph at lines 58--62
+Overfull \hbox (142.30238pt too wide) in paragraph at lines 67--71
 \OT1/ptm/m/n/8 https-[]medium-[]com-[]amarbudhiraja-[]learning-[]less-[]to-[]le
 arn-[]better-[]dropout-[]in-[]deep-[]machine-[]learning-[]74334da4bfc5$ 
  []
 
 
-Overfull \hbox (118.21054pt too wide) in paragraph at lines 81--86
+Overfull \hbox (118.21054pt too wide) in paragraph at lines 90--95
 \OT1/ptm/m/n/8 types-[]of-[]optimization-[]algorithms-[]used-[]in-[]neural-[]ne
 tworks-[]and-[]ways-[]to-[]optimize-[]gradient-[]95ae5d39529f.$ 
  []
@@ -554,32 +537,37 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-[7 <./figures/cnn_conf.png>] ("Kaggle Report.aux") ) 
+[8
+
+] ("Kaggle Report.aux") ) 
 Here is how much of TeX's memory you used:
- 2910 strings out of 493312
- 43340 string characters out of 3138899
- 114805 words of memory out of 3000000
- 6409 multiletter control sequences out of 15000+200000
- 42533 words of font info for 86 fonts, out of 3000000 for 9000
+ 2964 strings out of 493312
+ 44042 string characters out of 3138899
+ 118378 words of memory out of 3000000
+ 6453 multiletter control sequences out of 15000+200000
+ 44596 words of font info for 93 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,14n,25p,1178b,313s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.
-9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
-cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7
-.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/
-Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Fi
-les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX
- 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courie
-r/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/
-Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/Mi
-KTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
-pe1/urw/times/utmri8a.pfb>
-Output written on "Kaggle Report.pdf" (7 pages, 740242 bytes).
+ 41i,14n,25p,1117b,313s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.e
+nc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
+amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
+cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pf
+b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Prog
+ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 
+2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts
+/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/time
+s/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:
+/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/Mi
+KTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on "Kaggle Report.pdf" (8 pages, 790911 bytes).
 PDF statistics:
- 362 PDF objects out of 1000 (max. 8388607)
+ 383 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 71 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 76 words of extra memory for PDF output out of 10000 (max. 10000000)
 

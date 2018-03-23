@@ -39,6 +39,15 @@ W.~contributors. (2018) Mnist database --- wikipedia{,} the free encyclopedia.
 A.~C. Bovik, \emph{The essential guide to image processing}.\hskip 1em plus
   0.5em minus 0.4em\relax Academic Press, 2009.
 
+\bibitem{bishop:2006:PRML}
+C.~M. Bishop, \emph{Pattern Recognition and Machine Learning}.\hskip 1em plus
+  0.5em minus 0.4em\relax Springer, 2006.
+
+\bibitem{goodfellow2016deep}
+I.~Goodfellow, Y.~Bengio, A.~Courville, and Y.~Bengio, \emph{Deep
+  learning}.\hskip 1em plus 0.5em minus 0.4em\relax MIT press Cambridge, 2016,
+  vol.~1.
+
 \bibitem{wiki:cnn}
 \BIBentryALTinterwordspacing
 W.~contributors. (2018) Convolutional neural network --- wikipedia{,} the free
