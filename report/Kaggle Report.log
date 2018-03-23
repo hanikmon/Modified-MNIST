@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  22 MAR 2018 21:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.25)  22 MAR 2018 21:51
 entering extended mode
 **"./Kaggle Report.tex"
 ("Kaggle Report.tex"
@@ -413,10 +413,6 @@ Package pdftex.def Info: figures/svm_tuning.png  used on input line 254. on inp
 ut line 254.
 Package pdftex.def Info: Requested size: 227.64894pt x 170.73744pt on input lin
 e 254.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 <figures/cnncomplexity.png, id=257, 557.08125pt x 457.71pt>
 File: figures/cnncomplexity.png Graphic file (type png)
 <use figures/cnncomplexity.png>
@@ -487,18 +483,16 @@ Overfull \hbox (7.22688pt too wide) in paragraph at lines 324--325
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [6 <./figures/cnncomplexity.png> <./figures/CNNaccuvsLayers.pdf> <./figures/sv
-m_conf.png> <./figures/fnn_tune.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 365--369
+Underfull \hbox (badness 10000) in paragraph at lines 367--371
 
  []
 
+[6 <./figures/cnncomplexity.png> <./figures/CNNaccuvsLayers.pdf> <./figures/svm
+_conf.png> <./figures/fnn_tune.png>]
+Overfull \vbox (336.63315pt too high) has occurred while \output is active []
 
-Underfull \vbox (badness 2846) has occurred while \output is active []
 
- [7 <./figures/fnn_conf.png> <./figures/cnn_conf.png>] ("Kaggle Report.bbl"
+[7 <./figures/fnn_conf.png> <./figures/cnn_conf.png>] ("Kaggle Report.bbl"
 Underfull \hbox (badness 4940) in paragraph at lines 67--71
 []\OT1/ptm/m/n/8 A. Bud-hi-raja, ``Dropout in (deep) ma-chine
  []
@@ -537,35 +531,33 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-[8
-
-] ("Kaggle Report.aux") ) 
+[8] ("Kaggle Report.aux") ) 
 Here is how much of TeX's memory you used:
- 2964 strings out of 493312
- 44042 string characters out of 3138899
+ 2965 strings out of 493312
+ 44048 string characters out of 3138899
  118378 words of memory out of 3000000
  6453 multiletter control sequences out of 15000+200000
- 44596 words of font info for 93 fonts, out of 3000000 for 9000
+ 45674 words of font info for 94 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,14n,25p,1117b,313s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.e
-nc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/P
-rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program F
-iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiK
-TeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/f
-onts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
-1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
-amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
-cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pf
-b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Prog
-ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program File
-s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/time
-s/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:
-/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/Mi
-KTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on "Kaggle Report.pdf" (8 pages, 790911 bytes).
+ 41i,14n,25p,1022b,313s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r
+.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:
+/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program
+ Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
+pe1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
+c/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfont
+s/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.
+pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/ti
+mes/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><
+C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/
+MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on "Kaggle Report.pdf" (8 pages, 790889 bytes).
 PDF statistics:
  383 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
